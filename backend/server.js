@@ -12,8 +12,9 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://mern-full-stack-hopefully-working.onrender.com'
-}
+  origin: 'https://mern-full-stack-hopefully-working.onrender.com',
+  credential: true,
+};
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
