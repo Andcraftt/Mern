@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'https://mern-full-stack-1-0.onrender.com'
+const API_URL = 'https://mern-full-stack-1-0.onrender.com/goals'
 
 // Create new goal
 const createGoal = async (goalData, token) => {
