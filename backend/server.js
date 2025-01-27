@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const colors = require('colors');
 const dotenv = require('dotenv').config();
-const cors = require('cors')
+const cors = require('cors');
 const { errorHandler } = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
 const port = process.env.PORT || 5000;
@@ -12,9 +12,7 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: 'https://mern-full-stack-hopefully-working.onrender.com',
-  methods: ['GET','POST','DELETE'],
-  allowedHeaders: ['Content-Type','Authorization'],
+  origin: 'https://mern-full-stack-hopefully-working.onrender.com'
 }
 
 app.use(express.json());
