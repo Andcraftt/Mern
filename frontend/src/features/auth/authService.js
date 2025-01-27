@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = 'https://mern-full-stack-1-0.onrender.com/api/users/'
+const API_URL = 'https://mern-full-stack-1-0.onrender.com'
 
 // Register user
 const register = async (userData) => {
