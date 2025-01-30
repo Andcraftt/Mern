@@ -24,7 +24,7 @@ function Header() {
           <li>
             <div class="btn-container">
               <button className='btn1'>
-                <Link to='/MyProfile' /> My profile
+                <FaUser /><Link to='/MyProfile' /> My profile
               </button>
               <button className='btn' onClick={onLogout}>
                 <FaSignOutAlt /> Logout
