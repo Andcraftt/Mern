@@ -24,7 +24,7 @@ function Header() {
           <li>
             <div class="btn-container">
               <button className='btn1'>
-                <FaUser style={{ color: 'white' }} /> 
+                <FaUser style={{ color: 'white',marginRight: '4px' }} /> 
                 <Link to='/MyProfile' /> My profile
               </button>
               <button className='btn' onClick={onLogout}>
