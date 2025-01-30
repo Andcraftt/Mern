@@ -22,12 +22,14 @@ function Header() {
       <ul>
         {user ? (
           <li>
-            <button className='btn1'>
-              <Link to='/MyProfile' /> My profile
-            </button>
-            <button className='btn' onClick={onLogout}>
-              <FaSignOutAlt /> Logout
-            </button>
+            <div class="btn-container">
+              <button className='btn1'>
+                <Link to='/MyProfile' /> My profile
+              </button>
+              <button className='btn' onClick={onLogout}>
+                <FaSignOutAlt /> Logout
+              </button>
+            </div>
           </li>
         ) : (
           <>
