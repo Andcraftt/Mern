@@ -138,7 +138,7 @@ h3 {
 .btn-container {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 10px; /* Espacio uniforme entre los botones */
 }
 
 .btn1,
@@ -156,12 +156,13 @@ h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  min-width: 120px; /* Evita que un botón sea más pequeño que el otro */
+  height: 40px; /* Establece una altura fija para ambos */
 }
 
 .btn1 {
-  margin-right: 0; 
+  margin-right: 0; /* No es necesario porque usamos `gap` */
 }
-
 
 .btn svg {
   margin-right: 8px;
