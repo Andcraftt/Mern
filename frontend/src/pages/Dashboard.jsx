@@ -20,7 +20,11 @@ function Dashboard() {
       console.log(message)
     }
 
-    dispatch(getGoals())
+    if (!user) {
+      navigate('/login')
+    }else {
+      dispatch(getGoals())
+    }
 
     return () => {
       dispatch(reset())
