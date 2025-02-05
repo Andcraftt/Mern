@@ -38,7 +38,7 @@ function Dashboard() {
         <p>Goals Dashboard</p>
       </section>
 
-      <GoalForm />
+      {user && <GoalForm />}
 
       <section className='content'>
         {goals.length > 0 ? (
