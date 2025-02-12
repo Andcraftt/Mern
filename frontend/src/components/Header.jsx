@@ -25,7 +25,7 @@ function Header() {
             <div class="btn-container">
               <button className='btn1'>
                 <FaUser style={{ color: 'white',marginRight: '4px' }} /> 
-                <Link to='/MyProfile' /> My profile
+                <Link to='/myprofile' /> My profile
               </button>
               <button className='btn' onClick={onLogout}>
                 <FaSignOutAlt /> Logout
