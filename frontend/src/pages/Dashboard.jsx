@@ -25,7 +25,6 @@ function Dashboard() {
     }else {
       dispatch(getGoals())
     }
-    //Hola prueba commit
     return () => {
       dispatch(reset())
     }
