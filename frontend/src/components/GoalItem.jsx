@@ -6,7 +6,7 @@ function GoalItem({ goal }) {
   const dispatch = useDispatch()
 
   // Comparamos el ID del usuario autenticado con el ID del creador del goal
-  const isOwner = user && goal.userId === user._id
+  const isOwner = user && goal.user === user._id
 
   return (
     <div className='goal'>
