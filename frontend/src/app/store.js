@@ -6,5 +6,6 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     goals: goalReducer,
+    //hola
   },
 });
