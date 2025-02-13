@@ -168,6 +168,10 @@ h3 {
   color: white !important;
 }
 
+.btn-container a {
+  color: inherit;
+}
+
 .btn svg {
   margin-right: 8px;
 }
