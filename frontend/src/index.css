@@ -164,13 +164,16 @@ h3 {
   margin-right: 0; /* No es necesario porque usamos `gap` */
 }
 
-.btn svg {
-  margin-right: 8px;
+.btn, .btn1 {
+  color: white !important;
 }
 
-.btn-reverse {
-  background: black;
-  color: white;
+.btn-container a {
+  color: inherit;
+}
+
+.btn svg {
+  margin-right: 8px;
 }
 
 .btn-block {
