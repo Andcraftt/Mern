@@ -36,12 +36,6 @@ function Dashboard() {
 
   return (
     <>
-      <section className='heading'>
-        <h1>Welcome {user && user.name}</h1>
-        <p>Goals Dashboard</p>
-      </section>
-
-      {user && <GoalForm />}
 
       <section className='content'>
         {goals.length > 0 ? (
