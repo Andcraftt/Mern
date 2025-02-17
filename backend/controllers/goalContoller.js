@@ -11,14 +11,6 @@ const getGoals = asyncHandler(async (req,res) =>{
     res.status(200).json(goals);
 })
 
-// @desc    Get goals 
-// @route   GET /api/goals
-// @access  Private
-const getUserGoals = asyncHandler(async (req, res) => {
-    const goals = await Goal.find({ user: req.user.id });
-    res.status(200).json(goals);
-});
-
 // @desc    Set goals
 // @route   POST /api/goals
 // @access  Private
