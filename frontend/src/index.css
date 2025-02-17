@@ -88,7 +88,7 @@ h3 {
 
 .goals {
   display: grid;
-  grid-template-columns: repeat(6, 3fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 10px;
 }
 
@@ -110,10 +110,6 @@ h3 {
 
 .form, .content {
   width: 70%;
-  margin: 0 auto;
-}
-.content2 {
-  width: 130%;
   margin: 0 auto;
 }
 
