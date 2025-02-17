@@ -23,11 +23,11 @@ function Header() {
         {user ? (
           <li>
             <div class="btn-container">
-              <button className='btn1'> 
               <Link to='/myprofile'> 
+                <button className='btn1'> 
                 <FaUser style={{ color: 'white',marginRight: '4px' }} /> My Profile
+                   </button>
               </Link>
-              </button>
               <button className='btn' onClick={onLogout}>
                 <FaSignOutAlt /> Logout
               </button>
