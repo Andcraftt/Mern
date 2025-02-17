@@ -42,7 +42,7 @@ function Myprofile(){const navigate = useNavigate()
   
       {user && <GoalForm />}
   
-      <section className='content2'>
+      <section className='content'>
         {userGoals.length > 0 ? (
           <div className='goals'>
             {userGoals.map((goal) => (
