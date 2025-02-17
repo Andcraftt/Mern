@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import Spinner from '../components/Spinner'
-import { getUserGoals, reset } from '../features/goals/goalSlice'
+import { getGoals, reset } from '../features/goals/goalSlice'
 
 function Myprofile(){const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ function Myprofile(){const navigate = useNavigate()
     if (!user) {
        navigate('/login')
     }else {
-      dispatch(getUserGoals())
+      dispatch(getGoals())
      }
      return () => {
       dispatch(reset())
@@ -32,28 +32,28 @@ function Myprofile(){const navigate = useNavigate()
   if (isLoading) {
     return <Spinner />
   }
-
+   const userGoals = goals.filter((goal) => goal.user === user._id)
    return (
-      <>
-        <section className='heading'>
-          <h1>Welcome {user && user.name}</h1>
-          <p>Goals Dashboard</p>
-        </section>
+    <>
+      <section className='heading'>
+        <h1>Welcome {user && user.name}</h1>
+        <p>Goals Dashboard</p>
+      </section>
   
-        {user && <GoalForm />}
+      {user && <GoalForm />}
   
-        <section className='content'>
-          {goals.length > 0 ? (
-            <div className='goals'>
-              {goals.map((goal) => (
-                <GoalItem key={goal._id} goal={goal} />
-              ))}
-            </div>
-          ) : (
-            <h3>You have not set any goals</h3>
-          )}
-        </section>
-       </>
-    )
+      <section className='content'>
+        {userGoals.length > 0 ? (
+          <div className='goals'>
+            {userGoals.map((goal) => (
+              <GoalItem key={goal._id} goal={goal} />
+            ))}
+          </div>
+        ) : (
+          <h3>You have not set any goals</h3>
+        )}
+      </section>
+    </>
+  )
 }
 export default Myprofile
