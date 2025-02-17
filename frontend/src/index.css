@@ -108,9 +108,12 @@ h3 {
   background: none;
 }
 
-.form,
-.content {
-  width: 110%;
+.form, .content {
+  width: 70%;
+  margin: 0 auto;
+}
+.content2 {
+  width: 130%;
   margin: 0 auto;
 }
 

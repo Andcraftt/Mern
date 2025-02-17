@@ -37,7 +37,7 @@ function Dashboard() {
   return (
     <>
 
-      <section className='content'>
+      <section className='content2'>
         {goals.length > 0 ? (
           <div className='goals'>
             {goals.map((goal) => (
