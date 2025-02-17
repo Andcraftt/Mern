@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import Spinner from '../components/Spinner'
-import { getGoals, reset } from '../features/goals/goalSlice'
+import { getUserGoals, reset } from '../features/goals/goalSlice'
 
 function Myprofile(){const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ function Myprofile(){const navigate = useNavigate()
     if (!user) {
        navigate('/login')
     }else {
-      dispatch(getGoals())
+      dispatch(getUserGoals())
      }
      return () => {
       dispatch(reset())
