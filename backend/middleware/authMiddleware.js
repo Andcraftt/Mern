@@ -2,36 +2,35 @@ const jwt = require('jsonwebtoken')
 const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 
-const protect = asyncHandler(async (req, res, next) =>{
-    let token
-    if (req.method === 'GET') {
-        return next();  // Continuar sin aplicar la protección
+const protect = asyncHandler(async (req, res, next) => {
+    // Saltarse la autenticación solo para la ruta GET /api/goals
+    if (req.method === 'GET' && req.path === '/api/goals') {
+        return next();  // Continúa sin aplicar protección en esta ruta específica
     }
-    if(req.headers.authorization && req.headers.authorization.startsWith
-        ('Bearer')){
-            try{
-                // Get token from header
-                token = req.headers.authorization.split(' ')[1]
 
-                //Verify token
-                const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    let token
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            // Obtener token del encabezado
+            token = req.headers.authorization.split(' ')[1]
 
-                //Get user from the token
-                req.user = await User.findById(decoded.id).select('-password')
+            // Verificar el token
+            const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-                next()
-            }catch(error) {
-                console.log(error)
-                res.status(401)
-                throw new Error('Not authorized')
-            }
-        }
-        
-        if(!token) {
+            // Obtener el usuario del token
+            req.user = await User.findById(decoded.id).select('-password')
+
+            next()
+        } catch (error) {
+            console.log(error)
             res.status(401)
-            throw new Error('Not authorized, no token')
+            throw new Error('Not authorized')
         }
+    }
+    if (!token) {
+        res.status(401)
+        throw new Error('Not authorized, no token')
+    }
 })
 
 module.exports = { protect }
-
