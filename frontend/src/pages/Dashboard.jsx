@@ -19,10 +19,7 @@ function Dashboard() {
     if (isError) {
       console.log(message)
     }
-
-    if (!user || user) {
-       navigate('/login')
-    }else {
+    if (user){
       dispatch(getGoals())
     }
     return () => {
