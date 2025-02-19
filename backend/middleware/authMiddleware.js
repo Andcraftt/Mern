@@ -3,9 +3,18 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 
 const protect = asyncHandler(async (req, res, next) => {
+    // Log para depurar la ruta y el método
+    console.log('Method:', req.method)
+    console.log('Original URL:', req.originalUrl)
+
     // Saltarse la autenticación solo para la ruta GET /api/goals
-    if (req.method === 'GET' && req.path === '/api/goals') {
+    if (req.method === 'GET' && req.originalUrl === '/api/goals') {
         return next();  // Continúa sin aplicar protección en esta ruta específica
+    }else{
+        if (!token) {
+            res.status(401)
+            throw new Error('Not authorized, no token')
+        }
     }
 
     let token
@@ -27,10 +36,7 @@ const protect = asyncHandler(async (req, res, next) => {
             throw new Error('Not authorized')
         }
     }
-    if (!token) {
-        res.status(401)
-        throw new Error('Not authorized, no token')
-    }
+
 })
 
 module.exports = { protect }
