@@ -20,7 +20,7 @@ function Dashboard() {
       console.log(message)
     }
 
-    if (!user) {
+    if (!user || user) {
        navigate('/login')
     }else {
       dispatch(getGoals())
