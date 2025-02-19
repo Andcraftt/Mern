@@ -25,11 +25,11 @@ function Header() {
             <div class="btn-container">
               <Link to='/myprofile'> 
                 <button className='btn1'> 
-                <FaUser style={{ color: 'white',marginRight: '4px' }} /> My Profile
+                <FaUser style={{ color: 'white',marginRight: '4px' }} />&nbsp;My Profile
                    </button>
               </Link>
               <button className='btn' onClick={onLogout}>
-                <FaSignOutAlt /> Logout
+                <FaSignOutAlt />&nbsp;Logout
               </button>
             </div>
           </li>
@@ -37,12 +37,12 @@ function Header() {
           <>
             <li>
               <Link to='/login'>
-                <FaSignInAlt /> Login
+                <FaSignInAlt />&nbsp;Login
               </Link>
             </li>
             <li>
               <Link to='/register'>
-                <FaUser /> Register
+                <FaUser />&nbsp;Register
               </Link>
             </li>
           </>
