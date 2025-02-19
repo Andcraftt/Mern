@@ -8,13 +8,8 @@ const protect = asyncHandler(async (req, res, next) => {
     console.log('Original URL:', req.originalUrl)
 
     // Saltarse la autenticación solo para la ruta GET /api/goals
-    if (req.method === 'GET' && req.originalUrl === '/api/goals') {
+    if (req.method === 'GET') {
         return next();  // Continúa sin aplicar protección en esta ruta específica
-    }else{
-        if (!token) {
-            res.status(401)
-            throw new Error('Not authorized, no token')
-        }
     }
 
     let token
@@ -35,6 +30,11 @@ const protect = asyncHandler(async (req, res, next) => {
             res.status(401)
             throw new Error('Not authorized')
         }
+    }
+
+    if (!token) {
+        res.status(401)
+        throw new Error('Not authorized, no token')
     }
 
 })
