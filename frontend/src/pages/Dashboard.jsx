@@ -20,12 +20,13 @@ function Dashboard() {
       console.log(message)
     }
 
+    // Cargar los objetivos sin importar si el usuario ha iniciado sesión o no.
     dispatch(getGoals())
-  
+    
     return () => {
       dispatch(reset())
     }
-  }, [user, navigate, isError, message, dispatch])
+  }, [dispatch, isError, message])
 
   if (isLoading) {
     return <Spinner />
@@ -33,7 +34,6 @@ function Dashboard() {
 
   return (
     <>
-
       <section className='content'>
         {goals.length > 0 ? (
           <div className='goals'>
