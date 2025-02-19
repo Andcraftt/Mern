@@ -120,15 +120,6 @@ h3 {
   font-weight: 600;
   margin-bottom: 10px;
 }
-
-.container {
-  width: 100%;
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 20px;
-  text-align: center;
-}
-
 .header {
   display: flex;
   justify-content: space-between;
@@ -229,6 +220,7 @@ h3 {
   display: flex;
   align-items: center;
   gap: 10px; /* Espacio uniforme entre los botones */
+  margin-top: 20px; /* Ajusta este valor según el espacio que desees */
 }
 
 .btn1,
