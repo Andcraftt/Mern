@@ -156,6 +156,7 @@ h1, h2, h3 {
   justify-content: center;
   min-width: 120px; /* Evita que un botón sea más pequeño que el otro */
   height: 40px; /* Establece una altura fija para ambos */
+  margin-botton: 20px;
 }
 
 .btn:hover {
