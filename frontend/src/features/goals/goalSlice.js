@@ -33,19 +33,28 @@ export const getGoals = createAsyncThunk(
   'goals/getAll',
   async (_, thunkAPI) => {
     try {
-      const token = thunkAPI.getState().auth.user.token
-      return await goalService.getGoals(token)
+      // Obtener token solo si está disponible, si no, proceder sin él
+      const token = thunkAPI.getState().auth.user?.token;
+
+      // Si el token está presente, lo pasamos a goalService, si no, llamamos sin token
+      if (token) {
+        return await goalService.getGoals(token);
+      }
+
+      // Si no hay token, simplemente obtenemos los goals sin necesidad de autenticación
+      return await goalService.getGoals();
     } catch (error) {
       const message =
         (error.response &&
           error.response.data &&
           error.response.data.message) ||
         error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
   }
 )
+
 
 // Delete user goal
 export const deleteGoal = createAsyncThunk(
