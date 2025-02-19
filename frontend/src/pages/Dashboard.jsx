@@ -19,9 +19,9 @@ function Dashboard() {
     if (isError) {
       console.log(message)
     }
-    if (user){
-      dispatch(getGoals())
-    }
+
+    dispatch(getGoals())
+  
     return () => {
       dispatch(reset())
     }
