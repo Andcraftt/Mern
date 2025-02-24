@@ -13,6 +13,9 @@ function GoalItem({ goal }) {
       <div>{new Date(goal.createdAt).toLocaleString('en-US')}</div>
       <h2>{goal.text}</h2>
 
+      {/* Si hay una URL de imagen, la mostramos */}
+      {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
+
       {/* Solo mostramos el botón X si el usuario es el propietario del goal */}
       {isOwner && (
         <button onClick={() => dispatch(deleteGoal(goal._id))} className="close">
