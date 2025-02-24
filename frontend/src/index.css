@@ -106,7 +106,12 @@ h1, h2, h3 {
   border: none;
   background: none;
 }
-
+.goal-image {
+  max-width: 400px;   /* Establece un ancho máximo de 400px */
+  max-height: 300px;  /* Establece una altura máxima de 300px */
+  object-fit: cover;  /* Hace que la imagen cubra el espacio sin distorsionar */
+  margin-top: 10px;   /* Añade un pequeño margen superior */
+}
 .form {
   width: 70%;
   margin: 0 auto;
