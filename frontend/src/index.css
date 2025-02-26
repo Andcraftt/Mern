@@ -111,6 +111,7 @@ h1, h2, h3 {
   height: 300px;  /* Establece una altura máxima de 300px */
   object-fit: cover;  /* Hace que la imagen cubra el espacio sin distorsionar */
   margin-top: 10px;   /* Añade un pequeño margen superior */
+  border-radius: 10px;
 }
 .form {
   width: 70%;
