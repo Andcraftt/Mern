@@ -11,6 +11,8 @@ import connectDB from './config/db.js';
 dotenv.config();  // Cargar las variables de entorno desde .env
 connectDB();
 
+const port = process.env.PORT || 5001;
+
 const app = express();
 
 // Configuración de CORS
