@@ -1,4 +1,6 @@
-
+import { S3, S3Client } from "@aws-sdk/client-s3";
+import dotenv from 'dotenv'
+import multer from 'multer'
 
 const path = require('path');
 const express = require('express');
@@ -10,6 +12,7 @@ const connectDB = require('./config/db');
 const port = process.env.PORT || 5001;
 
 connectDB();
+
 
 const app = express();
 
