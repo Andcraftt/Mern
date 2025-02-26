@@ -5,7 +5,7 @@ import path from 'path';
 import express from 'express';
 import colors from 'colors';
 import cors from 'cors';
-import { errorHandler } from './middleware/errorMiddleware';
+import { errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db';
 
 dotenv.config();  // Cargar las variables de entorno desde .env
