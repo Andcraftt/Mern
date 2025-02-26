@@ -8,6 +8,7 @@ import cors from 'cors';
 import { errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 
+
 dotenv.config();  // Cargar las variables de entorno desde .env
 connectDB();
 
