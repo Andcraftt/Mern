@@ -1,7 +1,7 @@
-import { S3, S3Client } from "@aws-sdk/client-s3";
-import dotenv from 'dotenv';
-import multer from 'multer';
-
+// Reemplaza todos los import con require
+const { S3, S3Client } = require('@aws-sdk/client-s3');
+const dotenv = require('dotenv');
+const multer = require('multer');
 const path = require('path');
 const express = require('express');
 const colors = require('colors');
@@ -10,11 +10,12 @@ const { errorHandler } = require('./middleware/errorMiddleware');
 const connectDB = require('./config/db');
 const port = process.env.PORT || 5001;
 
+dotenv.config();  // Cargar las variables de entorno desde .env
 connectDB();
-
 
 const app = express();
 
+// Configuración de CORS
 const corsOptions = {
   origin: 'https://mern-full-stack-hopefully-working.onrender.com',
   credentials: true,
@@ -28,7 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
-// Serve frontend
+// Servir el frontend en producción
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')));
 
