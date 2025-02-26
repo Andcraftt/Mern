@@ -1,18 +1,15 @@
-import { S3, S3Client } from '@aws-sdk/client-s3';
-import dotenv from 'dotenv';
-import multer from 'multer';
-import path from 'path';
-import express from 'express';
-import colors from 'colors';
-import cors from 'cors';
-import { errorHandler } from './middleware/errorMiddleware.js';
-import connectDB from './config/db.js';
-
-
-dotenv.config();  // Cargar las variables de entorno desde .env
-connectDB();
-
+const { S3, S3Client } = require('@aws-sdk/client-s3');
+const dotenv = require('dotenv').config();
+const multer = require('multer');
+const path = require('path');
+const express = require('express');
+const colors = require('colors');
+const cors = require('cors');
+const { errorHandler } = require('./middleware/errorMiddleware');
+const connectDB = require('./config/db');
 const port = process.env.PORT || 5001;
+
+connectDB();
 
 const app = express();
 
