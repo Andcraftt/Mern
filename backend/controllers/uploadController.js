@@ -1,7 +1,7 @@
 // controllers/uploadController.js
-import multer from 'multer';
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
-import dotenv from 'dotenv';
+const multer = require ('multer');
+const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const asyncHandler = require('express-async-handler');
 
 // Configura Multer para manejar las cargas de archivos
 const storage = multer.memoryStorage();  // Usamos almacenamiento en memoria para las imágenes

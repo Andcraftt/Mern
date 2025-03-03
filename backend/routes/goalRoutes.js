@@ -7,13 +7,17 @@ const { protect } = require('../middleware/authMiddleware');
 // Ruta para subir una imagen a S3 (solo se usa el middleware de multer para la carga de archivos)
 router.post("/upload", upload.single('image'), uploadImageToS3);
 
-// Rutas para los goals
-router.route("/")
-  .get(getGoals)              // Obtener todos los goals
-  .post(protect, setGoal);     // Crear un nuevo goal (requiere autenticación)
+// Get all goals
+router.get('/', getGoals);
 
-router.route("/:id")
-  .delete(protect, deleteGoal) // Eliminar un goal (requiere autenticación)
-  .put(protect, updateGoal);    // Actualizar un goal (requiere autenticación)
+// Create a goal
+router.post('/', protect, setGoal);
+
+// Upload route - Make sure this is above other routes with parameters
+router.post('/upload', protect, upload.single('image'), uploadImageToS3);
+
+// Update and delete routes
+router.put('/:id', protect, updateGoal);
+router.delete('/:id', protect, deleteGoal);
 
 module.exports = router;
