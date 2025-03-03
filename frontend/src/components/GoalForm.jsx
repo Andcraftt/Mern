@@ -20,6 +20,12 @@ function GoalForm() {
     const selectedFile = e.target.files[0];
     
     if (selectedFile) {
+      // Check file size (max 5MB)
+      if (selectedFile.size > 5 * 1024 * 1024) {
+        setError('Image size must be less than 5MB');
+        return;
+      }
+      
       setImage(selectedFile);
       
       // Create preview
@@ -45,32 +51,37 @@ function GoalForm() {
       return;
     }
     
-    if (!image) {
-      setError('Please select an image');
-      return;
-    }
-    
-    setLoading(true);
-    
     try {
-      // 1. Upload image and get back S3 URL
-      const formData = new FormData();
-      formData.append('image', image);
+      setLoading(true);
       
-      // Include the auth token in the request
-      const config = {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${user.token}`,
-        },
-      };
+      let imgURL = null;
       
-      const response = await axios.post('/api/goals/upload', formData, config);
+      // Only upload image if one is selected
+      if (image) {
+        // 1. Upload image and get back S3 URL
+        const formData = new FormData();
+        formData.append('image', image);
+        
+        // Include the auth token in the request
+        const config = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${user.token}`,
+          },
+        };
+        
+        console.log('Uploading image...');
+        const response = await axios.post('/api/goals/upload', formData, config);
+        
+        imgURL = response.data.imageUrl;
+        console.log('Image uploaded:', imgURL);
+      }
       
-      const imgURL = response.data.imageUrl;
-      
-      // 2. Create goal with the text and image URL
-      await dispatch(createGoal({ text, imgURL })).unwrap();
+      // 2. Create goal with the text and image URL (if available)
+      await dispatch(createGoal({ 
+        text, 
+        imgURL: imgURL || '' 
+      })).unwrap();
       
       // 3. Reset form on success
       setText('');
@@ -78,8 +89,11 @@ function GoalForm() {
       setPreview(null);
       
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create goal. Please try again.');
       console.error('Error creating goal:', err);
+      setError(
+        err.response?.data?.message || 
+        'Failed to create goal. Please try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -104,7 +118,7 @@ function GoalForm() {
         </div>
 
         <div className='form-group'>
-          <label htmlFor='image'>Select Image</label>
+          <label htmlFor='image'>Select Image (optional)</label>
           <input
             type='file'
             name='image'
@@ -117,7 +131,11 @@ function GoalForm() {
 
         {preview && (
           <div className='image-preview'>
-            <img src={preview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px' }} />
+            <img 
+              src={preview} 
+              alt="Preview" 
+              style={{ maxWidth: '100%', maxHeight: '200px' }} 
+            />
           </div>
         )}
 
@@ -127,7 +145,7 @@ function GoalForm() {
             type='submit'
             disabled={loading}
           >
-            {loading ? 'Creating Goal...' : 'Add Goal with Image'}
+            {loading ? 'Creating Goal...' : 'Add Goal'}
           </button>
         </div>
       </form>
