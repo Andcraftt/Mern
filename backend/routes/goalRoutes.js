@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { getGoals, setGoal, updateGoal, deleteGoal } = require("../controllers/goalController")
+const { getGoals, setGoal, updateGoal, deleteGoal } = require("../controllers/goalController");
 const { uploadImageToS3, upload } = require('../controllers/uploadController'); // Importa el controlador de carga de imágenes
 const { protect } = require('../middleware/authMiddleware');
 
