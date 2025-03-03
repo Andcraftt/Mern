@@ -13,10 +13,31 @@ connectDB();
 
 const app = express();
 
+const whitelist = [
+  'https://mern-full-stack-hopefully-working.onrender.com',
+  'https://mern-full-stack-1-0.onrender.com',
+  // Add your local development URL if needed
+  'http://localhost:3000'
+];
+
 // Configuración de CORS
 const corsOptions = {
-  origin: 'https://mern-full-stack-hopefully-working.onrender.com',
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(null, true); // Temporarily allow all origins for debugging
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
 app.use(cors(corsOptions));
