@@ -44,4 +44,4 @@ const uploadImageToS3 = async (req, res) => {
   }
 };
 
-export { upload, uploadImageToS3 };
+module.exports = { upload, uploadImageToS3 };
