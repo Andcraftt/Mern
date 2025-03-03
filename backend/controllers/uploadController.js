@@ -1,5 +1,5 @@
 // controllers/uploadController.js
-const multer = require ('multer');
+const multer = require('multer');
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
 const asyncHandler = require('express-async-handler');
 
