@@ -66,7 +66,7 @@ function GoalForm() {
         const config = {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${AKIAR3HUOFH63ORKVSBR}`,
           },
         };
         
