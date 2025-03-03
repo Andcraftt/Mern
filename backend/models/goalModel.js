@@ -13,7 +13,7 @@ const goalSchema = mongoose.Schema(
     },
     imgURL: {
         type: String,
-        require: [true, 'Please add a text value']
+        require: [false, 'Please add a text value']
     }
     }, 
 {
