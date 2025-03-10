@@ -1,6 +1,6 @@
 // controllers/uploadController.js
 const multer = require('multer');
-const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const axios = require('axios');
 const asyncHandler = require('express-async-handler');
 
 // Configura Multer para manejar las cargas de archivos
@@ -12,46 +12,37 @@ const upload = multer({
   }
 });
 
-// Configura las credenciales de AWS S3
-const s3 = new S3Client({
-  credentials: {
-    accessKeyId: process.env.ACCESS_KEY,
-    secretAccessKey: process.env.SECRET_ACCESS_KEY,
-  },
-  region: process.env.BUCKET_REGION,
-});
-
-// Ruta para subir una imagen a S3
-const uploadImageToS3 = async (req, res) => {
+// Ruta para subir una imagen a Imgur
+const uploadImageToImgur = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    // Generate a unique name for the image
-    const params = {
-      Bucket: process.env.BUCKET_NAME,
-      Key: `${Date.now()}_${req.file.originalname}`, // Unique name
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype,
-    };
+    // Configura los parámetros para la solicitud a Imgur
+    const formData = new FormData();
+    formData.append('image', req.file.buffer.toString('base64')); // Convertir el buffer a base64
 
-    // Upload file to S3
-    const command = new PutObjectCommand(params);
-    await s3.send(command);
+    // Realiza la solicitud a la API de Imgur
+    const response = await axios.post('https://api.imgur.com/3/image', formData, {
+      headers: {
+        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+        ...formData.getHeaders(), // Agrega los headers de FormData
+      },
+    });
 
-    // Create the public URL of the image
-    const imageUrl = `https://${process.env.BUCKET_NAME}.s3.${process.env.BUCKET_REGION}.amazonaws.com/${params.Key}`;
-    
+    // Obtiene la URL de la imagen subida
+    const imageUrl = response.data.data.link;
+
     console.log('Image uploaded successfully:', imageUrl);
     res.status(200).json({ imageUrl });
   } catch (error) {
-    console.error('S3 Upload Error:', error);
+    console.error('Imgur Upload Error:', error);
     res.status(500).json({ 
       message: 'Failed to upload image', 
-      error: error.message 
+      error: error.response ? error.response.data : error.message 
     });
   }
 };
 
-module.exports = { upload, uploadImageToS3 };
+module.exports = { upload, uploadImageToImgur };
