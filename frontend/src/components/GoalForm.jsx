@@ -58,22 +58,22 @@ function GoalForm() {
       
       // Only upload image if one is selected
       if (image) {
-        // 1. Upload image and get back S3 URL
+        // 1. Upload image to Imgur and get back the URL
         const formData = new FormData();
         formData.append('image', image);
-        
+
         // Include the auth token in the request
         const config = {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${user.token}`,
+            'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`, // Asegúrate de tener tu Client ID en las variables de entorno
+            ...formData.getHeaders(), // Agrega los headers de FormData
           },
         };
         
-        console.log('Uploading image...');
-        const response = await axios.post('/api/goals/upload', formData, config);
+        console.log('Uploading image to Imgur...');
+        const response = await axios.post('https://api.imgur.com/3/image', formData, config);
         
-        imgURL = response.data.imageUrl;
+        imgURL = response.data.data.link; // Obtén la URL de la imagen subida
         console.log('Image uploaded:', imgURL);
       }
       
