@@ -2,7 +2,6 @@
 const multer = require('multer');
 const axios = require('axios');
 const asyncHandler = require('express-async-handler');
-const FormData = require('form-data');
 
 // Configure Multer for file uploads
 const storage = multer.memoryStorage();
@@ -25,22 +24,22 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
     }
 
     console.log('File received:', req.file.originalname, req.file.mimetype, req.file.size);
-
-    // Create form data for Imgur API request
-    const formData = new FormData();
-    formData.append('image', req.file.buffer.toString('base64'));
+    
+    // Convert buffer to base64
+    const base64Image = req.file.buffer.toString('base64');
     
     console.log('Making request to Imgur API');
     
-    // Make request to Imgur API
+    // Make request to Imgur API with the correct format
     const response = await axios({
       method: 'post',
       url: 'https://api.imgur.com/3/image',
       headers: {
-        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`
+        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
+        'Content-Type': 'application/json'
       },
       data: {
-        image: req.file.buffer.toString('base64'),
+        image: base64Image,
         type: 'base64'
       }
     });
