@@ -1,6 +1,4 @@
-const { S3, S3Client } = require('@aws-sdk/client-s3');
 const dotenv = require('dotenv').config();
-const multer = require('multer');
 const path = require('path');
 const express = require('express');
 const colors = require('colors');
@@ -20,7 +18,7 @@ const whitelist = [
   'http://localhost:3000'
 ];
 
-// Configuración de CORS
+// CORS configuration
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, Postman)
@@ -48,7 +46,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
-// Servir el frontend en producción
+// Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')));
 

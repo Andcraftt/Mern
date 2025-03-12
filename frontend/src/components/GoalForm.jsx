@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { createGoal } from '../features/goals/goalSlice';
 import axios from 'axios';
 
@@ -11,9 +11,6 @@ function GoalForm() {
   const [preview, setPreview] = useState(null);
 
   const dispatch = useDispatch();
-  
-  // Get user token from Redux store
-  const { user } = useSelector((state) => state.auth);
 
   // Handle image selection with preview
   const onFileChange = (e) => {
@@ -58,22 +55,25 @@ function GoalForm() {
       
       // Only upload image if one is selected
       if (image) {
-        // 1. Upload image to Imgur and get back the URL
+        // 1. Upload image to our backend (which will then upload to Imgur)
         const formData = new FormData();
         formData.append('image', image);
 
+        // Get the auth token from localStorage
+        const token = JSON.parse(localStorage.getItem('user'))?.token;
+        
         // Include the auth token in the request
         const config = {
           headers: {
-            'Authorization': `Client-ID ${process.env.REACT_APP_IMGUR_CLIENT_ID}`, // Asegúrate de tener tu Client ID en las variables de entorno
-            ...formData.getHeaders(), // Agrega los headers de FormData
+            'Authorization': `Bearer ${token}`,
+            // No need to set Content-Type, axios will set it correctly with FormData
           },
         };
         
-        console.log('Uploading image to Imgur...');
-        const response = await axios.post('https://api.imgur.com/3/image', formData, config);
+        console.log('Uploading image to backend...');
+        const response = await axios.post('/api/goals/upload', formData, config);
         
-        imgURL = response.data.data.link; // Obtén la URL de la imagen subida
+        imgURL = response.data.imageUrl; // Get the image URL from the response
         console.log('Image uploaded:', imgURL);
       }
       

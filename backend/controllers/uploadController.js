@@ -2,9 +2,10 @@
 const multer = require('multer');
 const axios = require('axios');
 const asyncHandler = require('express-async-handler');
+const FormData = require('form-data'); // Make sure to add this dependency
 
-// Configura Multer para manejar las cargas de archivos
-const storage = multer.memoryStorage();  // Usamos almacenamiento en memoria para las imágenes
+// Configure Multer for file uploads
+const storage = multer.memoryStorage();  // Use memory storage for images
 const upload = multer({ 
   storage: storage,
   limits: {
@@ -12,37 +13,37 @@ const upload = multer({
   }
 });
 
-// Ruta para subir una imagen a Imgur
-const uploadImageToImgur = async (req, res) => {
+// Upload image to Imgur
+const uploadImageToImgur = asyncHandler(async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    // Configura los parámetros para la solicitud a Imgur
+    // Create form data for Imgur API request
     const formData = new FormData();
-    formData.append('image', req.file.buffer.toString('base64')); // Convertir el buffer a base64
+    formData.append('image', req.file.buffer.toString('base64')); // Convert buffer to base64
 
-    // Realiza la solicitud a la API de Imgur
+    // Make request to Imgur API
     const response = await axios.post('https://api.imgur.com/3/image', formData, {
       headers: {
         'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
-        ...formData.getHeaders(), // Agrega los headers de FormData
-      },
+        'Content-Type': 'multipart/form-data'
+      }
     });
 
-    // Obtiene la URL de la imagen subida
+    // Get the uploaded image URL
     const imageUrl = response.data.data.link;
 
     console.log('Image uploaded successfully:', imageUrl);
     res.status(200).json({ imageUrl });
   } catch (error) {
-    console.error('Imgur Upload Error:', error);
+    console.error('Imgur Upload Error:', error.response?.data || error.message);
     res.status(500).json({ 
       message: 'Failed to upload image', 
       error: error.response ? error.response.data : error.message 
     });
   }
-};
+});
 
 module.exports = { upload, uploadImageToImgur };
