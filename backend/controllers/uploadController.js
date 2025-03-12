@@ -2,10 +2,10 @@
 const multer = require('multer');
 const axios = require('axios');
 const asyncHandler = require('express-async-handler');
-const FormData = require('form-data'); // Make sure to add this dependency
+const FormData = require('form-data');
 
 // Configure Multer for file uploads
-const storage = multer.memoryStorage();  // Use memory storage for images
+const storage = multer.memoryStorage();
 const upload = multer({ 
   storage: storage,
   limits: {
@@ -16,19 +16,32 @@ const upload = multer({
 // Upload image to Imgur
 const uploadImageToImgur = asyncHandler(async (req, res) => {
   try {
+    // Log for debugging
+    console.log('Upload request received');
+    
     if (!req.file) {
+      console.log('No file in request');
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
+    console.log('File received:', req.file.originalname, req.file.mimetype, req.file.size);
+
     // Create form data for Imgur API request
     const formData = new FormData();
-    formData.append('image', req.file.buffer.toString('base64')); // Convert buffer to base64
-
+    formData.append('image', req.file.buffer.toString('base64'));
+    
+    console.log('Making request to Imgur API');
+    
     // Make request to Imgur API
-    const response = await axios.post('https://api.imgur.com/3/image', formData, {
+    const response = await axios({
+      method: 'post',
+      url: 'https://api.imgur.com/3/image',
       headers: {
-        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
-        'Content-Type': 'multipart/form-data'
+        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`
+      },
+      data: {
+        image: req.file.buffer.toString('base64'),
+        type: 'base64'
       }
     });
 
@@ -38,10 +51,17 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
     console.log('Image uploaded successfully:', imageUrl);
     res.status(200).json({ imageUrl });
   } catch (error) {
-    console.error('Imgur Upload Error:', error.response?.data || error.message);
+    console.error('Imgur Upload Error:');
+    if (error.response) {
+      console.error('Response data:', error.response.data);
+      console.error('Response status:', error.response.status);
+    } else {
+      console.error(error.message);
+    }
+    
     res.status(500).json({ 
       message: 'Failed to upload image', 
-      error: error.response ? error.response.data : error.message 
+      error: error.response ? JSON.stringify(error.response.data) : error.message 
     });
   }
 });

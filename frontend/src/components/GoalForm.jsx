@@ -55,43 +55,59 @@ function GoalForm() {
       
       // Only upload image if one is selected
       if (image) {
-        // 1. Upload image to our backend (which will then upload to Imgur)
+        // Create form data for file upload
         const formData = new FormData();
         formData.append('image', image);
+
+        console.log('Preparing to upload file:', image.name, image.type, image.size);
 
         // Get the auth token from localStorage
         const token = JSON.parse(localStorage.getItem('user'))?.token;
         
-        // Include the auth token in the request
-        const config = {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            // No need to set Content-Type, axios will set it correctly with FormData
-          },
-        };
+        if (!token) {
+          throw new Error('Authentication token not found');
+        }
         
         console.log('Uploading image to backend...');
-        const response = await axios.post('/api/goals/upload', formData, config);
         
-        imgURL = response.data.imageUrl; // Get the image URL from the response
+        // Make sure the API endpoint is correct
+        const uploadUrl = '/api/goals/upload';
+        
+        const response = await axios.post(uploadUrl, formData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            // Let axios set the content type for FormData
+          },
+        });
+        
+        console.log('Upload response:', response.data);
+        imgURL = response.data.imageUrl;
         console.log('Image uploaded:', imgURL);
       }
       
-      // 2. Create goal with the text and image URL (if available)
+      // Create goal with the text and image URL
       await dispatch(createGoal({ 
         text, 
         imgURL: imgURL || '' 
       })).unwrap();
       
-      // 3. Reset form on success
+      // Reset form on success
       setText('');
       setImage(null);
       setPreview(null);
       
     } catch (err) {
       console.error('Error creating goal:', err);
+      
+      // More detailed error reporting
+      if (err.response) {
+        console.error('Response status:', err.response.status);
+        console.error('Response data:', err.response.data);
+      }
+      
       setError(
         err.response?.data?.message || 
+        err.message ||
         'Failed to create goal. Please try again.'
       );
     } finally {

@@ -14,35 +14,39 @@ const app = express();
 const whitelist = [
   'https://mern-full-stack-hopefully-working.onrender.com',
   'https://mern-full-stack-1-0.onrender.com',
-  // Add your local development URL if needed
   'http://localhost:3000'
 ];
 
-// CORS configuration
+// CORS configuration - expanded to better handle preflight
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, Postman)
+    // Allow requests with no origin
     if (!origin) return callback(null, true);
     
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       console.log('Blocked by CORS:', origin);
-      callback(null, true); // Temporarily allow all origins for debugging
+      callback(null, true); // Allow all origins in development/debugging
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
   preflightContinue: false,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 204,
+  maxAge: 86400 // 24 hours
 };
 
 app.use(cors(corsOptions));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// For JSON body parsing
+app.use(express.json({ limit: '10mb' }));
 
+// For URL-encoded bodies (forms)
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
+
+// Routes
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 
