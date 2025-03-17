@@ -5,6 +5,7 @@ import axios from 'axios';
 
 function GoalForm() {
   const [text, setText] = useState('');
+  const [description, setDescription] = useState(''); // Nuevo estado para la descripción
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -12,20 +13,20 @@ function GoalForm() {
 
   const dispatch = useDispatch();
 
-  // Handle image selection with preview
+  // Manejar la selección de imagen con vista previa
   const onFileChange = (e) => {
     const selectedFile = e.target.files[0];
     
     if (selectedFile) {
-      // Check file size (max 5MB)
+      // Verificar el tamaño del archivo (máximo 5MB)
       if (selectedFile.size > 5 * 1024 * 1024) {
-        setError('Image size must be less than 5MB');
+        setError('El tamaño de la imagen debe ser menor a 5MB');
         return;
       }
       
       setImage(selectedFile);
       
-      // Create preview
+      // Crear vista previa
       const reader = new FileReader();
       reader.onload = () => {
         setPreview(reader.result);
@@ -37,14 +38,14 @@ function GoalForm() {
     }
   };
 
-  // Submit handler - uploads image and creates goal in one step
+  // Manejador de envío - carga la imagen y crea el objetivo en un solo paso
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
-    // Validate input
-    if (!text.trim()) {
-      setError('Please enter a goal description');
+    // Validar los campos
+    if (!text.trim() || !description.trim()) {
+      setError('Por favor, ingresa una descripción y texto para el objetivo');
       return;
     }
     
@@ -53,62 +54,64 @@ function GoalForm() {
       
       let imgURL = null;
       
-      // Only upload image if one is selected
+      // Solo cargar la imagen si se selecciona una
       if (image) {
-        // Create form data for file upload
+        // Crear FormData para la carga del archivo
         const formData = new FormData();
         formData.append('image', image);
 
-        console.log('Preparing to upload file:', image.name, image.type, image.size);
+        console.log('Preparando la carga del archivo:', image.name, image.type, image.size);
 
-        // Get the auth token from localStorage
+        // Obtener el token de autenticación desde localStorage
         const token = JSON.parse(localStorage.getItem('user'))?.token;
         
         if (!token) {
-          throw new Error('Authentication token not found');
+          throw new Error('Token de autenticación no encontrado');
         }
         
-        console.log('Uploading image to backend...');
+        console.log('Cargando la imagen al backend...');
         
-        // Make sure the API endpoint is correct
+        // Asegurarse de que el endpoint de la API es correcto
         const uploadUrl = '/api/goals/upload';
         
         const response = await axios.post(uploadUrl, formData, {
           headers: {
             'Authorization': `Bearer ${token}`,
-            // Let axios set the content type for FormData
+            // Permitir que axios establezca el tipo de contenido para FormData
           },
         });
         
-        console.log('Upload response:', response.data);
+        console.log('Respuesta de la carga:', response.data);
         imgURL = response.data.imageUrl;
-        console.log('Image uploaded:', imgURL);
+        console.log('Imagen cargada:', imgURL);
       }
       
-      // Create goal with the text and image URL
+      // Crear el objetivo con el texto, descripción y URL de la imagen
       await dispatch(createGoal({ 
         text, 
+        description, // Ahora se incluye la descripción
         imgURL: imgURL || '' 
       })).unwrap();
       
-      // Reset form on success
+      // Resetear el formulario después de un éxito
       setText('');
+      setDescription(''); // Limpiar el campo de descripción
       setImage(null);
       setPreview(null);
       
     } catch (err) {
-      console.error('Error creating goal:', err);
+      console.error('Error al crear el objetivo:', err);
       
-      // More detailed error reporting
+      // Más detalles sobre el error
       if (err.response) {
-        console.error('Response status:', err.response.status);
-        console.error('Response data:', err.response.data);
+        console.error('Estado de la respuesta:', err.response.status);
+        console.error('Datos de la respuesta:', err.response.data);
       }
       
       setError(
         err.response?.data?.message || 
         err.message ||
-        'Failed to create goal. Please try again.'
+        'No se pudo crear el objetivo. Intenta nuevamente.'
       );
     } finally {
       setLoading(false);
@@ -121,20 +124,32 @@ function GoalForm() {
         {error && <div className="error-message">{error}</div>}
         
         <div className='form-group'>
-          <label htmlFor='text'>Goal Description</label>
+          <label htmlFor='text'>Descripción del Objetivo</label>
           <input
             type='text'
             name='text'
             id='text'
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Enter your goal"
+            placeholder="Ingresa tu objetivo"
             disabled={loading}
           />
         </div>
 
         <div className='form-group'>
-          <label htmlFor='image'>Select Image (optional)</label>
+          <label htmlFor='description'>Descripción Detallada</label>
+          <textarea
+            name='description'
+            id='description'
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Ingresa una descripción detallada"
+            disabled={loading}
+          />
+        </div>
+
+        <div className='form-group'>
+          <label htmlFor='image'>Seleccionar Imagen (opcional)</label>
           <input
             type='file'
             name='image'
@@ -149,7 +164,7 @@ function GoalForm() {
           <div className='image-preview'>
             <img 
               src={preview} 
-              alt="Preview" 
+              alt="Vista previa" 
               style={{ maxWidth: '100%', maxHeight: '200px' }} 
             />
           </div>
@@ -161,7 +176,7 @@ function GoalForm() {
             type='submit'
             disabled={loading}
           >
-            {loading ? 'Creating Goal...' : 'Add Goal'}
+            {loading ? 'Creando objetivo...' : 'Agregar Objetivo'}
           </button>
         </div>
       </form>
