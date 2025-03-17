@@ -14,6 +14,7 @@ const upload = multer({
 
 // Upload image to Imgur
 const uploadImageToImgur = asyncHandler(async (req, res) => {
+  console.log('hola buenas tardes');
   try {
     // Check if Imgur Client ID is set
     if (!process.env.IMGUR_CLIENT_ID) {
