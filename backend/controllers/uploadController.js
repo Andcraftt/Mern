@@ -42,8 +42,8 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
       method: 'post',
       url: 'https://api.imgur.com/3/image',
       headers: {
-        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`,
-        'Content-Type': 'application/json'
+        'Authorization': `Bearer 4a0d5e04bb96cea5c37d5d3e9fef27ce36bd1824`,
+        'Content-Type': 'multipart/form-data'
       },
       data: {
         image: base64Image,
