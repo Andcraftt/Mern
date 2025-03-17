@@ -15,7 +15,12 @@ const upload = multer({
 // Upload image to Imgur
 const uploadImageToImgur = asyncHandler(async (req, res) => {
   try {
-    // Log for debugging
+    // Check if Imgur Client ID is set
+    if (!process.env.IMGUR_CLIENT_ID) {
+      console.error('IMGUR_CLIENT_ID environment variable is not set');
+      return res.status(500).json({ message: 'Server configuration error' });
+    }
+    
     console.log('Upload request received');
     
     if (!req.file) {
@@ -28,7 +33,8 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
     // Convert buffer to base64
     const base64Image = req.file.buffer.toString('base64');
     
-    console.log('Making request to Imgur API');
+    console.log('Making request to Imgur API with Client ID:', 
+                process.env.IMGUR_CLIENT_ID.substring(0, 3) + '...');
     
     // Make request to Imgur API with the correct format
     const response = await axios({
@@ -44,18 +50,26 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
       }
     });
 
+    console.log('Imgur API response:', JSON.stringify(response.data, null, 2));
+    
     // Get the uploaded image URL
     const imageUrl = response.data.data.link;
+
+    if (!imageUrl) {
+      console.error('No image URL in response:', response.data);
+      return res.status(500).json({ message: 'Failed to get image URL from Imgur' });
+    }
 
     console.log('Image uploaded successfully:', imageUrl);
     res.status(200).json({ imageUrl });
   } catch (error) {
     console.error('Imgur Upload Error:');
     if (error.response) {
-      console.error('Response data:', error.response.data);
+      console.error('Response data:', JSON.stringify(error.response.data, null, 2));
       console.error('Response status:', error.response.status);
     } else {
-      console.error(error.message);
+      console.error('Error message:', error.message);
+      console.error('Full error:', error);
     }
     
     res.status(500).json({ 
