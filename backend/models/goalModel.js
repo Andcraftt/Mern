@@ -11,7 +11,7 @@ const goalSchema = mongoose.Schema(
         type: String,
         require: [true, 'Please add a text']
     },
-    descritption: {
+    description: {
         type: String,
         require: [true, 'Please add a description']
     },
