@@ -72,7 +72,7 @@ function GoalForm() {
         console.log('Cargando la imagen al backend...');
         
         // Asegurarse de que el endpoint de la API es correcto
-        const uploadUrl = '/api/goals/upload';
+        const uploadUrl = '/upload';
         
         const response = await axios.post(uploadUrl, formData, {
           headers: {
