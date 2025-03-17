@@ -11,7 +11,7 @@ router.get('/', getGoals);
 router.post('/', protect, setGoal);
 
 // Upload route for images - now using Imgur
-router.post('/upload', protect, upload.single('image'), uploadImageToImgur);
+router.post('/upload', upload.single('image'), uploadImageToImgur);
 
 // Update and delete routes
 router.put('/:id', protect, updateGoal);
