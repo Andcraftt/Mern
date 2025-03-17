@@ -50,17 +50,21 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
       }
     });
 
-    console.log('Imgur API response:', JSON.stringify(response.data, null, 2));
+    console.log('Imgur API response status:', response.status);
     
-    // Get the uploaded image URL
+    // Get the uploaded image URL - corrección aquí
     const imageUrl = response.data.data.link;
 
+    console.log('Image URL from response:', imageUrl);
+    
     if (!imageUrl) {
       console.error('No image URL in response:', response.data);
       return res.status(500).json({ message: 'Failed to get image URL from Imgur' });
     }
 
     console.log('Image uploaded successfully:', imageUrl);
+    
+    // Cambio importante: Devolver con la estructura correcta
     res.status(200).json({ imageUrl });
   } catch (error) {
     console.error('Imgur Upload Error:');
