@@ -5,7 +5,7 @@ import axios from 'axios';
 
 function GoalForm() {
   const [text, setText] = useState('');
-  const [description, setDescription] = useState(''); // Nuevo estado para la descripción
+  const [description, setDescription] = useState(''); 
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -124,26 +124,26 @@ function GoalForm() {
         {error && <div className="error-message">{error}</div>}
         
         <div className='form-group'>
-          <label htmlFor='text'>Descripción del Objetivo</label>
+          <label htmlFor='text'>Título</label>
           <input
             type='text'
             name='text'
             id='text'
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Ingresa tu objetivo"
+            placeholder="Introduzca un titulo"
             disabled={loading}
           />
         </div>
 
         <div className='form-group'>
-          <label htmlFor='description'>Descripción Detallada</label>
+          <label htmlFor='description'>Descripción </label>
           <textarea
             name='description'
             id='description'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Ingresa una descripción detallada"
+            placeholder="Ingresa una descripción"
             disabled={loading}
           />
         </div>
