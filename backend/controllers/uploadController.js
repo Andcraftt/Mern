@@ -1,6 +1,7 @@
 // controllers/uploadController.js
 const multer = require('multer');
 const axios = require('axios');
+const FormData = require('form-data');
 const asyncHandler = require('express-async-handler');
 
 // Configure Multer for file uploads
@@ -30,30 +31,31 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
     }
 
     console.log('File received:', req.file.originalname, req.file.mimetype, req.file.size);
-    
-    // Convert buffer to base64
-    const base64Image = req.file.buffer.toString('base64');
-    
+
+    // Prepare FormData for the image upload
+    const form = new FormData();
+    form.append('image', req.file.buffer, {
+      filename: req.file.originalname,
+      contentType: req.file.mimetype
+    });
+
     console.log('Making request to Imgur API with Client ID:', 
                 process.env.IMGUR_CLIENT_ID.substring(0, 3) + '...');
-    
-    // Make request to Imgur API with the correct format
+
+    // Make request to Imgur API
     const response = await axios({
       method: 'post',
-      url: 'https://api.imgur.com/3/image',
+      url: 'https://api.imgur.com/3/upload',
       headers: {
-        'Authorization': `Bearer 4a0d5e04bb96cea5c37d5d3e9fef27ce36bd1824`,
-        'Content-Type': 'multipart/form-data'
+        ...form.getHeaders(),
+        'Authorization': `Client-ID ${process.env.IMGUR_CLIENT_ID}`, // Use Client-ID
       },
-      data: {
-        image: base64Image,
-        type: 'base64'
-      }
+      data: form
     });
 
     console.log('Imgur API response status:', response.status);
     
-    // Get the uploaded image URL - corrección aquí
+    // Get the uploaded image URL
     const imageUrl = response.data.data.link;
 
     console.log('Image URL from response:', imageUrl);
@@ -65,7 +67,7 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
 
     console.log('Image uploaded successfully:', imageUrl);
     
-    // Cambio importante: Devolver con la estructura correcta
+    // Return the image URL
     res.status(200).json({ imageUrl });
   } catch (error) {
     console.error('Imgur Upload Error:');
