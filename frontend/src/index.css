@@ -106,13 +106,15 @@ h1, h2, h3 {
   border: none;
   background: none;
 }
+
 .goal-image {
-  width: 250px;   /* Establece un ancho máximo de 400px */
-  height: 300px;  /* Establece una altura máxima de 300px */
-  object-fit: cover;  /* Hace que la imagen cubra el espacio sin distorsionar */
-  margin-top: 10px;   /* Añade un pequeño margen superior */
+  width: 100%; /* Ajusta la imagen para que ocupe el espacio disponible */
+  height: auto; /* Mantiene la proporción de la imagen */
+  object-fit: cover;
+  margin-top: 10px;
   border-radius: 10px;
 }
+
 .form {
   width: 70%;
   margin: 0 auto;
@@ -142,8 +144,8 @@ h1, h2, h3 {
 .btn-container {
   display: flex;
   align-items: center;
-  gap: 10px; /* Espacio uniforme entre los botones */
-  margin-top: 20px; /* Ajusta este valor según el espacio que desees */
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .btn1,
@@ -160,9 +162,9 @@ h1, h2, h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px; /* Evita que un botón sea más pequeño que el otro */
-  height: 40px; /* Establece una altura fija para ambos */
-  margin-botton: 20px;
+  min-width: 120px;
+  height: 40px;
+  margin-bottom: 20px;
 }
 
 .btn:hover {
@@ -212,50 +214,47 @@ h1, h2, h3 {
   .heading p {
     font-size: 1.5rem;
   }
-
 }
 
 /* Estilos para el popup */
 .goalInner {
-  display: none; /* Inicialmente está oculto */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Fondo semi-transparente */
-  z-index: 1000; /* Aseguramos que el popup esté por encima de otros elementos */
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
   justify-content: center;
   align-items: center;
   color: white;
   padding: 20px;
   box-sizing: border-box;
-  opacity: 0; /* Comienza como invisible */
-  transition: opacity 0.5s ease-in-out; /* Añadimos transición para fade-in */
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
-/* Clase para cuando el popup está visible */
 .goalInner.open {
   display: flex;
-  opacity: 1; /* Lo hace visible */
+  opacity: 1;
+  visibility: visible;
 }
 
-/* Estilos para el contenido del popup */
 .goal-inner-content {
   background-color: #333;
   padding: 30px;
   border-radius: 8px;
-  max-width: 80%; /* Max ancho del popup */
-  max-height: 80%; /* Max altura del popup */
-  overflow-y: auto; /* Añadimos scroll si el contenido es muy grande */
+  max-width: 90%; /* Mayor tamaño en ancho */
+  max-height: 90%; /* Mayor tamaño en alto */
+  overflow-y: auto;
   text-align: center;
   position: relative;
   box-sizing: border-box;
 }
 
-/* Botón de cierre del popup */
 .close-popup {
-  background-color: #f44336; /* Rojo para el botón de cierre */
+  background-color: #f44336;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -269,10 +268,10 @@ h1, h2, h3 {
   background-color: #d32f2f;
 }
 
-/* Estilos para la imagen dentro del popup */
-.goal-image {
+/* Imagen dentro del popup */
+.goal-popup-image {
   max-width: 100%;
   height: auto;
   margin-top: 20px;
+  border-radius: 10px;
 }
-
