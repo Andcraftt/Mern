@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { createGoal } from '../features/goals/goalSlice';
-import axios from 'axios';
 
 function GoalForm() {
   const [text, setText] = useState('');
@@ -10,15 +9,16 @@ function GoalForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [preview, setPreview] = useState(null);
+  const [base64Image, setBase64Image] = useState('');
 
   const dispatch = useDispatch();
 
-  // Manejar la selección de imagen con vista previa
+  // Convert image to Base64 when a file is selected
   const onFileChange = (e) => {
     const selectedFile = e.target.files[0];
     
     if (selectedFile) {
-      // Verificar el tamaño del archivo (máximo 5MB)
+      // Verify file size (max 5MB)
       if (selectedFile.size > 5 * 1024 * 1024) {
         setError('El tamaño de la imagen debe ser menor a 5MB');
         return;
@@ -26,24 +26,26 @@ function GoalForm() {
       
       setImage(selectedFile);
       
-      // Crear vista previa
+      // Create preview and convert to Base64
       const reader = new FileReader();
       reader.onload = () => {
         setPreview(reader.result);
+        setBase64Image(reader.result); // Store the Base64 representation
       };
       reader.readAsDataURL(selectedFile);
     } else {
       setImage(null);
       setPreview(null);
+      setBase64Image('');
     }
   };
 
-  // Manejador de envío - carga la imagen y crea el objetivo en un solo paso
+  // Form submission handler - now using Base64 for image storage
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
-    // Validar los campos
+    // Validate required fields
     if (!text.trim() || !description.trim()) {
       setError('Por favor, ingresa una descripción y texto para el objetivo');
       return;
@@ -52,57 +54,24 @@ function GoalForm() {
     try {
       setLoading(true);
       
-      let imgURL = null;
-      
-      // Solo cargar la imagen si se selecciona una
-      if (image) {
-        // Crear FormData para la carga del archivo
-        const formData = new FormData();
-        formData.append('image', image);
-
-        console.log('Preparando la carga del archivo:', image.name, image.type, image.size);
-
-        // Obtener el token de autenticación desde localStorage
-        const token = JSON.parse(localStorage.getItem('user'))?.token;
-        
-        if (!token) {
-          throw new Error('Token de autenticación no encontrado');
-        }
-        
-        console.log('Cargando la imagen al backend...');
-        
-        // Asegurarse de que el endpoint de la API es correcto
-        const uploadUrl = '/api/goals/upload';
-        
-        const response = await axios.post(uploadUrl, formData, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            // Permitir que axios establezca el tipo de contenido para FormData
-          },
-        });
-        
-        console.log('Respuesta de la carga:', response.data);
-        imgURL = response.data.imageUrl;
-        console.log('Imagen cargada:', imgURL);
-      }
-      
-      // Crear el objetivo con el texto, descripción y URL de la imagen
+      // Create goal with text, description and Base64 image string
+      // No need for a separate upload process now
       await dispatch(createGoal({ 
         text, 
-        description, // Ahora se incluye la descripción
-        imgURL: imgURL || '' 
+        description,
+        imgURL: base64Image || '' // Store the Base64 image string directly
       })).unwrap();
       
-      // Resetear el formulario después de un éxito
+      // Reset form after success
       setText('');
-      setDescription(''); // Limpiar el campo de descripción
+      setDescription('');
       setImage(null);
       setPreview(null);
+      setBase64Image('');
       
     } catch (err) {
       console.error('Error al crear el objetivo:', err);
       
-      // Más detalles sobre el error
       if (err.response) {
         console.error('Estado de la respuesta:', err.response.status);
         console.error('Datos de la respuesta:', err.response.data);
