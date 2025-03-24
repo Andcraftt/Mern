@@ -9,19 +9,26 @@ function GoalItem({ goal }) {
   const isOwner = user && goal.user === user._id
 
   return (
-    <div className='goal'>
-      <h2>{goal.text}</h2>
+    <><button id="openGoal">
+      <div className='goal'>
+        <h2>{goal.text}</h2>
 
-      {/* Si hay una URL de imagen, la mostramos */}
-      {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
+        {/* Si hay una URL de imagen, la mostramos */}
+        {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
 
-      {/* Solo mostramos el botón X si el usuario es el propietario del goal */}
-      {isOwner && (
-        <button onClick={() => dispatch(deleteGoal(goal._id))} className="close">
-          X
-        </button>
-      )}
-    </div>
+        {/* Solo mostramos el botón X si el usuario es el propietario del goal */}
+        {isOwner && (
+          <button onClick={() => dispatch(deleteGoal(goal._id))} className="close">
+            X
+          </button>
+        )}
+      </div>
+    </button><div class="goalInner" id="goalInner">
+        {goal.text}
+        {goal.description}
+        {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
+        <button id="closeGoal"> CLOSE </button>
+      </div></>
   )
 }
 
