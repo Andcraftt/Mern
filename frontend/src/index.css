@@ -212,7 +212,10 @@ h1, h2, h3 {
   .heading p {
     font-size: 1.5rem;
   }
-  /* Estilos para el popup */
+
+}
+
+/* Estilos para el popup */
 .goalInner {
   display: none; /* Inicialmente está oculto */
   position: fixed;
@@ -227,20 +230,27 @@ h1, h2, h3 {
   color: white;
   padding: 20px;
   box-sizing: border-box;
+  opacity: 0; /* Comienza como invisible */
+  transition: opacity 0.5s ease-in-out; /* Añadimos transición para fade-in */
 }
 
-/* Estilos para cuando el popup está abierto */
+/* Clase para cuando el popup está visible */
 .goalInner.open {
   display: flex;
+  opacity: 1; /* Lo hace visible */
 }
 
+/* Estilos para el contenido del popup */
 .goal-inner-content {
   background-color: #333;
-  padding: 20px;
+  padding: 30px;
   border-radius: 8px;
-  max-width: 500px;
-  width: 100%;
+  max-width: 80%; /* Max ancho del popup */
+  max-height: 80%; /* Max altura del popup */
+  overflow-y: auto; /* Añadimos scroll si el contenido es muy grande */
   text-align: center;
+  position: relative;
+  box-sizing: border-box;
 }
 
 /* Botón de cierre del popup */
@@ -265,4 +275,4 @@ h1, h2, h3 {
   height: auto;
   margin-top: 20px;
 }
-}
+
