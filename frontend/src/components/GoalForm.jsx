@@ -93,32 +93,32 @@ function GoalForm() {
         {error && <div className="error-message">{error}</div>}
         
         <div className='form-group'>
-          <label htmlFor='text'>Título</label>
+          <label htmlFor='text'>Title</label>
           <input
             type='text'
             name='text'
             id='text'
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder="Introduzca un titulo"
+            placeholder="Your title here"
             disabled={loading}
           />
         </div>
 
         <div className='form-group'>
-          <label htmlFor='description'>Descripción </label>
+          <label htmlFor='description'>Description </label>
           <textarea
             name='description'
             id='description'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Ingresa una descripción"
+            placeholder="Your description here"
             disabled={loading}
           />
         </div>
 
         <div className='form-group'>
-          <label htmlFor='image'>Seleccionar Imagen</label>
+          <label htmlFor='image'>Select an image</label>
           <input
             type='file'
             name='image'
@@ -145,7 +145,7 @@ function GoalForm() {
             type='submit'
             disabled={loading}
           >
-            {loading ? 'Creando objetivo...' : 'Agregar Objetivo'}
+            {loading ? 'Uploading post...' : 'Post'}
           </button>
         </div>
       </form>

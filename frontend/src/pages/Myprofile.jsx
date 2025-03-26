@@ -37,7 +37,7 @@ function Myprofile(){const navigate = useNavigate()
     <>
       <section className='heading'>
         <h1>Welcome {user && user.name}</h1>
-        <p>Goals Dashboard</p>
+        <p>Your posts</p>
       </section>
   
       {user && <GoalForm />}
