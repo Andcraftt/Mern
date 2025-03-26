@@ -218,6 +218,8 @@ h1, h2, h3 {
 
 /* Estilos para el popup */
 .goalInner {
+  transform: scale(0.8); /* Inicialmente más pequeño */
+  animation: popupAnimation 0.5s ease-out forwards; /* Animación de aparición */
   display: none;
   position: fixed;
   top: 0;
@@ -232,7 +234,6 @@ h1, h2, h3 {
   padding: 20px;
   box-sizing: border-box;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
 }
 
 .goalInner.open {
