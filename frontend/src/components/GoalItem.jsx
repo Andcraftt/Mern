@@ -17,33 +17,35 @@ function GoalItem({ goal }) {
 
   return (
     <>
-      <button onClick={openGoal}>
-        <div className='goal'>
-          <h2>{goal.text}</h2>
+      <div className='goal' onClick={openGoal}>
+        <h2>{goal.text}</h2>
 
-          {/* Si hay una URL de imagen, la mostramos */}
-          {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
+        {/* Si hay una URL de imagen, la mostramos */}
+        {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
 
-          {/* Solo mostramos el botón X si el usuario es el propietario del goal */}
-          {isOwner && (
-            <button onClick={() => dispatch(deleteGoal(goal._id))} className="close">
-              X
-            </button>
-          )}
-        </div>
-      </button>
+        {/* Solo mostramos el botón X si el usuario es el propietario del goal */}
+        {isOwner && (
+          <button 
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent popup from opening when clicking delete
+              dispatch(deleteGoal(goal._id))
+            }} 
+            className="close"
+          >
+            X
+          </button>
+        )}
+      </div>
 
       {/* Popup (goalInner) que se muestra si isOpen es verdadero */}
-      {isOpen && (
-        <div className="goalInner">
-          <div className="goal-inner-content">
-            <h2>{goal.text}</h2>
-            <p>{goal.description}</p>
-            {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
-            <button onClick={closeGoal} className="close-popup">CLOSE</button>
-          </div>
+      <div className={`goalInner ${isOpen ? 'open' : ''}`}>
+        <div className="goal-inner-content">
+          <h2>{goal.text}</h2>
+          <p>{goal.description}</p>
+          {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />}
+          <button onClick={closeGoal} className="close-popup">CLOSE</button>
         </div>
-      )}
+      </div>
     </>
   )
 }
