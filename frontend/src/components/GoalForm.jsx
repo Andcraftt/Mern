@@ -118,7 +118,7 @@ function GoalForm() {
         </div>
 
         <div className='form-group'>
-          <label htmlFor='image'>Seleccionar Imagen (opcional)</label>
+          <label htmlFor='image'>Seleccionar Imagen</label>
           <input
             type='file'
             name='image'
