@@ -270,7 +270,7 @@ h1, h2, h3 {
 
 /* Imagen dentro del popup */
 .goal-popup-image {
-  max-width: 100%;
+  max-width: 500px;
   height: auto;
   margin-top: 20px;
   border-radius: 10px;
