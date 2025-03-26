@@ -18,7 +18,7 @@ function Header() {
   return (
     <header className='header'>
       <div className='logo'>
-        <IoHome /><Link to='/'></Link>
+        <Link to='/'><IoHome class="casita"/></Link>
       </div>
       <ul>
         {user ? (
