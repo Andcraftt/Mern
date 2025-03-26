@@ -6,10 +6,8 @@ function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
   const dispatch = useDispatch()
   
-  // Estado para manejar si el popup está abierto o cerrado
   const [isOpen, setIsOpen] = useState(false)
 
-  // Comparamos el ID del usuario autenticado con el ID del creador del goal
   const isOwner = user && goal.user === user._id
 
   const openGoal = () => setIsOpen(true)
@@ -20,14 +18,12 @@ function GoalItem({ goal }) {
       <div className='goal' onClick={openGoal}>
         <h2>{goal.text}</h2>
 
-        {/* Si hay una URL de imagen, la mostramos */}
         {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
 
-        {/* Solo mostramos el botón X si el usuario es el propietario del goal */}
         {isOwner && (
           <button 
             onClick={(e) => {
-              e.stopPropagation(); // Prevent popup from opening when clicking delete
+              e.stopPropagation();
               dispatch(deleteGoal(goal._id))
             }} 
             className="close"
@@ -37,15 +33,26 @@ function GoalItem({ goal }) {
         )}
       </div>
 
-      {/* Popup (goalInner) que se muestra si isOpen es verdadero */}
-      <div className={`goalInner ${isOpen ? 'open' : ''}`}>
-        <div className="goal-inner-content">
-          <h2>{goal.text}</h2>
-          <p>{goal.description}</p>
-          {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />}
-          <button onClick={closeGoal} className="close-popup">CLOSE</button>
+      {isOpen && (
+        <div className="goalInner">
+          <div className="goal-inner-content">
+            <div className="popup-header">
+              <h2>{goal.text}</h2>
+              <button onClick={closeGoal} className="close-popup">×</button>
+            </div>
+            
+            {goal.imgURL && (
+              <div className="popup-image-container">
+                <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />
+              </div>
+            )}
+            
+            <div className="popup-description">
+              <p>{goal.description}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </>
   )
 }

@@ -218,9 +218,6 @@ h1, h2, h3 {
 
 /* Estilos para el popup */
 .goalInner {
-  transform: scale(0.8); /* Inicialmente más pequeño */
-  animation: popupAnimation 0.5s ease-out forwards; /* Animación de aparición */
-  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -228,53 +225,91 @@ h1, h2, h3 {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 1000;
+  display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
-  padding: 20px;
-  box-sizing: border-box;
-  opacity: 0;
+  animation: fadeIn 0.3s ease-out;
 }
 
-.goalInner.open {
-  display: flex;
-  opacity: 1;
-  visibility: visible;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .goal-inner-content {
-  background-color: #f4f4f4;
-  padding: 30px;
+  background-color: #333;
   border-radius: 8px;
-  max-width: 90%; /* Mayor tamaño en ancho */
-  max-height: 90%; /* Mayor tamaño en alto */
+  width: 90%;
+  max-width: 600px;
+  max-height: 90%;
   overflow-y: auto;
-  text-align: center;
   position: relative;
-  box-sizing: border-box;
+  padding: 20px;
+  animation: scaleUp 0.3s ease-out;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.popup-header h2 {
+  color: white;
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
 }
 
 .close-popup {
   background-color: #f44336;
   color: white;
   border: none;
-  margin-left: 20px;
-  margin-bottom: 10px;
-  padding: 10px 20px;
-  margin-top: 20px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
-  font-size: 16px;
-  border-radius: 5px;
+  font-size: 20px;
+  padding: 0;
 }
 
 .close-popup:hover {
   background-color: #d32f2f;
 }
 
-/* Imagen dentro del popup */
+.popup-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 .goal-popup-image {
-  max-width: 500px;
-  height: auto;
-  margin-top: 20px;
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
   border-radius: 10px;
+}
+
+.popup-description {
+  color: white;
+  text-align: center;
 }
