@@ -13,6 +13,7 @@ const app = express();
 
 const whitelist = [
   'https://mern-full-stack-hopefully-working.onrender.com',
+  'https://pixelup.onrender.com/',
   'https://mern-full-stack-1-0.onrender.com',
   'http://localhost:3000',
   'http://localhost:5000',
