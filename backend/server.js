@@ -6,6 +6,10 @@ const cors = require('cors');
 const { errorHandler } = require('./middleware/errorMiddleware.js');
 const connectDB = require('./config/db.js');
 const port = process.env.PORT || 5001;
+// Routes
+app.use('/api/goals', require('./routes/goalRoutes'));
+app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/comments', require('./routes/commentRoutes'));
 
 connectDB();
 
