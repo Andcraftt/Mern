@@ -2,23 +2,15 @@ const mongoose = require('mongoose')
 
 const goalSchema = mongoose.Schema(
     {
-    user: {
+    parentGoal: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User',
+        ref: 'Goal',
     },
     text: {
         type: String,
         require: [true, 'Please add a text']
     },
-    description: {
-        type: String,
-        require: [true, 'Please add a description']
-    },
-    imgURL: {
-        type: String,
-        require: [true, 'Please add a text value']
-    }
     }, 
 {
     timestamps: true,
