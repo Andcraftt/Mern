@@ -13,6 +13,14 @@ function GoalItem({ goal }) {
   const openGoal = () => setIsOpen(true)
   const closeGoal = () => setIsOpen(false)
 
+  const downloadImage = () => {
+    const link = document.createElement('a')
+    link.href = goal.imgURL
+    link.download = 'goal-image'  // Puedes cambiar el nombre del archivo si lo prefieres
+    link.click()
+  }
+
+
   return (
     <>
       <div className='goal' onClick={openGoal}>
@@ -50,6 +58,12 @@ function GoalItem({ goal }) {
             <div className="popup-description">
               <p>{goal.description}</p>
             </div>
+
+            {goal.imgURL && (
+                <button onClick={downloadImage} className="download-button">
+                  Descargar Imagen
+                </button>
+              )}
           </div>
         </div>
       )}

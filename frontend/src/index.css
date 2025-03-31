@@ -318,3 +318,35 @@ h1, h2, h3 {
 #casita{
   font-size: 32px;
 }
+
+.download-button {
+  padding: 10px 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  background-color: #4CAF50; /* Color verde */
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 120px;
+  height: 40px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.download-button:hover {
+  background-color: #45a049; /* Un verde más oscuro al pasar el ratón */
+  transform: scale(0.98);
+}
+
+.download-button:focus {
+  outline: none;
+}
+
+.download-button:active {
+  background-color: #388e3c; /* Verde aún más oscuro cuando se hace clic */
+}
