@@ -7,9 +7,10 @@ const { errorHandler } = require('./middleware/errorMiddleware.js');
 const connectDB = require('./config/db.js');
 const port = process.env.PORT || 5001;
 
-connectDB();
-
+// Initialize the app first
 const app = express();
+
+connectDB();
 
 const whitelist = [
   'https://mern-full-stack-hopefully-working.onrender.com',
@@ -52,10 +53,7 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 // Routes
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/goals', require('./routes/goalRoutes'));
-app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));
-
 
 // Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
@@ -71,5 +69,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.use(errorHandler);
+
+// Add a console log to show what port we're trying to bind to
+console.log(`Attempting to start server on port ${port}`);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
