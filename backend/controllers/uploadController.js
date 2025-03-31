@@ -13,8 +13,8 @@ const upload = multer({
   }
 });
 
-// Upload image to Imgur
-const uploadImageToImgur = asyncHandler(async (req, res) => {
+// Upload image
+const uploadImage = asyncHandler(async (req, res) => {
   console.log('hola buenas tardes');
   try {
     // Check if Imgur Client ID is set
@@ -53,7 +53,7 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
       data: form
     });
 
-    console.log('Imgur API response status:', response.status);
+    console.log('response status:', response.status);
     
     // Get the uploaded image URL
     const imageUrl = response.data.data.link;
@@ -86,4 +86,4 @@ const uploadImageToImgur = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { upload, uploadImageToImgur };
+module.exports = { upload, uploadImage };
