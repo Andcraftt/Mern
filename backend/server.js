@@ -14,24 +14,25 @@ connectDB();
 
 const whitelist = [
   'https://mern-full-stack-hopefully-working.onrender.com',
-  'https://pixelup.onrender.com/',
+  'https://pixelup.onrender.com',
   'https://mern-full-stack-1-0.onrender.com',
   'http://localhost:3000',
   'http://localhost:5000',
   'http://localhost:5001'
 ];
 
-// CORS configuration - expanded to better handle preflight
+// CORS configuration - allow all origins in development mode
 const corsOptions = {
   origin: function (origin, callback) {
-    // Allow requests with no origin
+    // Allow requests with no origin (like mobile apps, curl requests)
     if (!origin) return callback(null, true);
     
     if (whitelist.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       callback(null, true);
     } else {
       console.log('Blocked by CORS:', origin);
-      callback(null, true); // Allow all origins in development/debugging
+      // In production, only allow whitelisted origins
+      callback(new Error('Not allowed by CORS'));
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

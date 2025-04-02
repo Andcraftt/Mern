@@ -15,11 +15,12 @@ router.get('/', getComments);
 // Get comments by goal
 router.get('/goal/:goalId', getCommentsByGoal);
 
-// Create a comment
+// Create a comment - requires authentication
 router.post('/', protect, setComment);
 
 // Update and delete routes
-router.put('/:id', protect, updateComment);
-router.delete('/:id', protect, deleteComment);
+router.route('/:id')
+    .put(protect, updateComment)
+    .delete(protect, deleteComment);
 
 module.exports = router;

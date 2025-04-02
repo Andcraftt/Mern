@@ -29,13 +29,16 @@ const setComment = asyncHandler(async (req, res) => {
         throw new Error('Please add a text field')
     }
 
-    if (!req.body.goalId) {
+    // Allow for flexibility in how the goalId is passed (either goalId or goal)
+    const goalId = req.body.goalId || req.body.goal;
+    
+    if (!goalId) {
         res.status(400)
         throw new Error('Please specify a goal')
     }
 
     // Verify the goal exists
-    const goal = await Goal.findById(req.body.goalId)
+    const goal = await Goal.findById(goalId)
     if (!goal) {
         res.status(404)
         throw new Error('Goal not found')
@@ -43,11 +46,14 @@ const setComment = asyncHandler(async (req, res) => {
 
     const comment = await Comment.create({
         user: req.user.id,
-        goal: req.body.goalId,
+        goal: goalId,
         text: req.body.text,
     })
 
-    res.status(200).json(comment)
+    // Populate the user field for immediate use in frontend
+    const populatedComment = await Comment.findById(comment._id).populate('user', 'name');
+
+    res.status(200).json(populatedComment)
 })
 
 // @desc    Update comment
