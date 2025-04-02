@@ -1,15 +1,27 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { IoIosDownload } from "react-icons/io";
 import { deleteGoal } from '../features/goals/goalSlice'
-import { useState } from 'react'
-import { getCommentsByGoal } from '../../../backend/controllers/commentController'
+import { getCommentsByGoal, createComment, deleteComment } from '../features/comments/commentSlice'
+import { useState, useEffect } from 'react'
 
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
+  const { comments } = useSelector((state) => state.comments)
   const dispatch = useDispatch()
   
   const [isOpen, setIsOpen] = useState(false)
+  const [newComment, setNewComment] = useState('')
+  const [showComments, setShowComments] = useState(false)
 
   const isOwner = user && goal.user === user._id
+
+  // Load comments when the goal is opened
+  useEffect(() => {
+    if (isOpen && (!comments[goal._id] || !showComments)) {
+      dispatch(getCommentsByGoal(goal._id))
+      setShowComments(true)
+    }
+  }, [isOpen, dispatch, goal._id, comments, showComments])
 
   const openGoal = () => setIsOpen(true)
   const closeGoal = () => setIsOpen(false)
@@ -17,22 +29,27 @@ function GoalItem({ goal }) {
   const downloadImage = () => {
     const link = document.createElement('a')
     link.href = goal.imgURL
-    link.download = 'goal-image'  // Puedes cambiar el nombre del archivo si lo prefieres
+    link.download = 'goal-image'
     link.click()
   }
-  const goalId = goal._id
 
-  useEffect(() => {
-      if (isError) {
-        console.log(message)
-      }
-  
-      dispatch(getCommentsByGoal(goalId))
-      
-      return () => {
-        dispatch(reset())
-      }
-    }, [user, navigate, isError, message, dispatch])
+  const handleSubmitComment = (e) => {
+    e.preventDefault()
+    
+    if (newComment.trim()) {
+      dispatch(createComment({
+        text: newComment,
+        goalId: goal._id
+      }))
+      setNewComment('')
+    }
+  }
+
+  const handleDeleteComment = (commentId) => {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      dispatch(deleteComment(commentId))
+    }
+  }
 
   return (
     <>
@@ -59,6 +76,7 @@ function GoalItem({ goal }) {
           <div className="goal-inner-content">
             <div className="popup-header">
               <h2>{goal.text}</h2>
+              
               <button onClick={closeGoal} className="close-popup">×</button>
             </div>
             
@@ -73,21 +91,58 @@ function GoalItem({ goal }) {
             </div>
 
             {goal.imgURL && (
-                <button onClick={downloadImage} className="download-button">
-                  Descargar Imagen
-                </button>
+              <button onClick={downloadImage} className="download-button">
+                <IoIosDownload />
+              </button>
             )}
 
-            <div className='comment-box'>
-              {Comment.length > 0 ? (
-              <div className='comments'>
-                {goals.map((goal) => (
-                <GoalItem key={goal._id} goal={goal} />
-                 ))}
-                     </div>
+            {/* Comments Section */}
+            <div className="comments-section">
+              <h3>Comments</h3>
+              
+              {/* Comment Form */}
+              {user && (
+                <form onSubmit={handleSubmitComment} className="comment-form">
+                  <textarea
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    placeholder="Add a comment..."
+                    className="comment-input"
+                  />
+                  <button type="submit" className="comment-submit">
+                    Post
+                  </button>
+                </form>
+              )}
+              
+              {/* Comments List */}
+              <div className="comments-list">
+                {comments[goal._id] && comments[goal._id].length > 0 ? (
+                  comments[goal._id].map((comment) => (
+                    <div key={comment._id} className="comment-item">
+                      <div className="comment-header">
+                        <strong>{comment.user.name}</strong>
+                        <span className="comment-date">
+                          {new Date(comment.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="comment-text">{comment.text}</p>
+                      
+                      {/* Delete button for comment owner */}
+                      {user && user._id === comment.user._id && (
+                        <button
+                          onClick={() => handleDeleteComment(comment._id)}
+                          className="delete-comment"
+                        >
+                          Delete
+                        </button>
+                      )}
+                    </div>
+                  ))
                 ) : (
-                <h3>You have not set any goals</h3>
-                  )}
+                  <p className="no-comments">No comments yet. Be the first to comment!</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
