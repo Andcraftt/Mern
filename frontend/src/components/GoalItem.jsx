@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
+import { IoIosDownload } from "react-icons/io";
 import { deleteGoal } from '../features/goals/goalSlice'
 import { useState } from 'react'
 
@@ -61,7 +62,7 @@ function GoalItem({ goal }) {
 
             {goal.imgURL && (
                 <button onClick={downloadImage} className="download-button">
-                  Downolad image
+                  <IoIosDownload />
                 </button>
               )}
           </div>
