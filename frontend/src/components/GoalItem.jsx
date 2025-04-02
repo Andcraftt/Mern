@@ -64,12 +64,6 @@ function GoalItem({ goal }) {
             <div className="popup-description">
               <p>{goal.description}</p>
             </div>
-
-            {goal.imgURL && (
-                <button onClick={downloadImage} className="download-button">
-                  <IoIosDownload />
-                </button>
-              )}
           </div>
         </div>
       )}
