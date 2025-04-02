@@ -47,11 +47,7 @@ function GoalItem({ goal }) {
           <div className="goal-inner-content">
             <div className="popup-header">
               <h2>{goal.text}</h2>
-              {goal.imgURL && (
-                <button onClick={downloadImage} className="download-button">
-                  <IoIosDownload />
-                </button>
-              )}
+              
               <button onClick={closeGoal} className="close-popup">×</button>
             </div>
             
@@ -64,6 +60,12 @@ function GoalItem({ goal }) {
             <div className="popup-description">
               <p>{goal.description}</p>
             </div>
+
+            {goal.imgURL && (
+                <button onClick={downloadImage} className="download-button">
+                  <IoIosDownload />
+                </button>
+              )}
           </div>
         </div>
       )}

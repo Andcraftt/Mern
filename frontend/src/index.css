@@ -334,7 +334,7 @@ h1, h2, h3 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 120px;
+  min-width: 40px;
   height: 40px;
   margin-top: 20px;
   transition: background-color 0.3s ease, transform 0.2s ease;
