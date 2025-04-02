@@ -91,28 +91,9 @@ function GoalItem({ goal }) {
             </div>
 
             {goal.imgURL && (
-              <button onClick={downloadImage} className="download-button">
-                <IoIosDownload />
-              </button>
-            )}
-
-            {/* Comments Section */}
-            <div className="comments-section">
-              <h3>Comments</h3>
-              
-              {/* Comment Form */}
-              {user && (
-                <form onSubmit={handleSubmitComment} className="comment-form">
-                  <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="comment-input"
-                  />
-                  <button type="submit" className="comment-submit">
-                    Post
-                  </button>
-                </form>
+                <button onClick={downloadImage} className="download-button">
+                  Descargar Imagen
+                </button>
               )}
               
               {/* Comments List */}
