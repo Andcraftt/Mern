@@ -295,6 +295,7 @@ h1, h2, h3 {
 
 .close-popup:hover {
   background-color: #d32f2f;
+  transform: scale(0.98);
 }
 
 .popup-image-container {
@@ -313,6 +314,7 @@ h1, h2, h3 {
 .popup-description {
   color: black;
   text-align: left;
+  margin-left: 20px;
 }
 
 #casita{
