@@ -61,7 +61,7 @@ function GoalItem({ goal }) {
 
             {goal.imgURL && (
                 <button onClick={downloadImage} className="download-button">
-                  Descargar Imagen
+                  Downolad image
                 </button>
               )}
           </div>
