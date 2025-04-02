@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteGoal } from '../features/goals/goalSlice'
 import { useState } from 'react'
+import { getCommentsByGoal } from '../../../backend/controllers/commentController'
 
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
@@ -19,7 +20,19 @@ function GoalItem({ goal }) {
     link.download = 'goal-image'  // Puedes cambiar el nombre del archivo si lo prefieres
     link.click()
   }
+  const goalId = goal._id
 
+  useEffect(() => {
+      if (isError) {
+        console.log(message)
+      }
+  
+      dispatch(getCommentsByGoal(goalId))
+      
+      return () => {
+        dispatch(reset())
+      }
+    }, [user, navigate, isError, message, dispatch])
 
   return (
     <>
@@ -63,7 +76,19 @@ function GoalItem({ goal }) {
                 <button onClick={downloadImage} className="download-button">
                   Descargar Imagen
                 </button>
-              )}
+            )}
+
+            <div className='comment-box'>
+              {Comment.length > 0 ? (
+              <div className='comments'>
+                {goals.map((goal) => (
+                <GoalItem key={goal._id} goal={goal} />
+                 ))}
+                     </div>
+                ) : (
+                <h3>You have not set any goals</h3>
+                  )}
+            </div>
           </div>
         </div>
       )}

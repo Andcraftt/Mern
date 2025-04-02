@@ -22,6 +22,14 @@ const getGoals = async () => {
   return response.data
 }
 
+// Get comments by goal
+
+const getCommentsByGoal = async () => {
+  const response = await axios.get('')
+
+  return response.data
+}
+
 
 // Delete user goal
 const deleteGoal = async (goalId, token) => {

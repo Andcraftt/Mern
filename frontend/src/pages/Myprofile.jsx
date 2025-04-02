@@ -20,7 +20,7 @@ function Myprofile(){const navigate = useNavigate()
     }
 
     if (!user) {
-       navigate('/login')
+      navigate('/login')
     }else {
       dispatch(getGoals())
      }
