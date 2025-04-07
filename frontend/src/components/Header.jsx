@@ -18,7 +18,7 @@ function Header() {
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'><IoHome id="casita"/></Link>
+        <Link to='/'> <img src="../img/Logo.png" alt="Descripción de la imagen" width="400"/></Link>
       </div>
       <ul>
         {user ? (
