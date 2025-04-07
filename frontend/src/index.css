@@ -20,6 +20,7 @@ a {
 }
 
 p {
+  text-align: center;
   line-height: 1.7;
 }
 
@@ -394,7 +395,6 @@ h1, h2, h3 {
   width: 90%;
   max-width: 900px; /* Aumentamos el ancho máximo para las dos columnas */
   max-height: 90%;
-  overflow-y: auto;
   position: relative;
   padding: 20px;
   animation: scaleUp 0.3s ease-out;
