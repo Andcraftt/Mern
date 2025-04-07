@@ -73,13 +73,14 @@ function GoalItem({ goal }) {
 
       {isOpen && (
         <div className="goalInner">
-          <div className="goal-inner-content">
-            <div className="popup-header">
-              <h2>{goal.text}</h2>
-              
-              <button onClick={closeGoal} className="close-popup">×</button>
-            </div>
-            
+        <div className="goal-inner-content">
+          <div className="popup-header">
+            <h2>{goal.text}</h2>
+            <button onClick={closeGoal} className="close-popup">×</button>
+          </div>
+          
+          {/* Columna izquierda (contenido principal) */}
+          <div className="popup-left-column">
             {goal.imgURL && (
               <div className="popup-image-container">
                 <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />
@@ -89,18 +90,22 @@ function GoalItem({ goal }) {
             <div className="popup-description">
               <p>{goal.description}</p>
             </div>
-
+      
             {goal.imgURL && (
-              <button onClick={downloadImage} className="download-button">
-                <IoIosDownload />
-              </button>
+              <div className="download-button-container">
+                <button onClick={downloadImage} className="download-button">
+                  <IoIosDownload />
+                </button>
+              </div>
             )}
-
-            {/* Comments Section */}
+          </div>
+          
+          {/* Columna derecha (comentarios) */}
+          <div className="popup-right-column">
             <div className="comments-section">
               <h3>Comments</h3>
               
-              {/* Comment Form */}
+              {/* Formulario de comentarios */}
               {user && (
                 <form onSubmit={handleSubmitComment} className="comment-form">
                   <textarea
@@ -115,7 +120,7 @@ function GoalItem({ goal }) {
                 </form>
               )}
               
-              {/* Comments List */}
+              {/* Lista de comentarios */}
               <div className="comments-list">
                 {comments[goal._id] && comments[goal._id].length > 0 ? (
                   comments[goal._id].map((comment) => (
@@ -128,7 +133,7 @@ function GoalItem({ goal }) {
                       </div>
                       <p className="comment-text">{comment.text}</p>
                       
-                      {/* Delete button for comment owner */}
+                      {/* Botón de eliminar para el dueño del comentario */}
                       {user && user._id === comment.user._id && (
                         <button
                           onClick={() => handleDeleteComment(comment._id)}
@@ -146,6 +151,7 @@ function GoalItem({ goal }) {
             </div>
           </div>
         </div>
+      </div>
       )}
     </>
   )

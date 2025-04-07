@@ -375,6 +375,10 @@ h1, h2, h3 {
   animation: fadeIn 0.3s ease-out;
 }
 
+#casita{
+  font-size: 35px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
