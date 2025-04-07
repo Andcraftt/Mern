@@ -398,6 +398,7 @@ h1, h2, h3 {
   display: grid;
   grid-template-columns: 60% 40%; /* Dos columnas: 60% izquierda, 40% derecha */
   gap: 20px;
+  padding-right: 40px;
 }
 
 @keyframes scaleUp {
