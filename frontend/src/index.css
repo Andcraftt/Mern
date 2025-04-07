@@ -1,8 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
-
-div#root{
-  background-color: #e7ceffad;
-}
 * {
   margin: 0;
   padding: 0;
@@ -12,6 +8,7 @@ div#root{
 body {
   font-family: 'Poppins', sans-serif;
   height: 100vh;
+  background-color: #e7ceffad;
 }
 
 a {
