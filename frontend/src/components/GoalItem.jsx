@@ -127,7 +127,7 @@ function GoalItem({ goal }) {
                     <div key={comment._id} className="comment-item">
                       <div className="comment-header">
                         <strong>{comment.user.name}</strong>
-                        <p>&nbsp</p>
+                        <p>&nbsp;</p>
                         <span className="comment-date">
                           {new Date(comment.createdAt).toLocaleDateString()}
                         </span>
