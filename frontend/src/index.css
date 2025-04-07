@@ -216,7 +216,7 @@ h1, h2, h3 {
   }
 }
 
-/* Estilos para el popup */
+/* Estilos para el popup 
 .goalInner {
   position: fixed;
   top: 0;
@@ -325,7 +325,7 @@ h1, h2, h3 {
   padding: 10px 20px;
   border: 1px solid #000;
   border-radius: 5px;
-  background-color: #4CAF50; /* Color verde */
+  background-color: #4CAF50; /* Color verde *//*
   color: white;
   font-size: 16px;
   font-weight: 700;
@@ -341,7 +341,7 @@ h1, h2, h3 {
 }
 
 .download-button:hover {
-  background-color: #45a049; /* Un verde más oscuro al pasar el ratón */
+  background-color: #45a049; /* Un verde más oscuro al pasar el ratón *//*
   transform: scale(0.98);
 }
 
@@ -350,5 +350,184 @@ h1, h2, h3 {
 }
 
 .download-button:active {
-  background-color: #388e3c; /* Verde aún más oscuro cuando se hace clic */
+  background-color: #388e3c; /* Verde aún más oscuro cuando se hace clic *//*
+}
+*/
+
+.goalInner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.goal-inner-content {
+  background-color: #f4f4f4;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 900px; /* Aumentamos el ancho máximo para las dos columnas */
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  padding: 20px;
+  animation: scaleUp 0.3s ease-out;
+  display: grid;
+  grid-template-columns: 60% 40%; /* Dos columnas: 60% izquierda, 40% derecha */
+  gap: 20px;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  grid-column: 1 / -1; /* El header ocupa ambas columnas */
+}
+
+.popup-header h2 {
+  color: black;
+  margin: 0;
+  flex-grow: 1;
+  text-align: center;
+  margin-left: 30px;
+}
+
+.close-popup {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 20px;
+  padding: 0;
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}
+
+.close-popup:hover {
+  background-color: #d32f2f;
+  transform: scale(0.98);
+}
+
+.popup-left-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.popup-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.goal-popup-image {
+  max-width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.popup-description {
+  color: black;
+  text-align: left;
+  margin: 15px 0;
+}
+
+.popup-right-column {
+  border-left: 1px solid #ddd;
+  padding-left: 20px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.comments-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.download-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.download-button {
+  padding: 10px 20px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.download-button:hover {
+  background-color: #45a049;
+  transform: scale(0.98);
+}
+
+.download-button:focus {
+  outline: none;
+}
+
+.download-button:active {
+  background-color: #388e3c;
+}
+
+/* Estilos responsivos para pantallas más pequeñas */
+@media (max-width: 768px) {
+  .goal-inner-content {
+    grid-template-columns: 1fr;
+    max-height: 85%;
+  }
+  
+  .popup-right-column {
+    border-left: none;
+    border-top: 1px solid #ddd;
+    padding-left: 0;
+    padding-top: 20px;
+  }
 }
