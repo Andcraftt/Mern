@@ -494,6 +494,9 @@ h1, h2, h3 {
   margin-top: 20px;
 }
 
+button {
+  font-family: 'Poppins', sans-serif;;
+}
 .download-button {
   padding: 10px 20px;
   border: 1px solid #000;
