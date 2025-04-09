@@ -313,6 +313,7 @@ h1, h2, h3 {
   top: 0;
   background-color: #ffffff;
   z-index: 5;
+  margin-right: 25px;
 }
 
 /* Restructure the left column layout */
@@ -371,6 +372,7 @@ h1, h2, h3 {
 
 /* Comments section layout adjustment */
 .comments-section {
+  padding-right: 25px;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -428,6 +430,7 @@ h1, h2, h3 {
 }
 
 .close-popup {
+  margin-top: -20px;
   background-color: #e53e3e;
   color: white;
   border: none;

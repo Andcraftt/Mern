@@ -73,86 +73,90 @@ function GoalItem({ goal }) {
 
       {isOpen && (
         <div className="goalInner">
-        <div className="goal-inner-content">
-          <div className="popup-header">
-            <h2>{goal.text}</h2>
-            <button onClick={closeGoal} className="close-popup">×</button>
-          </div>
-          
-          {/* Columna izquierda (contenido principal) */}
-          <div className="popup-left-column">
-            {goal.imgURL && (
-              <div className="popup-image-container">
-                <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />
-              </div>
-            )}
-            
-            <div className="popup-description">
-              <p>{goal.description}</p>
+          <div className="goal-inner-content">
+            <div className="popup-header">
+              <h2>{goal.text}</h2>
+              <button onClick={closeGoal} className="close-popup">×</button>
             </div>
-      
-            {goal.imgURL && (
-              <div className="download-button-container">
-                <button onClick={downloadImage} className="download-button">
-                  <IoIosDownload />
-                </button>
-              </div>
-            )}
-          </div>
-          
-          {/* Columna derecha (comentarios) */}
-          <div className="popup-right-column">
-            <div className="comments-section">
-              <h3>Comments</h3>
-              
-              {/* Formulario de comentarios */}
-              {user && (
-                <form onSubmit={handleSubmitComment} className="comment-form">
-                  <textarea
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    placeholder="Add a comment..."
-                    className="comment-input"
-                  />
-                  <button type="submit" className="comment-submit">
-                    Post
-                  </button>
-                </form>
+            
+            {/* Left column (main content) with scrollable description */}
+            <div className="popup-left-column">
+              {goal.imgURL && (
+                <div className="popup-image-container">
+                  <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />
+                </div>
               )}
               
-              {/* Lista de comentarios */}
-              <div className="comments-list">
-                {comments[goal._id] && comments[goal._id].length > 0 ? (
-                  comments[goal._id].map((comment) => (
-                    <div key={comment._id} className="comment-item">
-                      <div className="comment-header">
-                        <strong>{comment.user.name}</strong>
-                        <p>&nbsp;</p>
-                        <span className="comment-date">
-                          {new Date(comment.createdAt).toLocaleDateString()}
-                        </span>
-                      </div>
-                      <p className="comment-text">{comment.text}</p>
-                      
-                      {/* Botón de eliminar para el dueño del comentario */}
-                      {user && user._id === comment.user._id && (
-                        <button
-                          onClick={() => handleDeleteComment(comment._id)}
-                          className="delete-comment"
-                        >
-                          Delete
-                        </button>
-                      )}
-                    </div>
-                  ))
-                ) : (
-                  <p className="no-comments">No comments yet. Be the first to comment!</p>
+              {/* Scrollable description container */}
+              <div className="popup-description-container">
+                <div className="popup-description">
+                  <p>{goal.description}</p>
+                </div>
+              </div>
+              
+              {/* Fixed download button at bottom */}
+              {goal.imgURL && (
+                <div className="download-button-container">
+                  <button onClick={downloadImage} className="download-button">
+                    <IoIosDownload />&nbsp;Download
+                  </button>
+                </div>
+              )}
+            </div>
+            
+            {/* Right column (comments) - independently scrollable */}
+            <div className="popup-right-column">
+              <div className="comments-section">
+                <h3>Comments</h3>
+                
+                {/* Comments form */}
+                {user && (
+                  <form onSubmit={handleSubmitComment} className="comment-form">
+                    <textarea
+                      value={newComment}
+                      onChange={(e) => setNewComment(e.target.value)}
+                      placeholder="Add a comment..."
+                      className="comment-input"
+                    />
+                    <button type="submit" className="comment-submit">
+                      Post
+                    </button>
+                  </form>
                 )}
+                
+                {/* Comments list */}
+                <div className="comments-list">
+                  {comments[goal._id] && comments[goal._id].length > 0 ? (
+                    comments[goal._id].map((comment) => (
+                      <div key={comment._id} className="comment-item">
+                        <div className="comment-header">
+                          <strong>{comment.user.name}</strong>
+                          <p>&nbsp;</p>
+                          <span className="comment-date">
+                            {new Date(comment.createdAt).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <p className="comment-text">{comment.text}</p>
+                        
+                        {/* Delete button for comment owner */}
+                        {user && user._id === comment.user._id && (
+                          <button
+                            onClick={() => handleDeleteComment(comment._id)}
+                            className="delete-comment"
+                          >
+                            Delete
+                          </button>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="no-comments">No comments yet. Be the first to comment!</p>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
       )}
     </>
   )
