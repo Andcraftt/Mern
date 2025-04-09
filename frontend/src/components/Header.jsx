@@ -19,7 +19,7 @@ function Header() {
     <header className='header'>
       <div className='logo'>
         <Link to='/'>
-          <img src="../../public/Logo.png" alt="Website Logo" />
+        <img src="/Logo.png" alt="Descripción de la imagen" width="400"/>
         </Link>
       </div>
       
