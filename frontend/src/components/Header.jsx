@@ -28,7 +28,7 @@ function Header() {
           {user ? (
             <>
               <li>
-                <Link to='/' className='nav-link'>
+                <Link to='/' className='nav-link btn3'>
                   <IoHome />&nbsp;Home
                 </Link>
               </li>
