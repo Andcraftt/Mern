@@ -389,8 +389,8 @@ h1, h2, h3 {
   background-color: #f5f5f5;
   border-radius: 8px;
   width: 90%;
-  max-width: 900px; /* Aumentamos el ancho máximo para las dos columnas */
-  max-height: 90%;
+  max-height: 71%;
+  max-width: 65%;
   position: relative;
   padding: 20px;
   animation: scaleUp 0.3s ease-out;
