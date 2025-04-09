@@ -27,7 +27,7 @@ ul {
 }
 
 h1, h2, h3 {
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 10px;
 }
 
@@ -60,6 +60,7 @@ h1, h2, h3 {
 .logo img {
   max-height: 50px;
   width: auto;
+  scale: 1.5;
 }
 
 .header-nav {
@@ -90,6 +91,7 @@ h1, h2, h3 {
 
 .header ul li a:hover {
   background-color: #f0f0f0;
+  color: #2d3748;
 }
 
 /* Button Styling */
@@ -118,9 +120,11 @@ h1, h2, h3 {
   color: white;
 }
 
-.btn:hover, .btn1:hover {
+.btn:hover, .btn1:hover ,.btn2:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+  color: #2D3748;
 }
 
 .btn-container {
@@ -141,6 +145,7 @@ h1, h2, h3 {
 .heading p {
   color: #718096;
   font-size: 1.1rem;
+  margin-bottom: -30px;
 }
 
 /* Goals/Posts Grid */
@@ -196,6 +201,7 @@ h1, h2, h3 {
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 50px;
 }
 
 .form-group {
@@ -338,6 +344,7 @@ h1, h2, h3 {
 .popup-description-container {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   margin-bottom: 80px; /* Space for the download button */
 }
 

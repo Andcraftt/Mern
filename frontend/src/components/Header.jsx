@@ -46,7 +46,7 @@ function Header() {
           ) : (
             <>
               <li>
-                <Link to='/login' className='nav-link'>
+                <Link to='/login' className='nav-link btn2'>
                   <FaSignInAlt />&nbsp;Login
                 </Link>
               </li>
