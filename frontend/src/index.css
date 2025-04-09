@@ -349,6 +349,7 @@ h1, h2, h3 {
   overflow-y: auto;
   overflow-x: hidden;
   margin-bottom: 80px; /* Space for the download button */
+  scrollbar-width: none;
 }
 
 .popup-description {
@@ -378,6 +379,7 @@ h1, h2, h3 {
   padding-left: 25px;
   overflow-y: auto;
   max-height: calc(80vh - 90px); /* Match left column height */
+  scrollbar-width: none;
 }
 
 /* Comments section layout adjustment */
