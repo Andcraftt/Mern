@@ -284,6 +284,7 @@ h1, h2, h3 {
   }
 }
 
+/* Modal/Popup Layout Fixes */
 .goal-inner-content {
   background-color: #ffffff;
   border-radius: 12px;
@@ -299,6 +300,114 @@ h1, h2, h3 {
   overflow: hidden;
 }
 
+/* Ensure the popup header stays at the top */
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  grid-column: 1 / -1;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 15px;
+  position: sticky;
+  top: 0;
+  background-color: #ffffff;
+  z-index: 5;
+}
+
+/* Restructure the left column layout */
+.popup-left-column {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(80vh - 90px); /* Account for header and padding */
+  position: relative;
+  padding-right: 15px;
+}
+
+/* Image container fixed at top */
+.popup-image-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  width: 100%;
+  flex-shrink: 0; /* Prevent image from shrinking */
+}
+
+/* Make only the description scrollable */
+.popup-description-container {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 80px; /* Space for the download button */
+}
+
+.popup-description {
+  color: #4a5568;
+  text-align: left;
+  padding: 5px 0;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Fix download button at the bottom */
+.download-button-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 15px; /* Match the padding-right of popup-left-column */
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+  padding: 15px 0;
+  border-top: 1px solid #edf2f7;
+}
+
+/* Ensure right column (comments) is independently scrollable */
+.popup-right-column {
+  border-left: 1px solid #edf2f7;
+  padding-left: 25px;
+  overflow-y: auto;
+  max-height: calc(80vh - 90px); /* Match left column height */
+}
+
+/* Comments section layout adjustment */
+.comments-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* For medium screens */
+@media (max-width: 768px) {
+  .goal-inner-content {
+    grid-template-columns: 1fr;
+    max-height: 85%;
+    gap: 15px;
+  }
+  
+  .popup-left-column {
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+    padding-bottom: 80px; /* Space for download button */
+  }
+  
+  .popup-description-container {
+    margin-bottom: 0;
+  }
+  
+  .download-button-container {
+    right: 0;
+  }
+  
+  .popup-right-column {
+    border-left: none;
+    border-top: 1px solid #edf2f7;
+    padding-left: 0;
+    padding-top: 20px;
+    max-height: 40vh;
+  }
+}
+
 @keyframes scaleUp {
   from {
     transform: scale(0.7);
@@ -310,15 +419,6 @@ h1, h2, h3 {
   }
 }
 
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  grid-column: 1 / -1;
-  border-bottom: 1px solid #edf2f7;
-  padding-bottom: 15px;
-}
 
 .popup-header h2 {
   color: #2d3748;
@@ -350,12 +450,6 @@ h1, h2, h3 {
   background-color: #c53030;
 }
 
-.popup-left-column {
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  padding-right: 15px;
-}
 
 .popup-image-container {
   display: flex;
@@ -372,13 +466,6 @@ h1, h2, h3 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.popup-description {
-  color: #4a5568;
-  text-align: left;
-  margin: 20px 0;
-  line-height: 1.6;
-  font-size: 1rem;
-}
 
 .popup-right-column {
   border-left: 1px solid #edf2f7;
@@ -387,22 +474,12 @@ h1, h2, h3 {
   max-height: 70vh;
 }
 
-.comments-section {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
+
 
 .comments-section h3 {
   margin-bottom: 20px;
   color: #2d3748;
   font-weight: 600;
-}
-
-.download-button-container {
-  display: flex;
-  justify-content: center;
-  margin-top: 25px;
 }
 
 button {
@@ -535,28 +612,6 @@ button {
 @media (max-width: 1024px) {
   .goal-inner-content {
     max-width: 85%;
-  }
-}
-
-@media (max-width: 768px) {
-  .form {
-    width: 90%;
-  }
-  
-  .goal-inner-content {
-    grid-template-columns: 1fr;
-    max-height: 85%;
-  }
-  
-  .popup-right-column {
-    border-left: none;
-    border-top: 1px solid #edf2f7;
-    padding-left: 0;
-    padding-top: 20px;
-  }
-  
-  .header {
-    padding: 15px 20px;
   }
 }
 
