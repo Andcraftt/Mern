@@ -18,37 +18,47 @@ function Header() {
   return (
     <header className='header'>
       <div className='logo'>
-        <Link to='/'> <img src="../../public/Logo.png" alt="Descripción de la imagen" width="400"/></Link>
+        <Link to='/'>
+          <img src="../../public/Logo.png" alt="Website Logo" />
+        </Link>
       </div>
-      <ul>
-        {user ? (
-          <li>
-            <div class="btn-container">
-              <Link to='/myprofile'> 
-                <button className='btn1'> 
-                <FaUser style={{ color: 'white',marginRight: '4px' }} />&nbsp;My Profile
-                   </button>
-              </Link>
-              <button className='btn' onClick={onLogout}>
-                <FaSignOutAlt />&nbsp;Logout
-              </button>
-            </div>
-          </li>
-        ) : (
-          <>
-            <li>
-              <Link to='/login'>
-                <FaSignInAlt />&nbsp;Login
-              </Link>
-            </li>
-            <li>
-              <Link to='/register'>
-                <FaUser />&nbsp;Register
-              </Link>
-            </li>
-          </>
-        )}
-      </ul>
+      
+      <nav className='header-nav'>
+        <ul>
+          {user ? (
+            <>
+              <li>
+                <Link to='/' className='nav-link'>
+                  <IoHome />&nbsp;Home
+                </Link>
+              </li>
+              <li>
+                <Link to='/myprofile' className='nav-link btn1'>
+                  <FaUser />&nbsp;My Profile
+                </Link>
+              </li>
+              <li>
+                <button className='btn' onClick={onLogout}>
+                  <FaSignOutAlt />&nbsp;Logout
+                </button>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link to='/login' className='nav-link'>
+                  <FaSignInAlt />&nbsp;Login
+                </Link>
+              </li>
+              <li>
+                <Link to='/register' className='nav-link btn'>
+                  <FaUser />&nbsp;Register
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
     </header>
   )
 }

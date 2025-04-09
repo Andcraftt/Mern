@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+/* Reset and Base Styles */
 * {
   margin: 0;
   padding: 0;
@@ -7,26 +9,21 @@
 
 body {
   font-family: 'Poppins', sans-serif;
-  height: 100vh;
-  background-color: #e7ceffad;
+  min-height: 100vh;
+  background-color: #f9f5ff;
 }
 
 a {
   text-decoration: none;
-  color: #000;
+  color: #333;
 }
 
 p {
-  text-align: center;
   line-height: 1.7;
 }
 
 ul {
   list-style: none;
-}
-
-li {
-  line-height: 2.2;
 }
 
 h1, h2, h3 {
@@ -36,70 +33,140 @@ h1, h2, h3 {
 
 .container {
   width: 100%;
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
 }
 
+/* Header Styling - Fixed Size Regardless of Login State */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e6e6e6;
-  margin-bottom: 60px;
-  background-color: #f5f5f5;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 20px;
+  padding: 15px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+  height: 80px; /* Fixed height for consistency */
+}
+
+.logo {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.logo img {
+  max-height: 50px;
+  width: auto;
+}
+
+.header-nav {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .header ul {
   display: flex;
   align-items: center;
+  gap: 15px;
 }
 
 .header ul li {
-  margin-left: 20px;
+  margin: 0;
 }
 
-.header ul li a {
+.header ul li a, 
+.header ul li button {
   display: flex;
   align-items: center;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .header ul li a:hover {
-  color: #777;
+  background-color: #f0f0f0;
 }
 
+/* Button Styling */
+.btn, .btn1 {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border: none;
+  min-height: 40px;
+  margin: 0;
+}
+
+.btn {
+  background-color: #6b46c1;
+  color: white;
+}
+
+.btn1 {
+  background-color: #4a5568;
+  color: white;
+}
+
+.btn:hover, .btn1:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 0;
+}
+
+/* Content Styling */
 .heading {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
+  color: #2d3748;
 }
 
 .heading p {
-  color: #828282;
+  color: #718096;
+  font-size: 1.1rem;
 }
 
+/* Goals/Posts Grid */
 .goals {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  justify-content: center;
-  align-items: stretch;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
   width: 100%;
-  max-width: 960px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .goal {
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   padding: 20px;
   text-align: center;
   border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.goal:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
 .goal .close {
@@ -109,79 +176,66 @@ h1, h2, h3 {
   cursor: pointer;
   border: none;
   background: none;
+  font-size: 18px;
+  color: #e53e3e;
 }
 
 .goal-image {
-  width: 250px; 
-  height: 250px; 
+  width: 100%;
+  height: 220px;
   object-fit: cover;
-  margin-top: 10px;
-  border-radius: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
 }
 
+/* Form Styling */
 .form {
   width: 70%;
   margin: 0 auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
 }
 
 .form-group {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .form-group input,
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #e6e6e6;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   font-family: inherit;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  border-color: #6b46c1;
+  outline: none;
 }
 
 .form-group label {
   text-align: left;
   display: block;
-  margin: 0 0 5px 3px;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #4a5568;
 }
 
-.btn-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.btn1,
-.btn {
-  padding: 10px 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  background: #000;
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 120px;
-  height: 40px;
-  margin-bottom: 20px;
-}
-
-.btn:hover {
-  transform: scale(0.98);
-}
-
+/* Loading Spinner */
 .loadingSpinnerContainer {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
   z-index: 5000;
   display: flex;
   justify-content: center;
@@ -189,12 +243,12 @@ h1, h2, h3 {
 }
 
 .loadingSpinner {
-  width: 64px;
-  height: 64px;
-  border: 8px solid;
-  border-color: #000 transparent #555 transparent;
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #6b46c1;
   border-radius: 50%;
-  animation: spin 1.2s linear infinite;
+  animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
@@ -206,21 +260,7 @@ h1, h2, h3 {
   }
 }
 
-@media (max-width: 600px) {
-  .form {
-    width: 90%;
-  }
-
-  .heading h1 {
-    font-size: 2rem;
-  }
-
-  .heading p {
-    font-size: 1.5rem;
-  }
-}
-
-/* Estilos para el popup 
+/* Modal Styling */
 .goalInner {
   position: fixed;
   top: 0;
@@ -245,159 +285,18 @@ h1, h2, h3 {
 }
 
 .goal-inner-content {
-  background-color: #f4f4f4;
-  border-radius: 8px;
+  background-color: #ffffff;
+  border-radius: 12px;
   width: 90%;
-  max-width: 600px;
-  max-height: 90%;
-  overflow-y: auto;
+  max-height: 80%;
+  max-width: 70%;
   position: relative;
-  padding: 20px;
-  animation: scaleUp 0.3s ease-out;
-}
-
-@keyframes scaleUp {
-  from {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.popup-header h2 {
-  color: black;
-  margin: 0;
-  flex-grow: 1;
-  text-align: center;
-  margin-left: 30px;
-}
-
-.close-popup {
-  background-color: #f44336;
-  color: white;
-  border: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  font-size: 20px;
-  padding: 0;
-}
-
-.close-popup:hover {
-  background-color: #d32f2f;
-  transform: scale(0.98);
-}
-
-.popup-image-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.goal-popup-image {
-  max-width: 100%;
-  max-height: 400px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-.popup-description {
-  color: black;
-  text-align: left;
-  margin-left: 20px;
-}
-
-#casita{
-  font-size: 35px;
-}
-
-.download-button {
-  padding: 10px 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
-  background-color: #4CAF50; /* Color verde *//*
-  color: white;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 40px;
-  height: 40px;
-  margin-top: 20px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.download-button:hover {
-  background-color: #45a049; /* Un verde más oscuro al pasar el ratón *//*
-  transform: scale(0.98);
-}
-
-.download-button:focus {
-  outline: none;
-}
-
-.download-button:active {
-  background-color: #388e3c; /* Verde aún más oscuro cuando se hace clic *//*
-}
-*/
-
-.goalInner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: fadeIn 0.3s ease-out;
-}
-
-#casita{
-  font-size: 35px;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.goal-inner-content {
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  width: 90%;
-  max-height: 71%;
-  max-width: 65%;
-  position: relative;
-  padding: 20px;
+  padding: 25px;
   animation: scaleUp 0.3s ease-out;
   display: grid;
-  grid-template-columns: 60% 40%; /* Dos columnas: 60% izquierda, 40% derecha */
-  gap: 20px;
-  padding-right: 40px;
+  grid-template-columns: 60% 40%;
+  gap: 25px;
+  overflow: hidden;
 }
 
 @keyframes scaleUp {
@@ -416,19 +315,20 @@ h1, h2, h3 {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  grid-column: 1 / -1; /* El header ocupa ambas columnas */
+  grid-column: 1 / -1;
+  border-bottom: 1px solid #edf2f7;
+  padding-bottom: 15px;
 }
 
 .popup-header h2 {
-  color: black;
+  color: #2d3748;
   margin: 0;
   flex-grow: 1;
   text-align: center;
-  margin-left: 30px;
 }
 
 .close-popup {
-  background-color: #f44336;
+  background-color: #e53e3e;
   color: white;
   border: none;
   width: 30px;
@@ -438,21 +338,23 @@ h1, h2, h3 {
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 18px;
   padding: 0;
   position: absolute;
   right: 20px;
   top: 20px;
+  transition: background-color 0.3s ease;
 }
 
 .close-popup:hover {
-  background-color: #d32f2f;
-  transform: scale(0.98);
+  background-color: #c53030;
 }
 
 .popup-left-column {
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  padding-right: 15px;
 }
 
 .popup-image-container {
@@ -466,18 +368,21 @@ h1, h2, h3 {
   max-width: 100%;
   max-height: 400px;
   object-fit: contain;
-  border-radius: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .popup-description {
-  color: black;
+  color: #4a5568;
   text-align: left;
-  margin: 15px 0;
+  margin: 20px 0;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 .popup-right-column {
-  border-left: 1px solid #ddd;
-  padding-left: 20px;
+  border-left: 1px solid #edf2f7;
+  padding-left: 25px;
   overflow-y: auto;
   max-height: 70vh;
 }
@@ -488,36 +393,41 @@ h1, h2, h3 {
   height: 100%;
 }
 
+.comments-section h3 {
+  margin-bottom: 20px;
+  color: #2d3748;
+  font-weight: 600;
+}
+
 .download-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 25px;
 }
 
 button {
-  font-family: 'Poppins', sans-serif;;
+  font-family: 'Poppins', sans-serif;
 }
+
 .download-button {
-  padding: 10px 20px;
-  border: 1px solid #000;
-  border-radius: 5px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 6px;
   background-color: #4CAF50;
   color: white;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  text-align: center;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 40px;
-  height: 40px;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .download-button:hover {
   background-color: #45a049;
-  transform: scale(0.98);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .download-button:focus {
@@ -526,10 +436,113 @@ button {
 
 .download-button:active {
   background-color: #388e3c;
+  transform: translateY(0);
 }
 
-/* Estilos responsivos para pantallas más pequeñas */
+/* Comment Styling */
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 25px;
+}
+
+.comment-input {
+  font-family: 'Poppins';
+  width: 100%;
+  min-height: 90px;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+}
+
+.comment-input:focus {
+  border-color: #6b46c1;
+  outline: none;
+}
+
+.comment-submit {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #6b46c1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.comment-submit:hover {
+  background-color: #553c9a;
+  transform: translateY(-2px);
+}
+
+.comments-list {
+  margin-top: 20px;
+}
+
+.comment-item {
+  padding: 15px 0;
+  border-bottom: 1px solid #edf2f7;
+}
+
+.comment-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+}
+
+.comment-date {
+  color: #718096;
+  font-size: 0.85em;
+  margin-left: auto;
+}
+
+.comment-text {
+  margin: 8px 0;
+  line-height: 1.5;
+  color: #4a5568;
+  text-align: left;
+}
+
+.delete-comment {
+  background: none;
+  border: none;
+  color: #e53e3e;
+  cursor: pointer;
+  font-size: 0.85em;
+  padding: 5px 0;
+  transition: color 0.3s ease;
+}
+
+.delete-comment:hover {
+  color: #c53030;
+  text-decoration: underline;
+}
+
+.no-comments {
+  color: #718096;
+  font-style: italic;
+  text-align: center;
+  padding: 25px 0;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .goal-inner-content {
+    max-width: 85%;
+  }
+}
+
 @media (max-width: 768px) {
+  .form {
+    width: 90%;
+  }
+  
   .goal-inner-content {
     grid-template-columns: 1fr;
     max-height: 85%;
@@ -537,86 +550,38 @@ button {
   
   .popup-right-column {
     border-left: none;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #edf2f7;
     padding-left: 0;
     padding-top: 20px;
   }
+  
+  .header {
+    padding: 15px 20px;
+  }
 }
 
-/* Estilos para la sección de comentarios */
-.comment-form {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.comment-input {
-  font-family: 'Poppins';
-  width: 100%;
-  min-height: 80px;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  resize: vertical;
-}
-
-.comment-submit {
-  align-self: flex-end;
-  padding: 8px 16px;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.comment-submit:hover {
-  background-color: #45a049;
-}
-
-.comments-list {
-  margin-top: 15px;
-}
-
-.comment-item {
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.comment-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 5px;
-  font-size: 0.9em;
-}
-
-.comment-date {
-  color: #777;
-  font-size: 0.8em;
-}
-
-.comment-text {
-  margin: 8px 0;
-  line-height: 1.4;
-}
-
-.delete-comment {
-  background: none;
-  border: none;
-  color: #f44336;
-  cursor: pointer;
-  font-size: 0.8em;
-  padding: 0;
-}
-
-.delete-comment:hover {
-  text-decoration: underline;
-}
-
-.no-comments {
-  color: #777;
-  font-style: italic;
-  text-align: center;
-  padding: 20px 0;
+@media (max-width: 480px) {
+  .heading h1 {
+    font-size: 1.8rem;
+  }
+  
+  .btn, .btn1 {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+  
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 15px;
+  }
+  
+  .header-nav {
+    margin-top: 15px;
+  }
+  
+  .btn-container {
+    flex-direction: column;
+    gap: 10px;
+  }
 }
