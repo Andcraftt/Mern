@@ -63,7 +63,7 @@ h1, h2, h3 {
 .logo img {
   max-height: 50px;
   width: auto;
-  scale: 1.5;
+  scale: 4;
 }
 
 .header-nav {
