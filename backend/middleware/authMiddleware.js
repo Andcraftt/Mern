@@ -7,11 +7,15 @@ const protect = asyncHandler(async (req, res, next) => {
     console.log('Method:', req.method)
     console.log('Original URL:', req.originalUrl)
 
-    // Only skip authentication for public GET routes
-    // We still need authentication for protected GET routes like /api/users/me
-    if (req.method === 'GET' && 
-       (req.originalUrl.startsWith('/api/goals') || 
-        req.originalUrl.startsWith('/api/comments'))) {
+    // Skip authentication for public routes
+    // - GET requests to /api/goals and /api/comments
+    // - POST requests to /api/users (registration) and /api/users/login
+    if ((req.method === 'GET' && 
+         (req.originalUrl.startsWith('/api/goals') || 
+          req.originalUrl.startsWith('/api/comments'))) ||
+        (req.method === 'POST' && 
+         (req.originalUrl === '/api/users' || 
+          req.originalUrl === '/api/users/login'))) {
         return next();  // Continue without applying protection for these specific routes
     }
 
@@ -27,13 +31,17 @@ const protect = asyncHandler(async (req, res, next) => {
             // Get user from the token
             req.user = await User.findById(decoded.id).select('-password')
 
+            if (!req.user) {
+                throw new Error('User not found')
+            }
+
             next()
         } catch (error) {
-            console.log(error)
+            console.log('Authentication error:', error.message)
             res.status(401)
             throw new Error('Not authorized')
         }
-    } else if (!token) {
+    } else {
         res.status(401)
         throw new Error('Not authorized, no token')
     }
