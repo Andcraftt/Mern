@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Myprofile from './pages/Myprofile';
+import Settings from './pages/Settings';
 
 function App() {
   return (
