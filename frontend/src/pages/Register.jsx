@@ -6,7 +6,6 @@ import{FaUser} from 'react-icons/fa'
 import {register, reset} from '../features/auth/authSlice'
 import Spinner from '../components/Spinner'
 
-
 function Register(){
     const[formData, setFormData] = useState({
         name:'',
