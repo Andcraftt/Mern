@@ -35,13 +35,14 @@ function Myprofile(){const navigate = useNavigate()
    const userGoals = goals.filter((goal) => goal.user === user._id)
    return (
     <>
-      <section className='heading'>
-        <h1>Welcome {user && user.name}</h1>
-        <p>CREATE A NEW POST</p>
-      </section>
-  
-      {user && <GoalForm />}
-  
+      <div className='ajustBack'>
+        <section className='heading'>
+          <h1>Welcome {user && user.name}</h1>
+          <p>CREATE A NEW POST</p>
+        </section>
+    
+        {user && <GoalForm />}
+      </div>
       <section className='content'>
         {userGoals.length > 0 ? (
           <div className='goals'>
