@@ -659,13 +659,31 @@ button {
 
 /*Cambios para que los ajustes tengan un fondo*/
 
-.ajustBack{
-    border-radius: 30px;
-    background-color: lightblue;
+.ajustBack {
+  border-radius: 30px;
+  background-color: lightblue;
+  padding: 20px; /* margen interno */
+  margin: 20px;  /* margen externo */
 }
 
-.ajustButton{
-    background-color: silver;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ajustButton {
+  background-color: silver;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.ajustButton:hover {
+  background-color: #aaa;
 }
 
 /* Add this to your index.css or App.css file */
