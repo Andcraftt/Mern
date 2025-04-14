@@ -657,22 +657,25 @@ button {
 }
 
 
-/*Cambios para que los ajustes tengan un fondo*/
-
-.ajustBack {
-  border-radius: 30px;
-  background-color: lightblue;
-  padding: 20px; /* margen interno */
-  margin: 20px;  /* margen externo */
-}
-
+/*Cambios para que los ajustes tengan un fondo con el botton*/
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.ajustBack {
+  position: relative; /* necesario para que el botón se posicione respecto a este div */
+  border-radius: 30px;
+  background-color: lightgrey;
+  padding: 20px;
+  margin: 20px;
+}
+
 .ajustButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
   background-color: silver;
   border: none;
   padding: 10px 16px;
