@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import { IoIosSettings } from "react-icons/io";
 import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import Spinner from '../components/Spinner'
@@ -39,6 +40,9 @@ function Myprofile(){const navigate = useNavigate()
         <section className='heading'>
           <h1>Welcome {user && user.name}</h1>
           <p>CREATE A NEW POST</p>
+          <Link to='/settings' className='ajustButton'>
+            <IoIosSettings />
+          </Link>
         </section>
     
         {user && <GoalForm />}

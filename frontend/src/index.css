@@ -655,3 +655,15 @@ button {
     gap: 10px;
   }
 }
+
+
+/*Cambios para que los ajustes tengan un fondo*/
+
+.ajustBack{
+    border-radius: 30px;
+    background-color: lightblue;
+}
+
+.ajustButton{
+    background-color: silver;
+}
