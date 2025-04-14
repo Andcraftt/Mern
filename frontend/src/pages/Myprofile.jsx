@@ -6,6 +6,7 @@ import GoalForm from '../components/GoalForm'
 import GoalItem from '../components/GoalItem'
 import Spinner from '../components/Spinner'
 import { getGoals, reset } from '../features/goals/goalSlice'
+import { Link } from 'react-router-dom'
 
 function Myprofile(){const navigate = useNavigate()
   const dispatch = useDispatch()
