@@ -39,11 +39,11 @@ function Myprofile(){const navigate = useNavigate()
     <>
       <div className='ajustBack'>
         <section className='heading'>
-          <h1>Welcome {user && user.name}</h1>
-          <p>CREATE A NEW POST</p>
           <Link to='/settings' className='ajustButton'>
             <IoIosSettings />
           </Link>
+          <h1>Welcome {user && user.name}</h1>
+          <p>CREATE A NEW POST</p>
         </section>
     
         {user && <GoalForm />}

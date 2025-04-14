@@ -657,18 +657,37 @@ button {
 }
 
 
-/*Cambios para que los ajustes tengan un fondo*/
-
-.ajustBack{
-    border-radius: 30px;
-    background-color: lightblue;
+/*Cambios para que los ajustes tengan un fondo con el botton*/
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.ajustButton{
-    background-color: silver;
+.ajustBack {
+  position: relative; /* necesario para que el botón se posicione respecto a este div */
+  border-radius: 30px;
+  background-color: lightgrey;
+  padding: 20px;
+  margin: 20px;
 }
 
-/* Add this to your index.css or App.css file */
+.ajustButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: silver;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.ajustButton:hover {
+  background-color: #aaa;
+}
 
 .danger-zone {
   margin-top: 2rem;
