@@ -724,7 +724,7 @@ button {
 
 .delete-confirm .buttons {
   display: flex;
-  justify-content: centers;
+  justify-content: center;
   gap: 1rem;
 }
 
