@@ -200,7 +200,7 @@ h1, h2, h3 {
 .form {
   width: 70%;
   margin: 0 auto;
-  background-color: #ffffff;
+  background-color: #f9f9f9;
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
@@ -666,8 +666,8 @@ button {
 
 .ajustBack {
   position: relative; /* necesario para que el botón se posicione respecto a este div */
-  border-radius: 30px;
-  background-color: lightgrey;
+  border-radius: 4px;
+  background-color: #e5e3e3;
   padding: 20px;
   margin: 20px;
 }
@@ -683,6 +683,8 @@ button {
   cursor: pointer;
   font-weight: bold;
   transition: background-color 0.3s;
+  padding-bottom: revert;
+  scale: 0.75;
 }
 
 .ajustButton:hover {
@@ -722,6 +724,7 @@ button {
 
 .delete-confirm .buttons {
   display: flex;
+  justify-content: center;
   gap: 1rem;
 }
 
