@@ -667,3 +667,47 @@ button {
 .ajustButton{
     background-color: silver;
 }
+
+/* Add this to your index.css or App.css file */
+
+.danger-zone {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #ff4d4f;
+  border-radius: 5px;
+  background-color: #fff1f0;
+}
+
+.danger-zone h2 {
+  color: #ff4d4f;
+  margin-bottom: 1rem;
+}
+
+.btn-danger {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #ff7875;
+}
+
+.delete-confirm {
+  margin-top: 1rem;
+}
+
+.delete-confirm p {
+  margin-bottom: 1rem;
+  color: #434343;
+}
+
+.delete-confirm .buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
