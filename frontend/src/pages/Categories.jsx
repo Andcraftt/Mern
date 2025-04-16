@@ -12,78 +12,77 @@ function Categories() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState(null) // Track category selection
 
-  const { user } = useSelector((state) => state.auth)
-  const { goals, isLoading, isError, message } = useSelector(
-    (state) => state.goals
-  )
+  const { goals, isLoading, isError, message } = useSelector((state) => state.goals)
 
   useEffect(() => {
     if (isError) {
       console.log(message)
     }
 
-    if (!user) {
-      navigate('/login')
-    } else {
-      dispatch(getGoals())
-    }
+    dispatch(getGoals())
 
     return () => {
       dispatch(reset())
     }
-  }, [user, navigate, isError, message, dispatch])
+  }, [dispatch, isError, message])
 
   if (isLoading) {
     return <Spinner />
   }
 
-  const userGoals = goals.filter((goal) => goal.user === user._id)
+  const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'] // Updated categories
 
-  const filteredGoals = selectedCategory === 'All'
-    ? userGoals
-    : userGoals.filter(goal => goal.category === selectedCategory)
-
-  const categories = ['All', 'Fitness', 'Study', 'Work', 'Personal', 'Health']
+  // Filter goals based on the selected category
+  const filteredGoals = selectedCategory
+    ? goals.filter(goal => goal.category === selectedCategory)
+    : []
 
   return (
     <>
       <div className='ajustBack'>
         <section className='heading'>
-          <Link to='/settings' className='ajustButton'>
-            <IoIosSettings />
-          </Link>
-          <h1>Welcome {user && user.name}</h1>
-          <p>CREATE A NEW POST</p>
+          <h1>Categories</h1>
         </section>
 
-        {user && <GoalForm />}
-      </div>
-
-      <section className='category-filters'>
-        {categories.map((category) => (
-          <button
-            key={category}
-            onClick={() => setSelectedCategory(category)}
-            className={`category-button ${selectedCategory === category ? 'active' : ''}`}
-          >
-            {category}
-          </button>
-        ))}
-      </section>
-
-      <section className='content'>
-        {filteredGoals.length > 0 ? (
-          <div className='goals'>
-            {filteredGoals.map((goal) => (
-              <GoalItem key={goal._id} goal={goal} />
+        {/* Category Buttons - Only show if no category is selected */}
+        {!selectedCategory && (
+          <section className='category-filters'>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)} // Set the selected category
+                className='category-button'
+              >
+                {category}
+              </button>
             ))}
-          </div>
-        ) : (
-          <h3>No goals in this category</h3>
+          </section>
         )}
-      </section>
+
+        {/* Displaying Goals - Only show after a category is selected */}
+        {selectedCategory && (
+          <section className='content'>
+            {filteredGoals.length > 0 ? (
+              <div className='goals'>
+                {filteredGoals.map((goal) => (
+                  <GoalItem key={goal._id} goal={goal} />
+                ))}
+              </div>
+            ) : (
+              <h3>No goals in this category</h3>
+            )}
+          </section>
+        )}
+
+        {/* Go back button to reset category */}
+        {selectedCategory && (
+          <button onClick={() => setSelectedCategory(null)} className='back-button'>
+            Back to Categories
+          </button>
+        )}
+      </div>
     </>
   )
 }
