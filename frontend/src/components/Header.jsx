@@ -2,7 +2,7 @@ import {FaSignInAlt, FaSignOutAlt, FaUser} from 'react-icons/fa'
 import {Link, useNavigate} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux'
 import { logout, reset } from '../features/auth/authSlice'
-import { IoHome } from "react-icons/io5";
+import { TbCategoryFilled } from "react-icons/tb";
 
 function Header() {
   const navigate = useNavigate()
@@ -29,7 +29,7 @@ function Header() {
             <>
               <li>
                 <Link to='/categories' className='nav-link btn3'>
-                  <IoHome />&nbsp;Home
+                <TbCategoryFilled />&nbsp;Categories
                 </Link>
               </li>
               <li>

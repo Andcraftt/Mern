@@ -32,7 +32,7 @@ function Categories() {
     return <Spinner />
   }
 
-  const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'] // Updated categories
+  const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'] 
 
   // Filter goals based on the selected category
   const filteredGoals = selectedCategory
