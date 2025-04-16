@@ -25,18 +25,14 @@ const setGoal = asyncHandler(async (req,res) =>{
         throw new Error('Please add a description')
     }
 
-    if (!req.body.category) {
-        res.status(400);
-        throw new Error('Please select a category');
-      }
-    
-      const goal = await Goal.create({
+    const goal = await Goal.create({
         text: req.body.text,
         description: req.body.description,
-        category: req.body.category, 
         imgURL: req.body.imgURL,
+        fileType: req.body.fileType || 'image/jpeg', // Default to image for backward compatibility
+        fileMetadata: req.body.fileMetadata || '{}',
         user: req.user.id,
-      });
+    })
 
     res.status(200).json(goal)
 })

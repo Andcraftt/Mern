@@ -15,13 +15,17 @@ const goalSchema = mongoose.Schema(
         type: String,
         require: [true, 'Please add a description']
     },
-    catergory: {
-        type: String,
-        enum: ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs']
-    },
     imgURL: {
         type: String,
-        require: [true, 'Please add a text value']
+        require: [true, 'Please add a file']
+    },
+    fileType: {
+        type: String,
+        default: 'image/jpeg'  // Default for backward compatibility
+    },
+    fileMetadata: {
+        type: String,  // Store as JSON string
+        default: '{}'
     }
     }, 
 {
@@ -29,4 +33,4 @@ const goalSchema = mongoose.Schema(
 }
 )
 
-module.exports = mongoose.model('Goal',goalSchema)
+module.exports = mongoose.model('Goal', goalSchema)
