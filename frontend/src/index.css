@@ -667,7 +667,7 @@ button {
 .ajustBack {
   position: relative; /* necesario para que el botón se posicione respecto a este div */
   border-radius: 4px;
-  background-color: #e5e3e3;
+  background-color: #ffffff;
   padding: 20px;
   margin: 20px;
 }
