@@ -37,20 +37,14 @@ function Categories() {
   // Filter goals based on the selected category
   const filteredGoals = selectedCategory
     ? goals.filter(goal => goal.category === selectedCategory)
-    : goals
+    : []
 
   return (
     <>
       <div className='ajustBack'>
         <section className='heading'>
-          <Link to='/settings' className='ajustButton'>
-            <IoIosSettings />
-          </Link>
           <h1>Categories</h1>
         </section>
-
-        {/* Goal Form (optional, if you want to allow users to add goals) */}
-        {/* <GoalForm /> */}
 
         {/* Category Buttons - Only show if no category is selected */}
         {!selectedCategory && (
@@ -67,18 +61,20 @@ function Categories() {
           </section>
         )}
 
-        {/* Displaying Goals */}
-        <section className='content'>
-          {filteredGoals.length > 0 ? (
-            <div className='goals'>
-              {filteredGoals.map((goal) => (
-                <GoalItem key={goal._id} goal={goal} />
-              ))}
-            </div>
-          ) : (
-            <h3>No goals in this category</h3>
-          )}
-        </section>
+        {/* Displaying Goals - Only show after a category is selected */}
+        {selectedCategory && (
+          <section className='content'>
+            {filteredGoals.length > 0 ? (
+              <div className='goals'>
+                {filteredGoals.map((goal) => (
+                  <GoalItem key={goal._id} goal={goal} />
+                ))}
+              </div>
+            ) : (
+              <h3>No goals in this category</h3>
+            )}
+          </section>
+        )}
 
         {/* Go back button to reset category */}
         {selectedCategory && (
@@ -92,4 +88,3 @@ function Categories() {
 }
 
 export default Categories
-
