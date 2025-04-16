@@ -330,9 +330,11 @@ h1, h2, h3 {
 .popup-left-column {
   display: flex;
   flex-direction: column;
-  max-height: calc(80vh - 90px); /* Account for header and padding */
+  max-height: calc(80vh - 90px);
   position: relative;
   padding-right: 15px;
+  /* Add padding-bottom to make room for the fixed download button */
+  padding-bottom: 60px; /* Reduced from previous value */
 }
 
 /* Image container fixed at top */
@@ -349,7 +351,8 @@ h1, h2, h3 {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-bottom: 80px; /* Space for the download button */
+  /* Reduce margin-bottom to keep button in view */
+  margin-bottom: 20px; /* Reduced from 80px */
   scrollbar-width: none;
 }
 
@@ -366,11 +369,11 @@ h1, h2, h3 {
   position: absolute;
   bottom: 0;
   left: 0;
-  right: 15px; /* Match the padding-right of popup-left-column */
+  right: 15px;
   display: flex;
   justify-content: center;
   background-color: #ffffff;
-  padding: 15px 0;
+  padding: 10px 0; /* Reduced padding */
   border-top: 1px solid #edf2f7;
 }
 
@@ -400,15 +403,13 @@ h1, h2, h3 {
   }
   
   .popup-left-column {
-    max-height: none;
-    overflow-y: visible;
-    padding-right: 0;
-    padding-bottom: 80px; /* Space for download button */
+    padding-bottom: 60px; /* Consistent with desktop value */
   }
   
   .popup-description-container {
     margin-bottom: 0;
   }
+
   
   .download-button-container {
     right: 0;
