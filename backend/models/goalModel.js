@@ -15,6 +15,10 @@ const goalSchema = mongoose.Schema(
         type: String,
         require: [true, 'Please add a description']
     },
+    catergory: {
+        type: String,
+        enum: ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs']
+    },
     imgURL: {
         type: String,
         require: [true, 'Please add a text value']

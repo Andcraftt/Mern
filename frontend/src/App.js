@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Myprofile from './pages/Myprofile';
 import Settings from './pages/Settings';
+import Categories from './pages/Categories';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path='/register' element={<Register/>}/>
             <Route path='/myprofile' element={<Myprofile/>}/>
             <Route path='/settings' element={<Settings/>}/>
+            <Route path='/categories' element={<Categories/>}/>
           </Routes>
         </div>
       </Router>

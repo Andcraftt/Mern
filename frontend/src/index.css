@@ -734,3 +734,34 @@ button {
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
+
+/*Ventana de categorias*/
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: 2rem 0;
+  justify-content: center;
+}
+
+.category-button {
+  padding: 2rem;
+  min-width: 150px;
+  font-size: 1.2rem;
+  border: 2px solid #ccc;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-button:hover {
+  background-color: #eee;
+}
+
+.category-button.active {
+  background-color: #333;
+  color: white;
+  border-color: #333;
+}
