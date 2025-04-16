@@ -738,33 +738,64 @@ button {
 /*Ventana de categorias*/
 
 .category-filters {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
   gap: 1rem;
   margin: 2rem 0;
   justify-content: center;
+  text-align: center;
 }
 
 .category-button {
-  padding: 2rem;
-  min-width: 150px;
-  font-size: 1.2rem;
+  padding: 3rem;
+  font-size: 1.5rem;
   border: 2px solid #ccc;
-  background-color: #f9f9f9;
+  background-color: rgba(255, 0, 0, 0.2); 
   border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 200px;
+  color: #333;
+  font-weight: bold;
 }
 
 .category-button:hover {
-  background-color: #eee;
+  background-color: rgba(255, 0, 0, 0.3); 
+  transform: scale(1.05); 
 }
 
 .category-button.active {
-  background-color: #333;
+  background-color: rgba(51, 51, 51, 0.8); 
   color: white;
   border-color: #333;
 }
+
+/* Specific colors for each category */
+.category-button:nth-child(1) {
+  background-color: rgba(255, 0, 0, 0.3); /* Red */
+}
+
+.category-button:nth-child(2) {
+  background-color: rgba(0, 255, 0, 0.3); /* Green */
+}
+
+.category-button:nth-child(3) {
+  background-color: rgba(0, 0, 255, 0.3); /* Blue */
+}
+
+.category-button:nth-child(4) {
+  background-color: rgba(255, 165, 0, 0.3); /* Orange */
+}
+
+.category-button:nth-child(5) {
+  background-color: rgba(255, 255, 0, 0.3); /* Yellow */
+}
+
+.category-button:nth-child(6) {
+  background-color: rgba(0, 255, 255, 0.3); /* Cyan */
+}
+
+
 /* File Preview Styles */
 .file-preview {
   margin: 15px 0;
