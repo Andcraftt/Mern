@@ -13,6 +13,15 @@ function GoalItem({ goal }) {
   const [newComment, setNewComment] = useState('')
   const [showComments, setShowComments] = useState(false)
 
+  // Parse file metadata if available
+  const fileMetadata = goal.fileMetadata ? JSON.parse(goal.fileMetadata) : null;
+  const fileType = goal.fileType || '';
+  
+  const isImage = fileType.startsWith('image/');
+  const isVideo = fileType.startsWith('video/');
+  const isAudio = fileType.startsWith('audio/');
+  const isOtherFile = !isImage && !isVideo && !isAudio && goal.imgURL;
+
   const isOwner = user && goal.user === user._id
 
   // Load comments when the goal is opened
@@ -26,10 +35,10 @@ function GoalItem({ goal }) {
   const openGoal = () => setIsOpen(true)
   const closeGoal = () => setIsOpen(false)
 
-  const downloadImage = () => {
+  const downloadFile = () => {
     const link = document.createElement('a')
     link.href = goal.imgURL
-    link.download = 'goal-image'
+    link.download = fileMetadata ? fileMetadata.name : 'download'
     link.click()
   }
 
@@ -51,12 +60,90 @@ function GoalItem({ goal }) {
     }
   }
 
+  // Function to render proper preview in card view
+  const renderFilePreview = () => {
+    if (isImage) {
+      return <img src={goal.imgURL} alt="Goal" className="goal-image" />;
+    } else if (isVideo) {
+      return (
+        <div className="video-preview-container">
+          <video className="goal-video-thumbnail" controls>
+            <source src={goal.imgURL} type={fileType} />
+            Your browser does not support video playback.
+          </video>
+        </div>
+      );
+    } else if (isAudio) {
+      return (
+        <div className="audio-preview-container">
+          <audio controls className="goal-audio">
+            <source src={goal.imgURL} type={fileType} />
+            Your browser does not support audio playback.
+          </audio>
+        </div>
+      );
+    } else if (isOtherFile) {
+      return (
+        <div className="file-preview-container">
+          <div className="file-icon">
+            {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
+          </div>
+          <div className="file-name">{fileMetadata?.name || 'Download file'}</div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Function to render detailed file view in popup
+  const renderDetailedFileView = () => {
+    if (isImage) {
+      return <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />;
+    } else if (isVideo) {
+      return (
+        <div className="video-container">
+          <video className="goal-popup-video" controls>
+            <source src={goal.imgURL} type={fileType} />
+            Your browser does not support video playback.
+          </video>
+        </div>
+      );
+    } else if (isAudio) {
+      return (
+        <div className="audio-container">
+          <audio className="goal-popup-audio" controls>
+            <source src={goal.imgURL} type={fileType} />
+            Your browser does not support audio playback.
+          </audio>
+          <div className="audio-visualization">
+            {/* Audio waveform placeholder or visualization could go here */}
+            <div className="audio-placeholder"></div>
+          </div>
+        </div>
+      );
+    } else if (isOtherFile) {
+      return (
+        <div className="file-container">
+          <div className="file-icon-large">
+            {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
+          </div>
+          <div className="file-info">
+            <p className="file-name">{fileMetadata?.name || 'File'}</p>
+            <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
+            <p className="file-type">{fileType || 'Unknown type'}</p>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       <div className='goal' onClick={openGoal}>
         <h2>{goal.text}</h2>
 
-        {goal.imgURL && <img src={goal.imgURL} alt="Goal" className="goal-image" />}
+        {goal.imgURL && renderFilePreview()}
 
         {isOwner && (
           <button 
@@ -82,8 +169,8 @@ function GoalItem({ goal }) {
             {/* Left column (main content) with scrollable description */}
             <div className="popup-left-column">
               {goal.imgURL && (
-                <div className="popup-image-container">
-                  <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />
+                <div className="popup-file-container">
+                  {renderDetailedFileView()}
                 </div>
               )}
               
@@ -97,8 +184,8 @@ function GoalItem({ goal }) {
               {/* Fixed download button at bottom */}
               {goal.imgURL && (
                 <div className="download-button-container">
-                  <button onClick={downloadImage} className="download-button">
-                    <IoIosDownload />&nbsp;Download
+                  <button onClick={downloadFile} className="download-button">
+                    <IoIosDownload />&nbsp;Download {fileMetadata?.name ? fileMetadata.name.split('.').pop().toUpperCase() : 'File'}
                   </button>
                 </div>
               )}

@@ -5,11 +5,13 @@ import { createGoal } from '../features/goals/goalSlice';
 function GoalForm() {
   const [text, setText] = useState('');
   const [description, setDescription] = useState(''); 
-  const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [preview, setPreview] = useState(null);
-  const [base64Image, setBase64Image] = useState('');
+  const [base64File, setBase64File] = useState('');
+  const [fileType, setFileType] = useState('');
+  const [fileMetadata, setFileMetadata] = useState({});
 
   const dispatch = useDispatch();
 
@@ -20,67 +22,122 @@ function GoalForm() {
     if (selectedFile) {
       // Verify file size (max 25MB)
       if (selectedFile.size > 25 * 1024 * 1024) {
-        setError('El tamaño del archivo debe ser menor a 25MB');
+        setError('File size must be less than 25MB');
         return;
       }
       
-      setImage(selectedFile);
+      setFile(selectedFile);
+      setFileType(selectedFile.type);
       
-      // Create preview and convert to Base64
-      const reader = new FileReader();
-      reader.onload = () => {
-        setPreview(reader.result);
-        setBase64Image(reader.result); // Store the Base64 representation
+      // Create file metadata
+      const metadata = {
+        name: selectedFile.name,
+        type: selectedFile.type,
+        size: selectedFile.size,
+        lastModified: selectedFile.lastModified
       };
+      setFileMetadata(metadata);
+      
+      // Create preview based on file type
+      const reader = new FileReader();
+      
+      reader.onload = () => {
+        setBase64File(reader.result); // Store the Base64 representation
+        
+        // Handle preview based on file type
+        if (selectedFile.type.startsWith('image/')) {
+          // Image preview
+          setPreview({
+            type: 'image',
+            src: reader.result
+          });
+        } else if (selectedFile.type.startsWith('video/')) {
+          // Video preview - create a video element to extract thumbnail
+          const video = document.createElement('video');
+          video.preload = 'metadata';
+          video.onloadedmetadata = function() {
+            // Set video at 1 second or middle if shorter
+            video.currentTime = Math.min(1, video.duration / 2);
+            video.onseeked = function() {
+              // Create canvas to capture frame
+              const canvas = document.createElement('canvas');
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              const ctx = canvas.getContext('2d');
+              ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+              const thumbnailDataUrl = canvas.toDataURL('image/jpeg');
+              setPreview({
+                type: 'video',
+                src: reader.result,
+                thumbnail: thumbnailDataUrl
+              });
+            };
+          };
+          video.src = reader.result;
+        } else {
+          // Generic file preview
+          setPreview({
+            type: 'file',
+            name: selectedFile.name,
+            extension: selectedFile.name.split('.').pop().toUpperCase()
+          });
+        }
+      };
+      
       reader.readAsDataURL(selectedFile);
     } else {
-      setImage(null);
+      setFile(null);
       setPreview(null);
-      setBase64Image('');
+      setBase64File('');
+      setFileType('');
+      setFileMetadata({});
     }
   };
 
-  // Form submission handler - now using Base64 for image storage
+  // Form submission handler - now using Base64 for all file types
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
     // Validate required fields
     if (!text.trim() || !description.trim()) {
-      setError('Por favor, ingresa una descripción y texto para el objetivo');
+      setError('Please enter a title and description for your post');
       return;
     }
     
     try {
       setLoading(true);
       
-      // Create goal with text, description and Base64 image string
-      // No need for a separate upload process now
+      // Create goal with text, description, Base64 file and metadata
       await dispatch(createGoal({ 
         text, 
         description,
-        imgURL: base64Image || '' // Store the Base64 image string directly
+        imgURL: base64File || '', // Keep the same field name for compatibility
+        fileType: fileType,
+        fileMetadata: JSON.stringify(fileMetadata)
       })).unwrap();
       
       // Reset form after success
       setText('');
       setDescription('');
-      setImage(null);
+      setFile(null);
       setPreview(null);
-      setBase64Image('');
+      setBase64File('');
+      setFileType('');
+      setFileMetadata({});
       
     } catch (err) {
-      console.error('Error al crear el objetivo:', err);
+      console.error('Error creating post:', err);
       
       if (err.response) {
-        console.error('Estado de la respuesta:', err.response.status);
-        console.error('Datos de la respuesta:', err.response.data);
+        console.error('Response status:', err.response.status);
+        console.error('Response data:', err.response.data);
       }
       
       setError(
         err.response?.data?.message || 
         err.message ||
-        'No se pudo crear el objetivo. Intenta nuevamente.'
+        'Could not create the post. Please try again.'
       );
     } finally {
       setLoading(false);
@@ -118,24 +175,41 @@ function GoalForm() {
         </div>
 
         <div className='form-group'>
-          <label htmlFor='image'>Select an image</label>
+          <label htmlFor='file'>Select a file (image, video, etc.)</label>
           <input
             type='file'
-            name='image'
-            id='image'
+            name='file'
+            id='file'
             onChange={onFileChange}
-            accept="image/*"
             disabled={loading}
           />
         </div>
 
         {preview && (
-          <div className='image-preview'>
-            <img 
-              src={preview} 
-              alt="Vista previa" 
-              style={{ maxWidth: '100%', maxHeight: '200px' }} 
-            />
+          <div className='file-preview'>
+            {preview.type === 'image' && (
+              <img 
+                src={preview.src} 
+                alt="Preview" 
+                style={{ maxWidth: '100%', maxHeight: '200px' }} 
+              />
+            )}
+            {preview.type === 'video' && (
+              <div className="video-preview">
+                <img 
+                  src={preview.thumbnail} 
+                  alt="Video thumbnail" 
+                  style={{ maxWidth: '100%', maxHeight: '200px' }}
+                />
+                <div className="video-indicator">Video</div>
+              </div>
+            )}
+            {preview.type === 'file' && (
+              <div className="generic-file-preview">
+                <div className="file-icon">{preview.extension}</div>
+                <div className="file-name">{preview.name}</div>
+              </div>
+            )}
           </div>
         )}
 
