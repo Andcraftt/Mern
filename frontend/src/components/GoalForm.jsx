@@ -13,14 +13,14 @@ function GoalForm() {
 
   const dispatch = useDispatch();
 
-  // Convert image to Base64 when a file is selected
+  // Convert file to Base64 when a file is selected
   const onFileChange = (e) => {
     const selectedFile = e.target.files[0];
     
     if (selectedFile) {
-      // Verify file size (max 5MB)
-      if (selectedFile.size > 5 * 1024 * 1024) {
-        setError('El tamaño de la imagen debe ser menor a 5MB');
+      // Verify file size (max 25MB)
+      if (selectedFile.size > 25 * 1024 * 1024) {
+        setError('El tamaño del archivo debe ser menor a 25MB');
         return;
       }
       
