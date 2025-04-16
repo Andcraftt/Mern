@@ -63,7 +63,8 @@ h1, h2, h3 {
 .logo img {
   max-height: 50px;
   width: auto;
-  scale: 4;
+  scale: 0.7;
+  margin-left: -25px;
 }
 
 .header-nav {
