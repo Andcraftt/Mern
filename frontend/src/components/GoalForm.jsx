@@ -12,6 +12,8 @@ function GoalForm() {
   const [base64File, setBase64File] = useState('');
   const [fileType, setFileType] = useState('');
   const [fileMetadata, setFileMetadata] = useState({});
+  const [category, setCategory] = useState('');
+  const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'];
 
   const dispatch = useDispatch();
 
@@ -99,20 +101,21 @@ function GoalForm() {
     e.preventDefault();
     setError('');
     
-    // Validate required fields
-    if (!text.trim() || !description.trim()) {
-      setError('Please enter a title and description for your post');
+    //Validate all stuff
+    if (!text.trim() || !description.trim() || !category) {
+      setError('Please enter a title, description, and select a category');
       return;
     }
     
     try {
       setLoading(true);
       
-      // Create goal with text, description, Base64 file and metadata
+      // Create goal with text, description, category, Base64 file and metadata
       await dispatch(createGoal({ 
         text, 
         description,
-        imgURL: base64File || '', // Keep the same field name for compatibility
+        category, 
+        imgURL: base64File || '',
         fileType: fileType,
         fileMetadata: JSON.stringify(fileMetadata)
       })).unwrap();
@@ -173,6 +176,22 @@ function GoalForm() {
             disabled={loading}
           />
         </div>
+
+        <div className='form-group'>
+          <label htmlFor='category'>Category</label>
+          <select
+            id='category'
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            disabled={loading}
+          >
+            <option value=''>-- Select a category --</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
+            ))}
+          </select>
+        </div>
+
 
         <div className='form-group'>
           <label htmlFor='file'>Select a file (image, video, etc.)</label>
