@@ -781,32 +781,32 @@ button {
 
 /* Specific backgrounds for each category */
 .category-button:nth-child(1) {
-  background-image: url('/Videogames.jpg');
+  background-image: url('/public/Videogames.jpg');
   background-color: rgba(255, 0, 0, 0.3); /* Red */
 }
 
 .category-button:nth-child(2) {
-  background-image: url('/Art.jpg');
+  background-image: url('/public/Art.jpg');
   background-color: rgba(0, 255, 0, 0.3); /* Green */
 }
 
 .category-button:nth-child(3) {
-  background-image: url('/Food.jpg');
+  background-image: url('/public/Food.jpg');
   background-color: rgba(0, 0, 255, 0.3); /* Blue */
 }
 
 .category-button:nth-child(4) {
-  background-image: url('/Code.jpg');
+  background-image: url('/public/Code.jpg');
   background-color: rgba(255, 165, 0, 0.3); /* Orange */
 }
 
 .category-button:nth-child(5) {
-  background-image: url('/Health.jpg');
+  background-image: url('/public/Health.jpg');
   background-color: rgba(255, 255, 0, 0.3); /* Yellow */
 }
 
 .category-button:nth-child(6) {
-  background-image: url('/WebDesign.jpg');
+  background-image: url('/public/WebDesign.jpg');
   background-color: rgba(0, 255, 255, 0.3); /* Cyan */
 }
 
