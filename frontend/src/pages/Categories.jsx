@@ -51,12 +51,15 @@ function Categories() {
           <section className='category-filters'>
             {categories.map((category) => (
               <button
-                key={category}
-                onClick={() => setSelectedCategory(category)} // Set the selected category
-                className='category-button'
-              >
-                {category}
-              </button>
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className='category-button'
+              style={{
+                backgroundImage: `url(${process.env.PUBLIC_URL}/Videogames.jpg)`
+              }}
+            >
+              {category}
+            </button>
             ))}
           </section>
         )}
