@@ -53,7 +53,7 @@ function Categories() {
               <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className='category-button'change
+              className='category-button'
             >
               {category}
             </button>
