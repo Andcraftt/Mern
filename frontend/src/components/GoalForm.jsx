@@ -13,7 +13,7 @@ function GoalForm() {
   const [fileType, setFileType] = useState('');
   const [fileMetadata, setFileMetadata] = useState({});
   const [category, setCategory] = useState('');
-const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'];
+  const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'];
 
   const dispatch = useDispatch();
 
