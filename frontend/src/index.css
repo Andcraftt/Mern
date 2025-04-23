@@ -328,8 +328,13 @@ h1, h2, h3 {
 
 /* Restructure the left column layout */
 .popup-left-column {
-  padding-bottom: 70px; /* Increased to give more room for the download button */
+  display: flex;
+  flex-direction: column;
+  max-height: calc(80vh - 90px);
   position: relative;
+  padding-right: 15px;
+  /* Add padding-bottom to make room for the fixed download button */
+  padding-bottom: 60px; /* Reduced from previous value */
 }
 
 /* Image container fixed at top */
@@ -343,10 +348,12 @@ h1, h2, h3 {
 
 /* Make only the description scrollable */
 .popup-description-container {
-  max-height: calc(100% - 100px); /* Reduced to make space for download button */
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
-  margin-bottom: 10px;
+  /* Reduce margin-bottom to keep button in view */
+  margin-bottom: 20px; /* Reduced from 80px */
+  scrollbar-width: none;
 }
 
 .popup-description {
@@ -360,19 +367,23 @@ h1, h2, h3 {
 /* Fix download button at the bottom */
 .download-button-container {
   position: absolute;
-  bottom: 10px; /* Move up from the very bottom */
+  bottom: 0;
   left: 0;
   right: 15px;
-  padding: 10px 0;
+  display: flex;
+  justify-content: center;
   background-color: #ffffff;
+  padding: 10px 0; /* Reduced padding */
   border-top: 1px solid #edf2f7;
-  z-index: 5; /* Ensure it stays above content */
 }
 
 /* Ensure right column (comments) is independently scrollable */
 .popup-right-column {
-  max-height: calc(80vh - 90px);
+  border-left: 1px solid #edf2f7;
+  padding-left: 25px;
   overflow-y: auto;
+  max-height: calc(80vh - 90px); /* Match left column height */
+  scrollbar-width: none;
 }
 
 /* Comments section layout adjustment */
@@ -387,22 +398,29 @@ h1, h2, h3 {
 @media (max-width: 768px) {
   .goal-inner-content {
     grid-template-columns: 1fr;
-    overflow-y: auto;
-    max-height: 90vh;
+    max-height: 85%;
+    gap: 15px;
   }
   
   .popup-left-column {
-    padding-bottom: 80px; /* Extra space for mobile */
-    max-height: none; /* Remove fixed height constraint */
+    padding-bottom: 60px; /* Consistent with desktop value */
+  }
+  
+  .popup-description-container {
+    margin-bottom: 0;
+  }
+
+  
+  .download-button-container {
+    right: 0;
   }
   
   .popup-right-column {
+    border-left: none;
+    border-top: 1px solid #edf2f7;
+    padding-left: 0;
+    padding-top: 20px;
     max-height: 40vh;
-  }
-  
-  .download-button-container {
-    position: sticky;
-    bottom: 0;
   }
 }
 
@@ -786,23 +804,20 @@ button {
 
 /* Video preview styles */
 .video-preview-container {
+  position: relative;
   width: 100%;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  margin-top: 15px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: auto;
+  max-height: 200px;
   overflow: hidden;
+  background-color: #000;
+  border-radius: 5px;
 }
 
 .goal-video-thumbnail {
   width: 100%;
   height: auto;
-  max-height: 220px; /* Match the height of goal-image */
-  object-fit: contain; /* Changed from cover to contain to prevent cutting */
-  border-radius: 8px;
-  margin-top: 15px;
+  max-height: 200px;
+  object-fit: contain;
 }
 
 .video-indicator {
@@ -868,8 +883,7 @@ button {
 .goal-popup-video {
   width: 100%;
   max-height: 400px;
-  object-fit: contain; /* Changed to contain to prevent cutting */
-  margin: 0; /* Remove margin-top that was pushing it down */
+  margin-top: 40px;
 }
 
 .audio-container {
@@ -944,13 +958,11 @@ button {
 /* Video preview container in popup */
 .video-container {
   width: 100%;
-  background-color: #f5f5f5;
-  border-radius: 8px;
+  max-height: 400px;
+  background-color: #000;
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  margin-bottom: 20px;
+  justify-content: center;
 }
 
 /* Generic file preview styles */
