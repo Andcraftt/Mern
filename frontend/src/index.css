@@ -883,6 +883,8 @@ button {
 .goal-popup-video {
   width: 100%;
   max-height: 400px;
+  margin-top: 40px;
+  z-index: 99999;
 }
 
 .audio-container {
