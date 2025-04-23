@@ -26,6 +26,11 @@ const goalSchema = mongoose.Schema(
     fileMetadata: {
         type: String,  // Store as JSON string
         default: '{}'
+    },
+    category: {
+        type: String,
+        required: [true, 'Please select a category'],
+        enum: ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'], // Asegura que sea una categoría válida
     }
     }, 
 {

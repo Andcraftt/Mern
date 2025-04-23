@@ -31,6 +31,7 @@ const setGoal = asyncHandler(async (req,res) =>{
         imgURL: req.body.imgURL,
         fileType: req.body.fileType || 'image/jpeg', // Default to image for backward compatibility
         fileMetadata: req.body.fileMetadata || '{}',
+        category: req.body.category,
         user: req.user.id,
     })
 
