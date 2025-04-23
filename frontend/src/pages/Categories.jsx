@@ -53,10 +53,7 @@ function Categories() {
               <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className='category-button'
-              style={{
-                backgroundImage: `url(${process.env.PUBLIC_URL}/Videogames.jpg)`
-              }}
+              className='category-button'change
             >
               {category}
             </button>
