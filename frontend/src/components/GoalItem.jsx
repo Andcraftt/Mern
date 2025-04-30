@@ -88,7 +88,6 @@ function GoalItem({ goal }) {
           <div className="file-icon">
             {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
           </div>
-          <div className="file-name">{fileMetadata?.name || 'Download file'}</div>
         </div>
       );
     }
