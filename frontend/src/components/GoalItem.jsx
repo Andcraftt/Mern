@@ -177,11 +177,9 @@ function GoalItem({ goal }) {
               />
             </div>
           )}
-          <div className="file-icon-large">3D</div>
           <div className="file-info">
             <p className="file-name">{fileMetadata?.name || '3D Model'}</p>
             <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
-            <p className="file-type">3D Model (GLB)</p>
           </div>
         </div>
       );
