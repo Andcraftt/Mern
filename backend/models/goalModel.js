@@ -19,6 +19,10 @@ const goalSchema = mongoose.Schema(
         type: String,
         require: [true, 'Please add a file']
     },
+    imgURLpreview: {
+        type: String,
+        require: [false]
+    },
     fileType: {
         type: String,
         default: 'image/jpeg'  // Default for backward compatibility
