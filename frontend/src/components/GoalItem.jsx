@@ -83,7 +83,7 @@ function GoalItem({ goal }) {
   const hasValidPreviewImage = () => {
     return goal.imgURLpreview && 
            typeof goal.imgURLpreview === 'string' && 
-           goal.imgURLpreview.startsWith('data:image/');
+           goal.imgURLpreview.startsWith('data:') && goal.imgURLpreview.includes('base64');
   }
 
   // Function to render proper preview in card view
