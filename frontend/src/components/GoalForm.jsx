@@ -13,6 +13,10 @@ function GoalForm() {
   const [fileType, setFileType] = useState('');
   const [fileMetadata, setFileMetadata] = useState({});
   const [category, setCategory] = useState('');
+  const [showImageUrlInput, setShowImageUrlInput] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+  const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
+
   const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'];
 
   const dispatch = useDispatch();
@@ -20,18 +24,19 @@ function GoalForm() {
   // Convert file to Base64 when a file is selected
   const onFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    
+  
+    setImageUrl(''); // resetear por si acaso
+    setShowImageUrlInput(false);
+  
     if (selectedFile) {
-      // Verify file size (max 25MB)
       if (selectedFile.size > 25 * 1024 * 1024) {
         setError('File size must be less than 25MB');
         return;
       }
-      
+  
       setFile(selectedFile);
       setFileType(selectedFile.type);
-      
-      // Create file metadata
+  
       const metadata = {
         name: selectedFile.name,
         type: selectedFile.type,
@@ -39,29 +44,27 @@ function GoalForm() {
         lastModified: selectedFile.lastModified
       };
       setFileMetadata(metadata);
-      
-      // Create preview based on file type
+  
       const reader = new FileReader();
-      
+  
       reader.onload = () => {
-        setBase64File(reader.result); // Store the Base64 representation
-        
-        // Handle preview based on file type
-        if (selectedFile.type.startsWith('image/')) {
-          // Image preview
+        setBase64File(reader.result);
+  
+        const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        const isImage = validImageTypes.includes(selectedFile.type);
+  
+        if (isImage) {
           setPreview({
             type: 'image',
             src: reader.result
           });
+          setShowImageUrlInput(false);
         } else if (selectedFile.type.startsWith('video/')) {
-          // Video preview - create a video element to extract thumbnail
           const video = document.createElement('video');
           video.preload = 'metadata';
-          video.onloadedmetadata = function() {
-            // Set video at 1 second or middle if shorter
+          video.onloadedmetadata = function () {
             video.currentTime = Math.min(1, video.duration / 2);
-            video.onseeked = function() {
-              // Create canvas to capture frame
+            video.onseeked = function () {
               const canvas = document.createElement('canvas');
               canvas.width = video.videoWidth;
               canvas.height = video.videoHeight;
@@ -76,16 +79,17 @@ function GoalForm() {
             };
           };
           video.src = reader.result;
+          setShowImageUrlInput(true);
         } else {
-          // Generic file preview
           setPreview({
             type: 'file',
             name: selectedFile.name,
             extension: selectedFile.name.split('.').pop().toUpperCase()
           });
+          setShowImageUrlInput(true);
         }
       };
-      
+  
       reader.readAsDataURL(selectedFile);
     } else {
       setFile(null);
@@ -95,8 +99,9 @@ function GoalForm() {
       setFileMetadata({});
     }
   };
+  
 
-  // Form submission handler - now using Base64 for all file types
+  // Form submission handler
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -194,43 +199,62 @@ function GoalForm() {
 
 
         <div className='form-group'>
-          <label htmlFor='file'>Select a file (image, video, etc.)</label>
-          <input
-            type='file'
-            name='file'
-            id='file'
-            onChange={onFileChange}
-            disabled={loading}
-          />
+        <label htmlFor='file'>Select a file (image, video, etc.)</label>
+        <input
+          type='file'
+          name='file'
+          id='file'
+          onChange={onFileChange}
+          disabled={loading}
+        />
         </div>
 
-        {preview && (
-          <div className='file-preview'>
-            {preview.type === 'image' && (
-              <img 
-                src={preview.src} 
-                alt="Preview" 
-                style={{ maxWidth: '100%', maxHeight: '200px' }} 
+        {showImageUrlInput && (
+          <div className='form-group'>
+            <label htmlFor='imageUrl'>Image URL (optional)</label>
+              <input
+                type='text'
+                id='imageUrl'
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder='Enter image URL for preview'
+                disabled={loading}
               />
-            )}
-            {preview.type === 'video' && (
-              <div className="video-preview">
-                <img 
-                  src={preview.thumbnail} 
-                  alt="Video thumbnail" 
-                  style={{ maxWidth: '100%', maxHeight: '200px' }}
-                />
-                <div className="video-indicator">Video</div>
-              </div>
-            )}
-            {preview.type === 'file' && (
-              <div className="generic-file-preview">
-                <div className="file-icon">{preview.extension}</div>
-                <div className="file-name">{preview.name}</div>
-              </div>
-            )}
+          </div>
+      )}
+
+      <div className='file-preview'>
+        {preview?.type === 'image' && (
+          <img 
+            src={preview.src} 
+            alt="Preview" 
+            style={{ maxWidth: '100%', maxHeight: '200px' }} 
+          />
+        )}
+        {preview?.type === 'video' && (
+          <div className="video-preview">
+            <img 
+              src={preview.thumbnail} 
+              alt="Video thumbnail" 
+              style={{ maxWidth: '100%', maxHeight: '200px' }}
+            />
+            <div className="video-indicator">Video</div>
           </div>
         )}
+        {preview?.type === 'file' && (
+          <div className="generic-file-preview">
+            <div className="file-icon">{preview.extension}</div>
+            <div className="file-name">{preview.name}</div>
+          </div>
+        )}
+        {showImageUrlInput && (
+          <img
+            src={imageUrl || DEFAULT_IMAGE}
+            alt="Alternative preview"
+            style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+          />
+        )}
+      </div>
 
         <div className='form-group'>
           <button 
