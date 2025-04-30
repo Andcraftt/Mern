@@ -21,12 +21,26 @@ function GoalItem({ goal }) {
   const fileMetadata = goal.fileMetadata ? JSON.parse(goal.fileMetadata) : null;
   const fileType = goal.fileType || '';
   
+  // Improved file type detection
   const isImage = fileType.startsWith('image/');
   const isVideo = fileType.startsWith('video/');
   const isAudio = fileType.startsWith('audio/');
+  const is3DModel = fileType === 'model/gltf-binary' || fileType.includes('glb') || 
+                   (fileMetadata?.name && fileMetadata.name.toLowerCase().endsWith('.glb'));
   const isOtherFile = !isImage && !isVideo && !isAudio && goal.imgURL;
 
   const isOwner = user && goal.user === user._id
+
+  // Add this debug logging to help troubleshoot
+  useEffect(() => {
+    if (goal.imgURLpreview) {
+      console.log('Preview image URL exists:', !!goal.imgURLpreview);
+      console.log('Preview image validation result:', hasValidPreviewImage());
+      console.log('Preview image type:', typeof goal.imgURLpreview);
+      console.log('File type:', fileType);
+      console.log('Is 3D model:', is3DModel);
+    }
+  }, [goal.imgURLpreview, fileType]);
 
   // Load comments when the goal is opened
   useEffect(() => {
@@ -79,15 +93,40 @@ function GoalItem({ goal }) {
     setPreviewImageError(true);
   }
 
-  // Check if imgURLpreview exists and is valid
+  // Improved preview image validation
   const hasValidPreviewImage = () => {
     return goal.imgURLpreview && 
            typeof goal.imgURLpreview === 'string' && 
-           goal.imgURLpreview.startsWith('data:') && goal.imgURLpreview.includes('base64');
+           (goal.imgURLpreview.startsWith('data:') || goal.imgURLpreview.startsWith('http'));
   }
 
   // Function to render proper preview in card view
   const renderFilePreview = () => {
+    // Special handling for 3D models and other non-media files
+    if (is3DModel || isOtherFile) {
+      // If we have a preview image, use that
+      if (hasValidPreviewImage()) {
+        return (
+          <img 
+            src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
+            alt="File preview" 
+            className="goal-image" 
+            onError={handlePreviewImageError}
+          />
+        );
+      } else {
+        // Otherwise use the file icon
+        return (
+          <div className="file-preview-container">
+            <div className="file-icon">
+              {is3DModel ? '3D' : (fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE')}
+            </div>
+          </div>
+        );
+      }
+    }
+    
+    // Standard media handling
     if (isImage) {
       return (
         <img 
@@ -115,32 +154,39 @@ function GoalItem({ goal }) {
           </audio>
         </div>
       );
-    } else if (isOtherFile) {
-      // Use the preview image if available, otherwise show file icon
-      if (hasValidPreviewImage()) {
-        return (
-          <img 
-            src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
-            alt="File preview" 
-            className="goal-image" 
-            onError={handlePreviewImageError}
-          />
-        );
-      } else {
-        return (
-          <div className="file-preview-container">
-            <div className="file-icon">
-              {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
-            </div>
-          </div>
-        );
-      }
     }
+    
     return null;
   };
 
   // Function to render detailed file view in popup
   const renderDetailedFileView = () => {
+    // Special handling for 3D models
+    if (is3DModel) {
+      return (
+        <div className="file-container">
+          {/* Show preview image above the file info if available */}
+          {hasValidPreviewImage() && (
+            <div className="file-preview-image">
+              <img 
+                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
+                alt="3D model preview" 
+                className="goal-popup-preview-image" 
+                style={{ maxWidth: '100%', marginBottom: '15px' }}
+                onError={handlePreviewImageError}
+              />
+            </div>
+          )}
+          <div className="file-icon-large">3D</div>
+          <div className="file-info">
+            <p className="file-name">{fileMetadata?.name || '3D Model'}</p>
+            <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
+            <p className="file-type">3D Model (GLB)</p>
+          </div>
+        </div>
+      );
+    }
+    
     if (isImage) {
       return (
         <img 
