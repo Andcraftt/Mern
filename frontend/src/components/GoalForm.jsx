@@ -13,8 +13,9 @@ function GoalForm() {
   const [fileType, setFileType] = useState('');
   const [fileMetadata, setFileMetadata] = useState({});
   const [category, setCategory] = useState('');
-  const [showImageUrlInput, setShowImageUrlInput] = useState(false);
-  const [imageUrl, setImageUrl] = useState('');
+  const [showImageUpload, setShowImageUpload] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [previewImageBase64, setPreviewImageBase64] = useState('');
   const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
 
   const categories = ['Videgames', 'Art', 'Food', 'Code', 'Health', 'Web Designs'];
@@ -25,8 +26,10 @@ function GoalForm() {
   const onFileChange = (e) => {
     const selectedFile = e.target.files[0];
   
-    setImageUrl(''); // resetear por si acaso
-    setShowImageUrlInput(false);
+    // Reset preview image states
+    setPreviewImage(null);
+    setPreviewImageBase64('');
+    setShowImageUpload(false);
   
     if (selectedFile) {
       if (selectedFile.size > 25 * 1024 * 1024) {
@@ -58,7 +61,7 @@ function GoalForm() {
             type: 'image',
             src: reader.result
           });
-          setShowImageUrlInput(false);
+          setShowImageUpload(false);
         } else if (selectedFile.type.startsWith('video/')) {
           const video = document.createElement('video');
           video.preload = 'metadata';
@@ -79,14 +82,14 @@ function GoalForm() {
             };
           };
           video.src = reader.result;
-          setShowImageUrlInput(true);
+          setShowImageUpload(true);
         } else {
           setPreview({
             type: 'file',
             name: selectedFile.name,
             extension: selectedFile.name.split('.').pop().toUpperCase()
           });
-          setShowImageUrlInput(true);
+          setShowImageUpload(true);
         }
       };
   
@@ -100,13 +103,42 @@ function GoalForm() {
     }
   };
   
+  // Handle preview image upload
+  const onPreviewImageChange = (e) => {
+    const selectedImage = e.target.files[0];
+    
+    if (selectedImage) {
+      const validImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+      
+      if (!validImageTypes.includes(selectedImage.type)) {
+        setError('Preview file must be an image (JPEG, JPG, PNG, WebP)');
+        return;
+      }
+      
+      if (selectedImage.size > 10 * 1024 * 1024) {
+        setError('Preview image size must be less than 10MB');
+        return;
+      }
+      
+      setPreviewImage(selectedImage);
+      
+      const reader = new FileReader();
+      reader.onload = () => {
+        setPreviewImageBase64(reader.result);
+      };
+      reader.readAsDataURL(selectedImage);
+    } else {
+      setPreviewImage(null);
+      setPreviewImageBase64('');
+    }
+  };
 
   // Form submission handler
   const onSubmit = async (e) => {
     e.preventDefault();
     setError('');
     
-    //Validate all stuff
+    // Validate all stuff
     if (!text.trim() || !description.trim() || !category) {
       setError('Please enter a title, description, and select a category');
       return;
@@ -121,6 +153,7 @@ function GoalForm() {
         description,
         category, 
         imgURL: base64File || '',
+        imgURLpreview: previewImageBase64 || '',
         fileType: fileType,
         fileMetadata: JSON.stringify(fileMetadata)
       })).unwrap();
@@ -133,6 +166,8 @@ function GoalForm() {
       setBase64File('');
       setFileType('');
       setFileMetadata({});
+      setPreviewImage(null);
+      setPreviewImageBase64('');
       
     } catch (err) {
       console.error('Error creating post:', err);
@@ -199,62 +234,65 @@ function GoalForm() {
 
 
         <div className='form-group'>
-        <label htmlFor='file'>Select a file (image, video, etc.)</label>
-        <input
-          type='file'
-          name='file'
-          id='file'
-          onChange={onFileChange}
-          disabled={loading}
-        />
+          <label htmlFor='file'>Select a file (image, video, etc.)</label>
+          <input
+            type='file'
+            name='file'
+            id='file'
+            onChange={onFileChange}
+            disabled={loading}
+          />
         </div>
 
-        {showImageUrlInput && (
+        {showImageUpload && (
           <div className='form-group'>
-            <label htmlFor='imageUrl'>Image URL (optional)</label>
-              <input
-                type='text'
-                id='imageUrl'
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                placeholder='Enter image URL for preview'
-                disabled={loading}
-              />
-          </div>
-      )}
-
-      <div className='file-preview'>
-        {preview?.type === 'image' && (
-          <img 
-            src={preview.src} 
-            alt="Preview" 
-            style={{ maxWidth: '100%', maxHeight: '200px' }} 
-          />
-        )}
-        {preview?.type === 'video' && (
-          <div className="video-preview">
-            <img 
-              src={preview.thumbnail} 
-              alt="Video thumbnail" 
-              style={{ maxWidth: '100%', maxHeight: '200px' }}
+            <label htmlFor='previewImage'>Upload Preview Image (optional)</label>
+            <input
+              type='file'
+              id='previewImage'
+              accept='image/*'
+              onChange={onPreviewImageChange}
+              disabled={loading}
             />
-            <div className="video-indicator">Video</div>
+            <small>Add a preview image for your non-image file</small>
           </div>
         )}
-        {preview?.type === 'file' && (
-          <div className="generic-file-preview">
-            <div className="file-icon">{preview.extension}</div>
-            <div className="file-name">{preview.name}</div>
-          </div>
-        )}
-        {showImageUrlInput && (
-          <img
-            src={imageUrl || DEFAULT_IMAGE}
-            alt="Alternative preview"
-            style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
-          />
-        )}
-      </div>
+
+        <div className='file-preview'>
+          {preview?.type === 'image' && (
+            <img 
+              src={preview.src} 
+              alt="Preview" 
+              style={{ maxWidth: '100%', maxHeight: '200px' }} 
+            />
+          )}
+          {preview?.type === 'video' && (
+            <div className="video-preview">
+              <img 
+                src={preview.thumbnail} 
+                alt="Video thumbnail" 
+                style={{ maxWidth: '100%', maxHeight: '200px' }}
+              />
+              <div className="video-indicator">Video</div>
+            </div>
+          )}
+          {preview?.type === 'file' && (
+            <div className="generic-file-preview">
+              <div className="file-icon">{preview.extension}</div>
+              <div className="file-name">{preview.name}</div>
+            </div>
+          )}
+          {showImageUpload && (
+            <div className="preview-image-container">
+              <h4>Preview Image:</h4>
+              <img
+                src={previewImageBase64 || DEFAULT_IMAGE}
+                alt="Preview for non-image file"
+                style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }}
+              />
+            </div>
+          )}
+        </div>
 
         <div className='form-group'>
           <button 

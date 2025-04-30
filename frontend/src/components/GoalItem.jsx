@@ -83,13 +83,18 @@ function GoalItem({ goal }) {
         </div>
       );
     } else if (isOtherFile) {
-      return (
-        <div className="file-preview-container">
-          <div className="file-icon">
-            {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
+      // Use the preview image if available, otherwise show file icon
+      if (goal.imgURLpreview) {
+        return <img src={goal.imgURLpreview} alt="File preview" className="goal-image" />;
+      } else {
+        return (
+          <div className="file-preview-container">
+            <div className="file-icon">
+              {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
     }
     return null;
   };
@@ -123,6 +128,17 @@ function GoalItem({ goal }) {
     } else if (isOtherFile) {
       return (
         <div className="file-container">
+          {/* Show preview image above the file info if available */}
+          {goal.imgURLpreview && (
+            <div className="file-preview-image">
+              <img 
+                src={goal.imgURLpreview} 
+                alt="File preview" 
+                className="goal-popup-preview-image" 
+                style={{ maxWidth: '100%', marginBottom: '15px' }}
+              />
+            </div>
+          )}
           <div className="file-icon-large">
             {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
           </div>
