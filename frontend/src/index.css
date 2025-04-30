@@ -896,20 +896,38 @@ button {
   border-radius: 5px;
 }
 
-.file-icon {
-  padding: 100px;
-  align-content: center;
-  background-color: #e0e0e0;
-  font-size: 14px;
-  font-weight: 700;
-  height: 60px;
-  justify-content: center;
-  margin-right: 0px;
-  width: 60px;
+.file-preview-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Center horizontally */
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 5px;
+  min-height: 200px; /* Use min-height instead of height for flexibility */
+  text-align: center; /* Center text content */
 }
-.file-name {
+
+.file-icon {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e0e0e0;
+  border-radius: 5px;
   font-size: 14px;
-  word-break: break-all;
+  font-weight: bold;
+  position: relative; /* For absolute positioning of inner content */
+}
+
+/* For text inside the icon */
+.file-icon span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%; /* Ensure text wraps properly */
+  padding: 5px;
 }
 
 /* Popup file display styles */
