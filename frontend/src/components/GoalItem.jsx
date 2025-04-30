@@ -12,6 +12,10 @@ function GoalItem({ goal }) {
   const [isOpen, setIsOpen] = useState(false)
   const [newComment, setNewComment] = useState('')
   const [showComments, setShowComments] = useState(false)
+  const [imageError, setImageError] = useState(false)
+  const [previewImageError, setPreviewImageError] = useState(false)
+  
+  const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
 
   // Parse file metadata if available
   const fileMetadata = goal.fileMetadata ? JSON.parse(goal.fileMetadata) : null;
@@ -36,6 +40,11 @@ function GoalItem({ goal }) {
   const closeGoal = () => setIsOpen(false)
 
   const downloadFile = () => {
+    if (!goal.imgURL) {
+      console.error('No file to download');
+      return;
+    }
+    
     const link = document.createElement('a')
     link.href = goal.imgURL
     link.download = fileMetadata ? fileMetadata.name : 'download'
@@ -60,10 +69,34 @@ function GoalItem({ goal }) {
     }
   }
 
+  const handleImageError = () => {
+    console.log('Main image failed to load');
+    setImageError(true);
+  }
+
+  const handlePreviewImageError = () => {
+    console.log('Preview image failed to load');
+    setPreviewImageError(true);
+  }
+
+  // Check if imgURLpreview exists and is valid
+  const hasValidPreviewImage = () => {
+    return goal.imgURLpreview && 
+           typeof goal.imgURLpreview === 'string' && 
+           goal.imgURLpreview.startsWith('data:image/');
+  }
+
   // Function to render proper preview in card view
   const renderFilePreview = () => {
     if (isImage) {
-      return <img src={goal.imgURL} alt="Goal" className="goal-image" />;
+      return (
+        <img 
+          src={imageError ? DEFAULT_IMAGE : goal.imgURL} 
+          alt="Goal" 
+          className="goal-image" 
+          onError={handleImageError}
+        />
+      );
     } else if (isVideo) {
       return (
         <div className="video-preview-container">
@@ -84,8 +117,15 @@ function GoalItem({ goal }) {
       );
     } else if (isOtherFile) {
       // Use the preview image if available, otherwise show file icon
-      if (goal.imgURLpreview) {
-        return <img src={goal.imgURLpreview} alt="File preview" className="goal-image" />;
+      if (hasValidPreviewImage()) {
+        return (
+          <img 
+            src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
+            alt="File preview" 
+            className="goal-image" 
+            onError={handlePreviewImageError}
+          />
+        );
       } else {
         return (
           <div className="file-preview-container">
@@ -102,7 +142,14 @@ function GoalItem({ goal }) {
   // Function to render detailed file view in popup
   const renderDetailedFileView = () => {
     if (isImage) {
-      return <img src={goal.imgURL} alt="Goal" className="goal-popup-image" />;
+      return (
+        <img 
+          src={imageError ? DEFAULT_IMAGE : goal.imgURL} 
+          alt="Goal" 
+          className="goal-popup-image" 
+          onError={handleImageError}
+        />
+      );
     } else if (isVideo) {
       return (
         <div className="video-container">
@@ -129,13 +176,14 @@ function GoalItem({ goal }) {
       return (
         <div className="file-container">
           {/* Show preview image above the file info if available */}
-          {goal.imgURLpreview && (
+          {hasValidPreviewImage() && (
             <div className="file-preview-image">
               <img 
-                src={goal.imgURLpreview} 
+                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
                 alt="File preview" 
                 className="goal-popup-preview-image" 
                 style={{ maxWidth: '100%', marginBottom: '15px' }}
+                onError={handlePreviewImageError}
               />
             </div>
           )}
