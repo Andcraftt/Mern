@@ -1,4 +1,5 @@
 const asyncHandler = require('express-async-handler')
+const mongoose = require('mongoose') // Añadido el import faltante
 
 const Goal = require('../models/goalModel')
 const User = require('../models/userModel')
