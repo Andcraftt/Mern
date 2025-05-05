@@ -70,14 +70,6 @@ function GoalItem({ goal }) {
     }
   }, [goal.imgURL, goal.imgURLpreview, fileType, fileName, fileExtension]);
 
-  // Load comments when the goal is opened
-  useEffect(() => {
-    if (isOpen && (!comments[goal._id] || !showComments)) {
-      dispatch(getCommentsByGoal(goal._id))
-      setShowComments(true)
-    }
-  }, [isOpen, dispatch, goal._id, comments, showComments])
-
   const openGoal = () => setIsOpen(true)
   const closeGoal = () => setIsOpen(false)
 
@@ -143,8 +135,6 @@ function GoalItem({ goal }) {
   // Get current like status
   const isLiked = likes[goal._id]?.userLiked || false;
   const likeCount = likes[goal._id]?.count || 0;
-
-  // Improved preview image validation
 
   // Improved preview image validation
   const hasValidPreviewImage = () => {
@@ -228,7 +218,7 @@ function GoalItem({ goal }) {
           {hasValidPreviewImage() && (
             <div className="file-preview-image">
               <img 
-                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} style="max-width: 405px"
+                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview}
                 alt="File preview" 
                 className="goal-popup-preview-image" 
                 style={{ maxWidth: '100%', marginBottom: '15px' }}
@@ -334,14 +324,7 @@ function GoalItem({ goal }) {
                 </div>
               </div>
               
-              {/* Fixed download button at bottom */}
-              {goal.imgURL && (
-                <div className="download-button-container">
-                  <button onClick={downloadFile} className="download-button">
-                    <IoIosDownload />&nbsp;Download {fileExtension ? fileExtension.toUpperCase() : 'File'}
-                  </button>
-                </div>
-              )}
+              {/* Buttons - Unificados en un solo contenedor */}
               <div className="button-container">
                 {goal.imgURL && (
                   <button onClick={downloadFile} className="download-button">
