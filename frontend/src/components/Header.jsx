@@ -28,7 +28,7 @@ function Header() {
           {user ? (
             <>
               <li>
-                <Link to='/categories' className='nav-link btn3'>
+                <Link to='/categories' className='nav-link btn1'>
                 <TbCategoryFilled />&nbsp;Categories
                 </Link>
               </li>
