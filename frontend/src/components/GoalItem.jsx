@@ -181,7 +181,7 @@ function GoalItem({ goal }) {
           {hasValidPreviewImage() && (
             <div className="file-preview-image">
               <img 
-                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
+                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} style="max-width: 405px"
                 alt="File preview" 
                 className="goal-popup-preview-image" 
                 style={{ maxWidth: '100%', marginBottom: '15px' }}
