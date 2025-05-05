@@ -1,5 +1,5 @@
 const asyncHandler = require('express-async-handler')
-const mongoose = require('mongoose') // Añadido el import faltante
+const mongoose = require('mongoose')
 
 const Goal = require('../models/goalModel')
 const User = require('../models/userModel')
@@ -72,8 +72,11 @@ const getMultipleLikesCounts = asyncHandler(async (req, res) => {
     }
 
     // Get like counts for each goal ID using aggregation
+    // Fixed: Create valid ObjectIDs for the MongoDB query
+    const objectIds = goalIds.map(id => new mongoose.Types.ObjectId(id));
+    
     const counts = await Like.aggregate([
-        { $match: { goal: { $in: goalIds.map(id => mongoose.Types.ObjectId(id)) } } },
+        { $match: { goal: { $in: objectIds } } },
         { $group: { _id: '$goal', count: { $sum: 1 } } }
     ]);
 
