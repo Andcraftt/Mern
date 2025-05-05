@@ -55,6 +55,7 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 app.use('/api/goals', require('./routes/goalRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));
 app.use('/api/comments', require('./routes/commentRoutes'));
+app.use('/api/likes', require('./routes/likeRoutes'));
 
 // Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
