@@ -109,7 +109,7 @@ function GoalItem({ goal }) {
   // Function to render proper preview in card view
   const renderFilePreview = () => {
     // For any file type, first try to use the preview image if available
-    if (!isImage && !isVideo && !isAudio && hasValidPreviewImage()) {
+    if (hasValidPreviewImage()) {
       return (
         <img 
           src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
@@ -120,18 +120,7 @@ function GoalItem({ goal }) {
       );
     }
     
-    // For non-media files without preview image, show generic file icon
-    if (isOtherFile && !hasValidPreviewImage()) {
-      return (
-        <div className="file-preview-container">
-          <div className="file-icon">
-            {fileExtension ? fileExtension.toUpperCase() : 'FILE'}
-          </div>
-        </div>
-      );
-    }
-    
-    // Standard media handling
+    // For images, display the image directly
     if (isImage) {
       return (
         <img 
@@ -141,7 +130,10 @@ function GoalItem({ goal }) {
           onError={handleImageError}
         />
       );
-    } else if (isVideo) {
+    } 
+    
+    // For videos, display a video element
+    else if (isVideo) {
       return (
         <div className="video-preview-container">
           <video className="goal-video-thumbnail" controls>
@@ -150,13 +142,28 @@ function GoalItem({ goal }) {
           </video>
         </div>
       );
-    } else if (isAudio) {
+    } 
+    
+    // For audio, display an audio element
+    else if (isAudio) {
       return (
         <div className="audio-preview-container">
           <audio controls className="goal-audio">
             <source src={goal.imgURL} type={fileType} />
             Your browser does not support audio playback.
           </audio>
+        </div>
+      );
+    }
+    
+    // For all other files (including .java), show generic file icon
+    else if (isOtherFile) {
+      return (
+        <div className="file-preview-container">
+          <div className="file-icon">
+            {fileExtension ? fileExtension.toUpperCase() : 'FILE'}
+          </div>
+          <div className="file-name">{fileName || "Unknown File"}</div>
         </div>
       );
     }
