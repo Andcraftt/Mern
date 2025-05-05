@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { IoIosDownload } from "react-icons/io";
-import { FaCode, FaFile } from "react-icons/fa"; // Import icons for better file representation
 import { deleteGoal } from '../features/goals/goalSlice'
 import { getCommentsByGoal, createComment, deleteComment } from '../features/comments/commentSlice'
 import { useState, useEffect } from 'react'
@@ -30,8 +29,7 @@ function GoalItem({ goal }) {
   const isAudio = fileType.startsWith('audio/');
   const is3DModel = fileType === 'model/gltf-binary' || fileType.includes('glb') || 
                    (fileMetadata?.name && fileMetadata.name.toLowerCase().endsWith('.glb'));
-  const isCodeFile = ['java', 'js', 'jsx', 'ts', 'tsx', 'py', 'rb', 'php', 'html', 'css', 'c', 'cpp', 'h', 'cs'].includes(fileExtension);
-  const isOtherFile = !isImage && !isVideo && !isAudio && !is3DModel && !isCodeFile && goal.imgURL;
+  const isOtherFile = !isImage && !isVideo && !isAudio && !is3DModel && goal.imgURL;
 
   const isOwner = user && goal.user === user._id
 
@@ -42,7 +40,6 @@ function GoalItem({ goal }) {
       console.log('File name:', fileName);
       console.log('File extension:', fileExtension);
       console.log('File type:', fileType);
-      console.log('Is code file:', isCodeFile);
     }
     
     if (goal.imgURLpreview) {
@@ -109,77 +106,29 @@ function GoalItem({ goal }) {
            (goal.imgURLpreview.startsWith('data:') || goal.imgURLpreview.startsWith('http'));
   }
 
-  // Get appropriate icon for code files
-  const getCodeFileIcon = () => {
-    switch (fileExtension) {
-      case 'java': return 'JAVA';
-      case 'js': return 'JS';
-      case 'jsx': return 'JSX';
-      case 'ts': return 'TS';
-      case 'tsx': return 'TSX';
-      case 'py': return 'PY';
-      case 'rb': return 'RB';
-      case 'php': return 'PHP';
-      case 'html': return 'HTML';
-      case 'css': return 'CSS';
-      case 'c': return 'C';
-      case 'cpp': return 'C++';
-      case 'h': return 'H';
-      case 'cs': return 'C#';
-      default: return 'CODE';
-    }
-  };
-
   // Function to render proper preview in card view
   const renderFilePreview = () => {
-    // Handle code files specifically
-    if (isCodeFile) {
-      // If we have a preview image, use that
-      if (hasValidPreviewImage()) {
-        return (
-          <img 
-            src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
-            alt="File preview" 
-            className="goal-image" 
-            onError={handlePreviewImageError}
-          />
-        );
-      } else {
-        // Otherwise use the code file icon
-        return (
-          <div className="file-preview-container">
-            <div className="file-icon code-file-icon">
-              <FaCode style={{ marginRight: '5px' }} />
-              {getCodeFileIcon()}
-            </div>
-          </div>
-        );
-      }
+    // For any file type, first try to use the preview image if available
+    if (!isImage && !isVideo && !isAudio && hasValidPreviewImage()) {
+      return (
+        <img 
+          src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
+          alt="File preview" 
+          className="goal-image" 
+          onError={handlePreviewImageError}
+        />
+      );
     }
     
-    // Special handling for 3D models and other non-media files
-    if (is3DModel || isOtherFile) {
-      // If we have a preview image, use that
-      if (hasValidPreviewImage()) {
-        return (
-          <img 
-            src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
-            alt="File preview" 
-            className="goal-image" 
-            onError={handlePreviewImageError}
-          />
-        );
-      } else {
-        // Otherwise use the file icon
-        return (
-          <div className="file-preview-container">
-            <div className="file-icon">
-              <FaFile style={{ marginRight: '5px' }} />
-              {is3DModel ? '3D' : (fileExtension.toUpperCase() || 'FILE')}
-            </div>
+    // For non-media files without preview image, show generic file icon
+    if (isOtherFile && !hasValidPreviewImage()) {
+      return (
+        <div className="file-preview-container">
+          <div className="file-icon">
+            {fileExtension ? fileExtension.toUpperCase() : 'FILE'}
           </div>
-        );
-      }
+        </div>
+      );
     }
     
     // Standard media handling
@@ -217,36 +166,8 @@ function GoalItem({ goal }) {
 
   // Function to render detailed file view in popup
   const renderDetailedFileView = () => {
-    // Handle code files
-    if (isCodeFile) {
-      return (
-        <div className="file-container code-file-container">
-          {/* Show preview image above the file info if available */}
-          {hasValidPreviewImage() && (
-            <div className="file-preview-image">
-              <img 
-                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
-                alt="Code preview" 
-                className="goal-popup-preview-image" 
-                style={{ maxWidth: '100%', marginBottom: '15px' }}
-                onError={handlePreviewImageError}
-              />
-            </div>
-          )}
-          <div className="file-info">
-            <div className="file-icon-large">
-              <FaCode size={48} />
-            </div>
-            <p className="file-name">{fileMetadata?.name || `Code File.${fileExtension}`}</p>
-            <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
-            <p className="file-type">Source Code ({fileExtension.toUpperCase()})</p>
-          </div>
-        </div>
-      );
-    }
-    
-    // Special handling for 3D models
-    if (is3DModel) {
+    // For all non-media files, show file info with preview if available
+    if (isOtherFile || is3DModel) {
       return (
         <div className="file-container">
           {/* Show preview image above the file info if available */}
@@ -254,7 +175,7 @@ function GoalItem({ goal }) {
             <div className="file-preview-image">
               <img 
                 src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
-                alt="3D model preview" 
+                alt="File preview" 
                 className="goal-popup-preview-image" 
                 style={{ maxWidth: '100%', marginBottom: '15px' }}
                 onError={handlePreviewImageError}
@@ -262,8 +183,9 @@ function GoalItem({ goal }) {
             </div>
           )}
           <div className="file-info">
-            <p className="file-name">{fileMetadata?.name || '3D Model'}</p>
+            <p className="file-name">{fileMetadata?.name || `File.${fileExtension || ''}`}</p>
             <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
+            <p className="file-type">{fileExtension ? fileExtension.toUpperCase() + ' File' : 'File'}</p>
           </div>
         </div>
       );
@@ -297,31 +219,6 @@ function GoalItem({ goal }) {
           <div className="audio-visualization">
             {/* Audio waveform placeholder or visualization could go here */}
             <div className="audio-placeholder"></div>
-          </div>
-        </div>
-      );
-    } else if (isOtherFile) {
-      return (
-        <div className="file-container">
-          {/* Show preview image above the file info if available */}
-          {hasValidPreviewImage() && (
-            <div className="file-preview-image">
-              <img 
-                src={previewImageError ? DEFAULT_IMAGE : goal.imgURLpreview} 
-                alt="File preview" 
-                className="goal-popup-preview-image" 
-                style={{ maxWidth: '100%', marginBottom: '15px' }}
-                onError={handlePreviewImageError}
-              />
-            </div>
-          )}
-          <div className="file-info">
-            <div className="file-icon-large">
-              <FaFile size={48} />
-            </div>
-            <p className="file-name">{fileMetadata?.name || 'File'}</p>
-            <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
-            <p className="file-type">{fileExtension.toUpperCase()} File</p>
           </div>
         </div>
       );
@@ -376,7 +273,7 @@ function GoalItem({ goal }) {
               {goal.imgURL && (
                 <div className="download-button-container">
                   <button onClick={downloadFile} className="download-button">
-                    <IoIosDownload />&nbsp;Download {fileMetadata?.name ? fileMetadata.name.split('.').pop().toUpperCase() : 'File'}
+                    <IoIosDownload />&nbsp;Download {fileExtension ? fileExtension.toUpperCase() : 'File'}
                   </button>
                 </div>
               )}
