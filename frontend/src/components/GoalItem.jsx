@@ -114,6 +114,15 @@ function GoalItem({ goal }) {
             onError={handlePreviewImageError}
           />
         );
+      } else {
+        // Otherwise use the file icon
+        return (
+          <div className="file-preview-container">
+            <div className="file-icon">
+              {is3DModel ? '3D' : (fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE')}
+            </div>
+          </div>
+        );
       }
     }
     
