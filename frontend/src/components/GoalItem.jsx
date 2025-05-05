@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { IoIosDownload } from "react-icons/io";
+import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { deleteGoal } from '../features/goals/goalSlice'
 import { getCommentsByGoal, createComment, deleteComment } from '../features/comments/commentSlice'
+import { toggleLike, checkLike, getLikesCount } from '../features/likes/likeSlice'
 import { useState, useEffect } from 'react'
 
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
   const { comments } = useSelector((state) => state.comments)
+  const { likes } = useSelector((state) => state.likes)
   const dispatch = useDispatch()
   
   const [isOpen, setIsOpen] = useState(false)
@@ -14,6 +17,7 @@ function GoalItem({ goal }) {
   const [showComments, setShowComments] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [previewImageError, setPreviewImageError] = useState(false)
+  const [likeAnimating, setLikeAnimating] = useState(false)
   
   const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
 
@@ -32,6 +36,24 @@ function GoalItem({ goal }) {
   const isOtherFile = !isImage && !isVideo && !isAudio && !is3DModel && goal.imgURL;
 
   const isOwner = user && goal.user === user._id
+  
+  // Load comments when the goal is opened
+  useEffect(() => {
+    if (isOpen && (!comments[goal._id] || !showComments)) {
+      dispatch(getCommentsByGoal(goal._id))
+      setShowComments(true)
+    }
+  }, [isOpen, dispatch, goal._id, comments, showComments])
+  
+  // Load likes data for this goal
+  useEffect(() => {
+    dispatch(getLikesCount(goal._id))
+    
+    // If user is logged in, check if they've liked this goal
+    if (user) {
+      dispatch(checkLike(goal._id))
+    }
+  }, [dispatch, goal._id, user])
 
   // Add this debug logging to help troubleshoot
   useEffect(() => {
@@ -94,10 +116,35 @@ function GoalItem({ goal }) {
     setImageError(true);
   }
 
+
   const handlePreviewImageError = () => {
     console.log('Preview image failed to load');
     setPreviewImageError(true);
   }
+  
+  // Handle toggling the like state
+  const handleLikeToggle = (e) => {
+    e.stopPropagation(); // Prevent opening the goal modal
+    
+    if (!user) {
+      // If user is not logged in, prompt them to log in
+      alert('Please log in to like posts');
+      return;
+    }
+    
+    // Animate the heart regardless of API success for immediate feedback
+    setLikeAnimating(true);
+    setTimeout(() => setLikeAnimating(false), 300);
+    
+    // Toggle the like in the database
+    dispatch(toggleLike(goal._id));
+  }
+  
+  // Get current like status
+  const isLiked = likes[goal._id]?.userLiked || false;
+  const likeCount = likes[goal._id]?.count || 0;
+
+  // Improved preview image validation
 
   // Improved preview image validation
   const hasValidPreviewImage = () => {
@@ -235,10 +282,21 @@ function GoalItem({ goal }) {
 
   return (
     <>
+      
       <div className='goal' onClick={openGoal}>
         <h2>{goal.text}</h2>
 
         {goal.imgURL && renderFilePreview()}
+        
+        <div className="goal-footer">
+          <button 
+            onClick={handleLikeToggle} 
+            className={`like-button-small ${isLiked ? 'liked' : ''} ${likeAnimating ? 'animate' : ''}`}
+          >
+            {isLiked ? <IoMdHeart className="heart-icon-small" /> : <IoMdHeartEmpty className="heart-icon-small" />}
+            <span className="like-count-small">{likeCount}</span>
+          </button>
+        </div>
 
         {isOwner && (
           <button 
@@ -284,6 +342,21 @@ function GoalItem({ goal }) {
                   </button>
                 </div>
               )}
+              <div className="button-container">
+                {goal.imgURL && (
+                  <button onClick={downloadFile} className="download-button">
+                    <IoIosDownload />&nbsp;Download {fileExtension ? fileExtension.toUpperCase() : 'File'}
+                  </button>
+                )}
+                
+                <button 
+                  onClick={handleLikeToggle} 
+                  className={`like-button ${isLiked ? 'liked' : ''} ${likeAnimating ? 'animate' : ''}`}
+                >
+                  {isLiked ? <IoMdHeart className="heart-icon" /> : <IoMdHeartEmpty className="heart-icon" />}
+                  <span className="like-count">{likeCount}</span>
+                </button>
+              </div>
             </div>
             
             {/* Right column (comments) - independently scrollable */}
