@@ -114,15 +114,6 @@ function GoalItem({ goal }) {
             onError={handlePreviewImageError}
           />
         );
-      } else {
-        // Otherwise use the file icon
-        return (
-          <div className="file-preview-container">
-            <div className="file-icon">
-              {is3DModel ? '3D' : (fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE')}
-            </div>
-          </div>
-        );
       }
     }
     
@@ -231,9 +222,6 @@ function GoalItem({ goal }) {
               />
             </div>
           )}
-          <div className="file-icon-large">
-            {fileMetadata?.name?.split('.').pop().toUpperCase() || 'FILE'}
-          </div>
           <div className="file-info">
             <p className="file-name">{fileMetadata?.name || 'File'}</p>
             <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
