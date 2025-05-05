@@ -94,7 +94,7 @@ h1, h2, h3 {
 }
 
 .header ul li a:hover {
-  background-color: #969696;
+  background-color: #c8c8c8;
   color: #2d3748;
 }
 
@@ -127,7 +127,7 @@ h1, h2, h3 {
 .btn:hover, .btn1:hover ,.btn2:hover, btn3:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  background-color: #969696;
+  background-color: #c8c8c8;
   color: #2D3748;
 }
 
