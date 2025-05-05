@@ -907,6 +907,10 @@ button {
   text-align: center; /* Center text content */
 }
 
+.file-preview-image{
+  max-width: 475px;
+}
+
 .file-icon {
   width: 120px;
   height: 120px;
