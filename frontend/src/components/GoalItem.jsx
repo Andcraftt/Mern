@@ -8,8 +8,8 @@ import { useState, useEffect } from 'react'
 
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
-  const { comments } = useSelector((state) => state.comments)
-  const { likes } = useSelector((state) => state.likes)
+  const { comments = {} } = useSelector((state) => state.comments || {})
+  const { likes = {} } = useSelector((state) => state.likes || {})
   const dispatch = useDispatch()
   
   const [isOpen, setIsOpen] = useState(false)
@@ -132,7 +132,7 @@ function GoalItem({ goal }) {
     dispatch(toggleLike(goal._id));
   }
   
-  // Get current like status
+  // Get current like status with safe default values
   const isLiked = likes[goal._id]?.userLiked || false;
   const likeCount = likes[goal._id]?.count || 0;
 
