@@ -237,7 +237,6 @@ function GoalItem({ goal }) {
           <div className="file-info">
             <p className="file-name">{fileMetadata?.name || 'File'}</p>
             <p className="file-size">{fileMetadata?.size ? `${Math.round(fileMetadata.size / 1024)} KB` : ''}</p>
-            <p className="file-type">{fileType || 'Unknown type'}</p>
           </div>
         </div>
       );
