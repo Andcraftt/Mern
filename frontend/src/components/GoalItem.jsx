@@ -149,6 +149,7 @@ function GoalItem({ goal }) {
     likeCount: likes[goal._id]?.count 
   });
   
+  // Properly extract like data from Redux store with fallbacks
   const isLiked = likes[goal._id]?.userLiked || false;
   const likeCount = likes[goal._id]?.count || 0;
 
@@ -340,7 +341,7 @@ function GoalItem({ goal }) {
                 </div>
               </div>
               
-              {/* Buttons - Unificados en un solo contenedor */}
+              {/* Buttons - Combined in a single container */}
               <div className="button-container">
                 {goal.imgURL && (
                   <button onClick={downloadFile} className="download-button">
