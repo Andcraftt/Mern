@@ -8,49 +8,33 @@ const mongoose = require('mongoose');
 // @access  Private
 const toggleLike = asyncHandler(async (req, res) => {
   const { goalId } = req.params;
-  const userId = req.user.id; // Assuming `req.user` is set by auth middleware
+  const userId = req.user.id;
 
-  // Verify the goal exists
+  // Verificar si el goal existe
   const goal = await Goal.findById(goalId);
   if (!goal) {
     res.status(404);
     throw new Error('Goal not found');
   }
 
-  const session = await mongoose.startSession();
-  session.startTransaction();
+  const existingLike = await Like.findOne({ user: userId, goal: goalId });
 
-  try {
-    // Try to delete the like (if it exists)
-    const deletedLike = await Like.findOneAndDelete(
-      { user: userId, goal: goalId },
-      { session }
-    );
-
-    if (deletedLike) {
-      await session.commitTransaction();
-      return res.status(200).json({ 
-        message: "Like removed",
-        liked: false,
-        likeCount: await Like.countDocuments({ goal: goalId })
-      });
-    }
-
-    // If no like was deleted, insert a new one
-    const newLike = await Like.create([{ user: userId, goal: goalId }], { session });
-    await session.commitTransaction();
-    
-    res.status(201).json({ 
+  if (existingLike) {
+    await existingLike.deleteOne();
+    const likeCount = await Like.countDocuments({ goal: goalId });
+    return res.status(200).json({
+      message: "Like removed",
+      liked: false,
+      likeCount,
+    });
+  } else {
+    await Like.create({ user: userId, goal: goalId });
+    const likeCount = await Like.countDocuments({ goal: goalId });
+    return res.status(201).json({
       message: "Like added",
       liked: true,
-      likeCount: await Like.countDocuments({ goal: goalId })
+      likeCount,
     });
-  } catch (error) {
-    await session.abortTransaction();
-    console.error("Error in toggleLike:", error);
-    res.status(500).json({ error: "Internal server error" });
-  } finally {
-    session.endSession();
   }
 });
 
