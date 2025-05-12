@@ -71,7 +71,7 @@ const getLikesCount = async (goalId) => {
   }
 }
 
-const likeService = {
+modelu.exports = {
   toggleLike,
   checkLike,
   getLikesCount
