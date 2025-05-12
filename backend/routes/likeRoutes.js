@@ -8,7 +8,6 @@ const {
 } = require("../controllers/likeController");
 const { protect } = require('../middleware/authMiddleware');
 
-// Make sure the count route comes BEFORE the :goalId parameter route
 // to prevent route conflicts
 router.get('/count/:goalId', getLikesCount);
 
