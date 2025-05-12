@@ -3,38 +3,37 @@ import axios from 'axios'
 const API_URL = '/api/likes/'
 
 // Toggle like for a goal
-const toggleLike = async (goalId, token) => {
+const toggleLike = async (req, res) => {
+  const { goalId } = req.params;
+  const userId = req.user; // Assuming `req.user` is set by auth middleware
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+    // Try to delete the like (if it exists)
+    const deletedLike = await Like.findOneAndDelete(
+      { user: userId, goal: goalId },
+      { session }
+    );
+
+    if (deletedLike) {
+      await session.commitTransaction();
+      return res.status(200).json({ message: "Like removed" });
     }
 
-    const response = await axios.post(API_URL + goalId, {}, config)
-    return response.data
+    // If no like was deleted, insert a new one
+    await Like.create([{ user: userId, goal: goalId }], { session });
+    await session.commitTransaction();
+    res.status(201).json({ message: "Like added" });
   } catch (error) {
-    // Log detailed error information
-    console.error('Toggle Like Error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-      headers: error.response?.headers
-    })
-
-    // Throw a more informative error
-    if (error.response) {
-      // The request was made and the server responded with a status code
-      throw new Error(error.response.data.message || 'Failed to toggle like')
-    } else if (error.request) {
-      // The request was made but no response was received
-      throw new Error('No response received from server')
-    } else {
-      // Something happened in setting up the request
-      throw new Error('Error setting up like request')
-    }
+    await session.abortTransaction();
+    console.error("Error in toggleLike:", error);
+    res.status(500).json({ error: "Internal server error" });
+  } finally {
+    session.endSession();
   }
-}
+};
 
 // Check if user liked a goal
 const checkLike = async (goalId, token) => {
