@@ -1,4 +1,6 @@
-import axios from 'axios'
+const axios = require('axios');
+const Like = require('../models/Like');
+const mongoose = require('mongoose');
 
 const API_URL = '/api/likes/'
 
@@ -76,5 +78,3 @@ module.exports = {
   checkLike,
   getLikesCount
 }
-
-export default likeService
