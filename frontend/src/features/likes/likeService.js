@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = '/api/likes/'
+const API_URL = 'https://mern-full-stack-1-0.onrender.com/api/likes'
 
 // Toggle like on a goal
 const toggleLike = async (goalId, token) => {
@@ -30,14 +30,14 @@ const checkLike = async (goalId, token) => {
 
 // Get likes count for a goal
 const getLikesCount = async (goalId) => {
-  const response = await axios.get(API_URL + 'count/' + goalId)
+  const response = await axios.get(API_URL + '/count/' + goalId)
   
   return response.data
 }
 
 // Get likes counts for multiple goals
 const getMultipleLikesCounts = async (goalIds) => {
-  const response = await axios.post(API_URL + 'counts', { goalIds })
+  const response = await axios.post(API_URL + '/counts', { goalIds })
   
   return response.data
 }
