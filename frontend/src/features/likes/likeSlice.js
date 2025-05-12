@@ -52,25 +52,8 @@ export const getLikesCount = createAsyncThunk(
   'likes/count',
   async (goalId, thunkAPI) => {
     try {
-      return await likeService.getLikesCount(goalId)
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-// Get likes counts for multiple goals
-export const getMultipleLikesCounts = createAsyncThunk(
-  'likes/counts',
-  async (goalIds, thunkAPI) => {
-    try {
-      return await likeService.getMultipleLikesCounts(goalIds)
+      const response = await likeService.getLikesCount(goalId)
+      return { goalId, likeCount: response.likeCount }
     } catch (error) {
       const message =
         (error.response &&
@@ -103,22 +86,18 @@ export const likeSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         
+        const goalId = action.payload.goalId || action.meta.arg
+        
         // Update the user's liked status for this goal
-        if (!state.likes[action.payload.goalId]) {
-          state.likes[action.payload.goalId] = {
+        if (!state.likes[goalId]) {
+          state.likes[goalId] = {
             userLiked: action.payload.liked,
-            count: action.payload.liked ? 1 : 0
+            count: action.payload.likeCount
           }
         } else {
-          // Update liked status
-          state.likes[action.payload.goalId].userLiked = action.payload.liked
-          
-          // Update count
-          if (action.payload.liked) {
-            state.likes[action.payload.goalId].count++
-          } else {
-            state.likes[action.payload.goalId].count--
-          }
+          // Update liked status and count
+          state.likes[goalId].userLiked = action.payload.liked
+          state.likes[goalId].count = action.payload.likeCount
         }
       })
       .addCase(toggleLike.rejected, (state, action) => {
@@ -133,14 +112,17 @@ export const likeSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         
+        const goalId = action.meta.arg
+        
         // Store user's like status for this goal
-        if (!state.likes[action.payload.goalId]) {
-          state.likes[action.payload.goalId] = {
+        if (!state.likes[goalId]) {
+          state.likes[goalId] = {
             userLiked: action.payload.liked,
-            count: 0
+            count: action.payload.likeCount
           }
         } else {
-          state.likes[action.payload.goalId].userLiked = action.payload.liked
+          state.likes[goalId].userLiked = action.payload.liked
+          state.likes[goalId].count = action.payload.likeCount
         }
       })
       .addCase(checkLike.rejected, (state, action) => {
@@ -155,43 +137,19 @@ export const likeSlice = createSlice({
         state.isLoading = false
         state.isSuccess = true
         
-        // Store like count for this goal
-        if (!state.likes[action.payload.goalId]) {
-          state.likes[action.payload.goalId] = {
+        const { goalId, likeCount } = action.payload
+        
+        // Store or update like count for this goal
+        if (!state.likes[goalId]) {
+          state.likes[goalId] = {
             userLiked: false,
-            count: action.payload.count
+            count: likeCount
           }
         } else {
-          state.likes[action.payload.goalId].count = action.payload.count
+          state.likes[goalId].count = likeCount
         }
       })
       .addCase(getLikesCount.rejected, (state, action) => {
-        state.isLoading = false
-        state.isError = true
-        state.message = action.payload
-      })
-      .addCase(getMultipleLikesCounts.pending, (state) => {
-        state.isLoading = true
-      })
-      .addCase(getMultipleLikesCounts.fulfilled, (state, action) => {
-        state.isLoading = false
-        state.isSuccess = true
-        
-        // Update like counts for multiple goals
-        const counts = action.payload
-        
-        Object.keys(counts).forEach(goalId => {
-          if (!state.likes[goalId]) {
-            state.likes[goalId] = {
-              userLiked: false,
-              count: counts[goalId]
-            }
-          } else {
-            state.likes[goalId].count = counts[goalId]
-          }
-        })
-      })
-      .addCase(getMultipleLikesCounts.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload

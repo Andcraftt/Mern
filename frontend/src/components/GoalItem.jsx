@@ -47,6 +47,7 @@ function GoalItem({ goal }) {
   
   // Load likes data for this goal
   useEffect(() => {
+    // First, get the like count
     dispatch(getLikesCount(goal._id))
     
     // If user is logged in, check if they've liked this goal
