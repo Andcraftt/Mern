@@ -116,22 +116,16 @@ function GoalItem({ goal }) {
   }
   
   // Handle toggling the like state
-  const handleLikeToggle = (e) => {
-    e.stopPropagation(); // Prevent opening the goal modal
-    
-    if (!user) {
-      // If user is not logged in, prompt them to log in
-      alert('Please log in to like posts');
-      return;
-    }
-    
-    // Animate the heart regardless of API success for immediate feedback
-    setLikeAnimating(true);
-    setTimeout(() => setLikeAnimating(false), 300);
-    
-    // Toggle the like in the database
-    dispatch(toggleLike(goal._id));
+  const handleLike = async () => {
+  try {
+    await dispatch(toggleLike(goal._id)).unwrap();
+    // Mostrar feedback al usuario
+    dispatch(showNotification({ message: 'Like updated!', type: 'success' }));
+  } catch (error) {
+    console.error('Like error:', error);
+    dispatch(showNotification({ message: error.message, type: 'error' }));
   }
+};
   
   // Get current like status with safe default values
   const isLiked = likes[goal._id]?.userLiked || false;
