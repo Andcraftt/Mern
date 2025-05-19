@@ -27,27 +27,6 @@ function GoalItem({ goal }) {
   const likeStatusRef = useRef(likeStatus)
   const likeCountRef = useRef(likeCount)
   
-  // Debug logging for the likes state
-  useEffect(() => {
-    console.log(`[GoalItem] Current goal ID: ${goal._id}`);
-    console.log(`[GoalItem] Like data for this goal from Redux:`, likes[goal._id]);
-    console.log(`[GoalItem] Full likes state from Redux:`, likes);
-    
-    // Update local state when Redux state changes
-    if (likes[goal._id]) {
-      const newLikeStatus = likes[goal._id].userLiked || false;
-      const newLikeCount = likes[goal._id].count || 0;
-      
-      console.log(`[GoalItem] Updating local state - status: ${newLikeStatus}, count: ${newLikeCount}`);
-      setLikeStatus(newLikeStatus);
-      setLikeCount(newLikeCount);
-      
-      // Also update refs for logging purposes
-      likeStatusRef.current = newLikeStatus;
-      likeCountRef.current = newLikeCount;
-    }
-  }, [likes, goal._id]);
-  
   const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
 
   // Parse file metadata if available
