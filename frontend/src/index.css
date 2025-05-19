@@ -153,20 +153,13 @@ h1, h2, h3 {
 }
 
 /* Goals/Posts Grid */
-.goal {
-  background-color: #ffffff;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  
-  /* Flexbox para alinear el footer abajo */
-  display: flex;
-  flex-direction: column;
-  min-height: 300px; /* Altura mínima (ajústala según necesites) */
+.goals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .goal {
