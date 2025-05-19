@@ -4,7 +4,7 @@ import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
 import { deleteGoal } from '../features/goals/goalSlice'
 import { getCommentsByGoal, createComment, deleteComment } from '../features/comments/commentSlice'
 import { toggleLike, checkLike, getLikesCount } from '../features/likes/likeSlice'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
@@ -19,11 +19,33 @@ function GoalItem({ goal }) {
   const [previewImageError, setPreviewImageError] = useState(false)
   const [likeAnimating, setLikeAnimating] = useState(false)
   
+  // Local state for like data that syncs with Redux
+  const [likeStatus, setLikeStatus] = useState(false)
+  const [likeCount, setLikeCount] = useState(0)
+  
+  // Use refs to keep track of latest like data for debugging
+  const likeStatusRef = useRef(likeStatus)
+  const likeCountRef = useRef(likeCount)
+  
   // Debug logging for the likes state
   useEffect(() => {
     console.log(`[GoalItem] Current goal ID: ${goal._id}`);
-    console.log(`[GoalItem] Like data for this goal:`, likes[goal._id]);
-    console.log(`[GoalItem] Full likes state:`, likes);
+    console.log(`[GoalItem] Like data for this goal from Redux:`, likes[goal._id]);
+    console.log(`[GoalItem] Full likes state from Redux:`, likes);
+    
+    // Update local state when Redux state changes
+    if (likes[goal._id]) {
+      const newLikeStatus = likes[goal._id].userLiked || false;
+      const newLikeCount = likes[goal._id].count || 0;
+      
+      console.log(`[GoalItem] Updating local state - status: ${newLikeStatus}, count: ${newLikeCount}`);
+      setLikeStatus(newLikeStatus);
+      setLikeCount(newLikeCount);
+      
+      // Also update refs for logging purposes
+      likeStatusRef.current = newLikeStatus;
+      likeCountRef.current = newLikeCount;
+    }
   }, [likes, goal._id]);
   
   const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
@@ -57,11 +79,27 @@ function GoalItem({ goal }) {
     console.log(`[GoalItem] Fetching like count for goal ${goal._id}`);
     // First, get the like count for all users
     dispatch(getLikesCount(goal._id))
+      .then((result) => {
+        if (result.payload) {
+          console.log(`[GoalItem] Got like count from API:`, result.payload);
+          // Update the local like count
+          setLikeCount(result.payload.likeCount || 0);
+          likeCountRef.current = result.payload.likeCount || 0;
+        }
+      })
     
     // If user is logged in, check if they've liked this goal
     if (user) {
       console.log(`[GoalItem] User logged in, checking if they liked goal ${goal._id}`);
       dispatch(checkLike(goal._id))
+        .then((result) => {
+          if (result.payload) {
+            console.log(`[GoalItem] Got like status from API:`, result.payload);
+            // Update the local like status
+            setLikeStatus(result.payload.liked || false);
+            likeStatusRef.current = result.payload.liked || false;
+          }
+        })
     }
   }, [dispatch, goal._id, user])
 
@@ -119,21 +157,41 @@ function GoalItem({ goal }) {
     }
     
     console.log(`[GoalItem] Like toggle clicked for goal: ${goal._id}`);
+    console.log(`[GoalItem] Current like status before toggle: ${likeStatus}`);
     
-    // Animate the heart regardless of API success for immediate feedback
+    // Animate the heart immediately for better UX
     setLikeAnimating(true);
     setTimeout(() => setLikeAnimating(false), 300);
     
-    // Toggle the like in the database
-    dispatch(toggleLike(goal._id));
+    // Optimistically update UI for immediate feedback
+    const newLikeStatus = !likeStatus;
+    setLikeStatus(newLikeStatus);
+    setLikeCount(prevCount => newLikeStatus ? prevCount + 1 : Math.max(0, prevCount - 1));
+    
+    // Then toggle the like in the database
+    dispatch(toggleLike(goal._id))
+      .then((result) => {
+        if (result.payload) {
+          console.log(`[GoalItem] Toggle like API response:`, result.payload);
+          // Update with the actual values from the server
+          setLikeStatus(result.payload.liked);
+          setLikeCount(result.payload.likeCount);
+          
+          // Update refs for debugging
+          likeStatusRef.current = result.payload.liked;
+          likeCountRef.current = result.payload.likeCount;
+        }
+      })
+      .catch((error) => {
+        console.error('[GoalItem] Error toggling like:', error);
+        // Revert optimistic update on error
+        setLikeStatus(!newLikeStatus);
+        setLikeCount(prevCount => !newLikeStatus ? prevCount + 1 : Math.max(0, prevCount - 1));
+      });
   }
   
-  // Properly extract like data from Redux store with fallbacks
-  const likeData = likes[goal._id] || { userLiked: false, count: 0 };
-  const isLiked = likeData.userLiked || false;
-  const likeCount = likeData.count || 0;
-  
-  console.log(`[GoalItem] Goal ${goal._id} - Final like values: isLiked=${isLiked}, likeCount=${likeCount}`);
+  // For debugging, log current values
+  console.log(`[GoalItem] Goal ${goal._id} - Current like values: isLiked=${likeStatus}, likeCount=${likeCount}`);
 
   // Improved preview image validation
   const hasValidPreviewImage = () => {
@@ -280,9 +338,9 @@ function GoalItem({ goal }) {
         <div className="goal-footer">
           <button 
             onClick={handleLikeToggle} 
-            className={`like-button-small`}
+            className={`like-button-small ${likeStatus ? 'liked' : ''}`}
           >
-            {isLiked ? <IoMdHeart className="heart-icon-small" /> : <IoMdHeartEmpty className="heart-icon-small" />}
+            {likeStatus ? <IoMdHeart className="heart-icon-small" /> : <IoMdHeartEmpty className="heart-icon-small" />}
             <span className="like-count-small">{likeCount}</span>
           </button>
         </div>
@@ -333,9 +391,9 @@ function GoalItem({ goal }) {
                 
                 <button 
                   onClick={handleLikeToggle} 
-                  className={`like-button ${isLiked ? 'liked' : ''} ${likeAnimating ? 'animate' : ''}`}
+                  className={`like-button ${likeStatus ? 'liked' : ''} ${likeAnimating ? 'animate' : ''}`}
                 >
-                  {isLiked ? <IoMdHeart className="heart-icon" /> : <IoMdHeartEmpty className="heart-icon" />}
+                  {likeStatus ? <IoMdHeart className="heart-icon" /> : <IoMdHeartEmpty className="heart-icon" />}
                   <span className="like-count">{likeCount}</span>
                 </button>
               </div>
