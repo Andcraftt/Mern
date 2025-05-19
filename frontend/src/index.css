@@ -169,7 +169,7 @@ h1, h2, h3 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
   cursor: pointer;
   position: relative; /* Necesario para el footer absoluto */
-  min-height: 200px; /* Altura mínima (ajusta según necesites) */
+  min-height: 200px; 
   padding-bottom: 60px; /* Espacio reservado para el footer */
 }
 
@@ -1113,7 +1113,7 @@ button {
   
   /* Posicionamiento absoluto en la parte inferior */
   position: absolute;
-  bottom: 20px; /* Ajusta según el padding del .goal */
+  bottom: 20px;
   left: 20px;
   right: 20px;
 }
