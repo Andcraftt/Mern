@@ -17,6 +17,7 @@ function GoalItem({ goal }) {
   const [showComments, setShowComments] = useState(false)
   const [imageError, setImageError] = useState(false)
   const [previewImageError, setPreviewImageError] = useState(false)
+  const [likeAnimating, setLikeAnimating] = useState(false)
   
   // Debug logging for the likes state
   useEffect(() => {
@@ -119,7 +120,9 @@ function GoalItem({ goal }) {
     
     console.log(`[GoalItem] Like toggle clicked for goal: ${goal._id}`);
     
-
+    // Animate the heart regardless of API success for immediate feedback
+    setLikeAnimating(true);
+    setTimeout(() => setLikeAnimating(false), 300);
     
     // Toggle the like in the database
     dispatch(toggleLike(goal._id));
