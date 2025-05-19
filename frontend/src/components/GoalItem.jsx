@@ -9,7 +9,8 @@ import { useState, useEffect } from 'react'
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
   const { comments = {} } = useSelector((state) => state.comments || {})
-  const { likes = {} } = useSelector((state) => state.likes || {})
+  const likesState = useSelector((state) => state.likes);
+  const likes = likesState?.likes || {};
   const dispatch = useDispatch()
   
   const [isOpen, setIsOpen] = useState(false)
@@ -21,10 +22,10 @@ function GoalItem({ goal }) {
   
   // Debug logging for the likes state
   useEffect(() => {
-    console.log('Current likes state:', likes);
-    console.log('Current goal ID:', goal._id);
-    console.log('Like data for this goal:', likes[goal._id]);
-  }, [likes, goal._id]);
+  console.log('Current likes state:', likesState);
+  console.log('Current goal ID:', goal._id);
+  console.log('Like data for this goal:', likes[goal._id]);
+}, [likesState, goal._id, likes]);
   
   const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
 
