@@ -165,13 +165,12 @@ h1, h2, h3 {
 .goal {
   background-color: #ffffff;
   padding: 20px;
-  text-align: center;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  min-height: 200px;
+  position: relative; /* Necesario para el footer absoluto */
+  min-height: 200px; /* Altura mínima (ajusta según necesites) */
+  padding-bottom: 60px; /* Espacio reservado para el footer */
 }
 
 .goal:hover {
@@ -1109,12 +1108,14 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: auto;
   padding-top: 8px;
   border-top: 1px solid #eee;
-  width: calc(100% - 40px); 
-  margin-left: auto;
-  margin-right: auto;
+  
+  /* Posicionamiento absoluto en la parte inferior */
+  position: absolute;
+  bottom: 20px; /* Ajusta según el padding del .goal */
+  left: 20px;
+  right: 20px;
 }
 
 .like-button-small {
