@@ -55,7 +55,6 @@ function GoalItem({ goal }) {
   
   // Load likes data for this goal
   useEffect(() => {
-    console.log(`[GoalItem] Fetching like count for goal ${goal._id}`);
     // First, get the like count for all users
     dispatch(getLikesCount(goal._id))
       .then((result) => {
@@ -69,11 +68,9 @@ function GoalItem({ goal }) {
     
     // If user is logged in, check if they've liked this goal
     if (user) {
-      console.log(`[GoalItem] User logged in, checking if they liked goal ${goal._id}`);
       dispatch(checkLike(goal._id))
         .then((result) => {
           if (result.payload) {
-            console.log(`[GoalItem] Got like status from API:`, result.payload);
             // Update the local like status
             setLikeStatus(result.payload.liked || false);
             likeStatusRef.current = result.payload.liked || false;
@@ -135,9 +132,6 @@ function GoalItem({ goal }) {
       return;
     }
     
-    console.log(`[GoalItem] Like toggle clicked for goal: ${goal._id}`);
-    console.log(`[GoalItem] Current like status before toggle: ${likeStatus}`);
-    
     // Animate the heart immediately for better UX
     setLikeAnimating(true);
     setTimeout(() => setLikeAnimating(false), 300);
@@ -151,7 +145,6 @@ function GoalItem({ goal }) {
     dispatch(toggleLike(goal._id))
       .then((result) => {
         if (result.payload) {
-          console.log(`[GoalItem] Toggle like API response:`, result.payload);
           // Update with the actual values from the server
           setLikeStatus(result.payload.liked);
           setLikeCount(result.payload.likeCount);
@@ -168,9 +161,6 @@ function GoalItem({ goal }) {
         setLikeCount(prevCount => !newLikeStatus ? prevCount + 1 : Math.max(0, prevCount - 1));
       });
   }
-  
-  // For debugging, log current values
-  console.log(`[GoalItem] Goal ${goal._id} - Current like values: isLiked=${likeStatus}, likeCount=${likeCount}`);
 
   // Improved preview image validation
   const hasValidPreviewImage = () => {
