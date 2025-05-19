@@ -9,8 +9,7 @@ import { useState, useEffect } from 'react'
 function GoalItem({ goal }) {
   const { user } = useSelector((state) => state.auth)
   const { comments = {} } = useSelector((state) => state.comments || {})
-  const likesState = useSelector((state) => state.likes);
-  const likes = likesState?.likes || {};
+  const { likes = {} } = useSelector((state) => state.likes || {})
   const dispatch = useDispatch()
   
   const [isOpen, setIsOpen] = useState(false)
@@ -22,10 +21,10 @@ function GoalItem({ goal }) {
   
   // Debug logging for the likes state
   useEffect(() => {
-  console.log('Current likes state:', likesState);
-  console.log('Current goal ID:', goal._id);
-  console.log('Like data for this goal:', likes[goal._id]);
-}, [likesState, goal._id, likes]);
+    console.log(`[GoalItem] Current goal ID: ${goal._id}`);
+    console.log(`[GoalItem] Like data for this goal:`, likes[goal._id]);
+    console.log(`[GoalItem] Full likes state:`, likes);
+  }, [likes, goal._id]);
   
   const DEFAULT_IMAGE = 'https://www.shutterstock.com/image-vector/default-ui-image-placeholder-wireframes-600nw-1037719192.jpg';
 
@@ -55,29 +54,16 @@ function GoalItem({ goal }) {
   
   // Load likes data for this goal
   useEffect(() => {
+    console.log(`[GoalItem] Fetching like count for goal ${goal._id}`);
     // First, get the like count for all users
     dispatch(getLikesCount(goal._id))
     
     // If user is logged in, check if they've liked this goal
     if (user) {
+      console.log(`[GoalItem] User logged in, checking if they liked goal ${goal._id}`);
       dispatch(checkLike(goal._id))
     }
   }, [dispatch, goal._id, user])
-
-  // Add this debug logging to help troubleshoot
-  useEffect(() => {
-    if (goal.imgURL) {
-      console.log('File URL exists:', !!goal.imgURL);
-      console.log('File name:', fileName);
-      console.log('File extension:', fileExtension);
-      console.log('File type:', fileType);
-    }
-    
-    if (goal.imgURLpreview) {
-      console.log('Preview image URL exists:', !!goal.imgURLpreview);
-      console.log('Preview image validation result:', hasValidPreviewImage());
-    }
-  }, [goal.imgURL, goal.imgURLpreview, fileType, fileName, fileExtension]);
 
   const openGoal = () => setIsOpen(true)
   const closeGoal = () => setIsOpen(false)
@@ -132,7 +118,7 @@ function GoalItem({ goal }) {
       return;
     }
     
-    console.log('Like toggle clicked for goal:', goal._id);
+    console.log(`[GoalItem] Like toggle clicked for goal: ${goal._id}`);
     
     // Animate the heart regardless of API success for immediate feedback
     setLikeAnimating(true);
@@ -142,17 +128,12 @@ function GoalItem({ goal }) {
     dispatch(toggleLike(goal._id));
   }
   
-  // Get current like status with safe default values
-  // Adding more detailed logging
-  console.log(`Goal ${goal._id} - Like status check:`, { 
-    likeData: likes[goal._id],
-    isLiked: likes[goal._id]?.userLiked, 
-    likeCount: likes[goal._id]?.count 
-  });
-  
   // Properly extract like data from Redux store with fallbacks
-  const isLiked = likes[goal._id]?.userLiked || false;
-  const likeCount = likes[goal._id]?.count || 0;
+  const likeData = likes[goal._id] || { userLiked: false, count: 0 };
+  const isLiked = likeData.userLiked || false;
+  const likeCount = likeData.count || 0;
+  
+  console.log(`[GoalItem] Goal ${goal._id} - Final like values: isLiked=${isLiked}, likeCount=${likeCount}`);
 
   // Improved preview image validation
   const hasValidPreviewImage = () => {
