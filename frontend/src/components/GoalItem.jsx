@@ -345,9 +345,7 @@ function GoalItem({ goal }) {
               
               {/* Scrollable description container */}
               <div className="popup-description-container">
-                <div className="popup-description">
-                  <p>{goal.description}</p>
-                </div>
+                <p>{goal.description}</p>
               </div>
               
               {/* Buttons - Combined in a single container */}

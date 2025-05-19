@@ -355,21 +355,14 @@ h1, h2, h3 {
 
 /* Make only the description scrollable */
 .popup-description-container {
-  flex: 1;
-  overflow-y: auto;
   overflow-x: hidden;
-  /* Reduce margin-bottom to keep button in view */
-  margin-bottom: 20px; /* Reduced from 80px */
+  overflow-y: auto;
   scrollbar-width: none;
+
+  min-height: 10vh;
+  max-height: 20vh;
 }
 
-.popup-description {
-  color: #4a5568;
-  text-align: center;
-  padding: 5px 0;
-  line-height: 1.6;
-  font-size: 1rem;
-}
 
 /* Fix download button at the bottom */
 .download-button-container {
@@ -484,7 +477,7 @@ h1, h2, h3 {
 
 .goal-popup-image {
   max-width: 100%;
-  max-height: 400px;
+  max-height: 100%;
   object-fit: contain;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
