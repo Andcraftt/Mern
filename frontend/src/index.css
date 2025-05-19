@@ -153,31 +153,24 @@ h1, h2, h3 {
 }
 
 /* Goals/Posts Grid */
-.goal {
-  background-color: #ffffff;
-  padding: 20px;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  
-  /* Flexbox para alinear el footer abajo */
-  display: flex;
-  flex-direction: column;
-  min-height: 300px; /* Altura mínima (ajústala según necesites) */
+.goals {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .goal {
   background-color: #ffffff;
   padding: 20px;
-  text-align: center;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  position: relative; /* Necesario para el footer absoluto */
+  min-height: 200px; 
+  padding-bottom: 60px; /* Espacio reservado para el footer */
 }
 
 .goal:hover {
@@ -1108,12 +1101,14 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: auto;
   padding-top: 8px;
   border-top: 1px solid #eee;
-  width: calc(100% - 40px); 
-  margin-left: auto;
-  margin-right: auto;
+  
+  /* Posicionamiento absoluto en la parte inferior */
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
 }
 
 .like-button-small {
