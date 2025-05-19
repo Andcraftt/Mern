@@ -1104,14 +1104,16 @@ button {
   animation: pulse 0.3s ease;
 }
 
-/* Small card like button */
 .goal-footer {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  margin-top: 8px;
+  margin-top: auto;
   padding-top: 8px;
   border-top: 1px solid #eee;
+  width: calc(100% - 40px); 
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .like-button-small {
