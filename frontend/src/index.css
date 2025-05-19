@@ -1158,3 +1158,51 @@ button {
     transform: scale(1);
   }
 }
+
+@media (max-width: 768px) {
+  .goal-inner-content {
+    grid-template-columns: 1fr;
+    max-height: 85vh; /* Usamos viewport height en lugar de porcentaje */
+    gap: 15px;
+    overflow: auto; /* Permitimos scroll en el contenedor principal */
+    width: 90%; /* Un poco más ancho en móvil */
+    max-width: 95%; /* Más espacio en móvil */
+  }
+  
+  .popup-left-column {
+    padding-bottom: 60px;
+    max-height: none; /* Eliminamos la altura máxima */
+    overflow: visible; /* Permitimos que el contenido fluya */
+    padding-right: 0; /* Eliminamos el padding derecho */
+  }
+  
+  .popup-description-container {
+    margin-bottom: 0;
+    max-height: none; /* Eliminamos la restricción de altura */
+    overflow: visible; /* Permitimos que el texto fluya */
+  }
+  
+  .download-button-container {
+    right: 0;
+    position: sticky; /* Hacemos que el botón se pegue al fondo */
+    bottom: 0;
+    background: white;
+    z-index: 10;
+    padding: 10px 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+  
+  .popup-right-column {
+    border-left: none;
+    border-top: 1px solid #edf2f7;
+    padding-left: 0;
+    padding-top: 20px;
+    max-height: 40vh; /* Limitamos la altura de los comentarios */
+    overflow-y: auto; /* Scroll solo en comentarios */
+  }
+  
+  .popup-header {
+    position: static; /* El header ya no es sticky en móvil */
+    margin-right: 0;
+  }
+}
