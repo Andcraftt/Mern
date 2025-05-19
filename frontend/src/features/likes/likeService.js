@@ -35,10 +35,18 @@ const getLikesCount = async (goalId) => {
   return response.data
 }
 
+// Get likes counts for multiple goals
+const getMultipleLikesCounts = async (goalIds) => {
+  const response = await axios.post(API_URL + 'counts', { goalIds })
+  
+  return response.data
+}
+
 const likeService = {
   toggleLike,
   checkLike,
-  getLikesCount
+  getLikesCount,
+  getMultipleLikesCounts
 }
 
 export default likeService
