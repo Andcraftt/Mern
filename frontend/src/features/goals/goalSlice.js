@@ -1,21 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import goalService from './goalService'
+import likeService from './likeService'
 
 const initialState = {
-  goals: [],
+  likes: {},
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
 }
 
-// Create new goal
-export const createGoal = createAsyncThunk(
-  'goals/create',
-  async (goalData, thunkAPI) => {
+// Toggle like on a goal
+export const toggleLike = createAsyncThunk(
+  'likes/toggle',
+  async (goalId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await goalService.createGoal(goalData, token)
+      const response = await likeService.toggleLike(goalId, token)
+      // Return both the response data and the goalId
+      return { ...response, goalId }
     } catch (error) {
       const message =
         (error.response &&
@@ -28,33 +30,15 @@ export const createGoal = createAsyncThunk(
   }
 )
 
-// Get user goals
-export const getGoals = createAsyncThunk(
-  'goals/getAll',
-  async (_, thunkAPI) => {
-    try {
-      // Llamar a la función getGoals sin pasarle un token
-      return await goalService.getGoals()
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString()
-      return thunkAPI.rejectWithValue(message)
-    }
-  }
-)
-
-
-// Delete user goal
-export const deleteGoal = createAsyncThunk(
-  'goals/delete',
-  async (id, thunkAPI) => {
+// Check if a user has liked a goal
+export const checkLike = createAsyncThunk(
+  'likes/check',
+  async (goalId, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token
-      return await goalService.deleteGoal(id, token)
+      const response = await likeService.checkLike(goalId, token)
+      // Return both the response data and the goalId
+      return { ...response, goalId }
     } catch (error) {
       const message =
         (error.response &&
@@ -67,51 +51,131 @@ export const deleteGoal = createAsyncThunk(
   }
 )
 
-export const goalSlice = createSlice({
-  name: 'goal',
+// Get likes count for a goal
+export const getLikesCount = createAsyncThunk(
+  'likes/count',
+  async (goalId, thunkAPI) => {
+    try {
+      const response = await likeService.getLikesCount(goalId)
+      // Return both the response data and the goalId
+      return { ...response, goalId }
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+// Get likes counts for multiple goals
+export const getMultipleLikesCounts = createAsyncThunk(
+  'likes/counts',
+  async (goalIds, thunkAPI) => {
+    try {
+      return await likeService.getMultipleLikesCounts(goalIds)
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString()
+      return thunkAPI.rejectWithValue(message)
+    }
+  }
+)
+
+export const likeSlice = createSlice({
+  name: 'likes',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: (state) => {
+      state.isLoading = false
+      state.isSuccess = false
+      state.isError = false
+      state.message = ''
+    },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createGoal.pending, (state) => {
+      .addCase(toggleLike.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(createGoal.fulfilled, (state, action) => {
+      .addCase(toggleLike.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.goals.push(action.payload)
+        
+        // Update the user's liked status for this goal
+        state.likes[action.payload.goalId] = {
+          userLiked: action.payload.liked,
+          count: action.payload.likeCount
+        }
       })
-      .addCase(createGoal.rejected, (state, action) => {
+      .addCase(toggleLike.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(getGoals.pending, (state) => {
+      .addCase(checkLike.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(getGoals.fulfilled, (state, action) => {
+      .addCase(checkLike.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.goals = action.payload
+        
+        // Store user's like status for this goal
+        state.likes[action.payload.goalId] = {
+          userLiked: action.payload.liked,
+          count: action.payload.likeCount
+        }
       })
-      .addCase(getGoals.rejected, (state, action) => {
+      .addCase(checkLike.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
       })
-      .addCase(deleteGoal.pending, (state) => {
+      .addCase(getLikesCount.pending, (state) => {
         state.isLoading = true
       })
-      .addCase(deleteGoal.fulfilled, (state, action) => {
+      .addCase(getLikesCount.fulfilled, (state, action) => {
         state.isLoading = false
         state.isSuccess = true
-        state.goals = state.goals.filter(
-          (goal) => goal._id !== action.payload.id
-        )
+        
+        // Store like count for this goal
+        state.likes[action.payload.goalId] = {
+          ...state.likes[action.payload.goalId],
+          count: action.payload.likeCount,
+          // If userLiked doesn't exist yet, default to false
+          userLiked: state.likes[action.payload.goalId]?.userLiked || false
+        }
       })
-      .addCase(deleteGoal.rejected, (state, action) => {
+      .addCase(getLikesCount.rejected, (state, action) => {
+        state.isLoading = false
+        state.isError = true
+        state.message = action.payload
+      })
+      .addCase(getMultipleLikesCounts.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getMultipleLikesCounts.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.isSuccess = true
+        
+        // Update like counts for multiple goals
+        action.payload.forEach(item => {
+          state.likes[item.goalId] = {
+            ...state.likes[item.goalId],
+            count: item.likeCount,
+            // If userLiked doesn't exist yet, default to false
+            userLiked: state.likes[item.goalId]?.userLiked || false
+          }
+        })
+      })
+      .addCase(getMultipleLikesCounts.rejected, (state, action) => {
         state.isLoading = false
         state.isError = true
         state.message = action.payload
@@ -119,5 +183,5 @@ export const goalSlice = createSlice({
   },
 })
 
-export const { reset } = goalSlice.actions
-export default goalSlice.reducer
+export const { reset } = likeSlice.actions
+export default likeSlice.reducer
