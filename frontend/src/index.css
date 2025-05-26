@@ -14,24 +14,29 @@ body {
   font-family: 'Poppins', sans-serif;
   min-height: 100vh;
   background-image: url('./img/background.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 a {
   text-decoration: none;
-  color: #333;
+  color: white;
 }
 
 p {
   line-height: 1.7;
+  color: white;
 }
 
 ul {
   list-style: none;
+  color: white;
 }
 
 h1, h2, h3 {
   font-weight: 800;
   margin-bottom: 10px;
+  color: white;
 }
 
 .container {
@@ -48,10 +53,10 @@ h1, h2, h3 {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  box-shadow: 0 4px 8px #0000005e;
+  box-shadow: 0 0px 8px #ffffff5e, inset 0 2px 12px #ffffff2a;
   margin-bottom: 40px;
   height: 80px; /* Fixed height for consistency */
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px) brightness(1.5);
 }
 
 .logo {
@@ -163,10 +168,10 @@ h1, h2, h3 {
 }
 
 .goal {
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px) brightness(1.5);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px #0000005e;
+  box-shadow: 0 0px 8px #ffffff5e, inset 0 2px 12px #ffffff2a;
   cursor: pointer;
   position: relative; /* Necesario para el footer absoluto */
   min-height: 200px; 
@@ -204,7 +209,7 @@ h1, h2, h3 {
   backdrop-filter: blur(4px);
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px #0000005e;
+  box-shadow: 0 4px 8px #ffffff5e;
   margin-bottom: 50px;
 }
 
