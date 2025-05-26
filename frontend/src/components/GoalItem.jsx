@@ -309,11 +309,6 @@ function GoalItem({ goal }) {
         
         <div className="goal-footer">
             <div className="file-info-tags">
-                {author && (
-                  <span className="author-tag">
-                    <span className="by-text">By   </span> {author.name}
-                  </span>
-                )}
                 <span>   Category:  </span>
                 {goal.category && (
                   <span className="category-tag">{goal.category}</span>
