@@ -163,7 +163,7 @@ h1, h2, h3 {
 }
 
 .goal {
-  background-color: #ffffff;
+  backdrop-filter: blur(4px);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px #0000005e;
@@ -201,7 +201,7 @@ h1, h2, h3 {
 .form {
   width: 70%;
   margin: 0 auto;
-  background-color: #f9f9f9;
+  backdrop-filter: blur(4px);
   padding: 30px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
@@ -660,9 +660,9 @@ button {
 }
 
 .ajustBack {
-  position: relative; /* necesario para que el botón se posicione respecto a este div */
+  position: relative; 
   border-radius: 4px;
-  background-color: #ffffff;
+  backdrop-filter: blur(4px);
   padding: 20px;
   margin: 20px;
 }
