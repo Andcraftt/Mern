@@ -1154,8 +1154,12 @@ button {
   animation: pulse 0.3s ease;
 }
 
-.file-info-tags{
+.file-info-tags {
   color: white;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem; /* Espacio uniforme entre elementos */
 }
 
 /* Heart pulse animation */

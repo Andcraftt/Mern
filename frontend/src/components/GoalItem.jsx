@@ -309,7 +309,7 @@ function GoalItem({ goal }) {
                 <span>Author: </span>
                 {goal.user && goal.user.name && (
                   <span className="author-tag">
-                    <span className="by-text">by</span> {goal.user.name}
+                    {goal.user.name}
                   </span>
                 )}
                 <span>   Category:  </span>
