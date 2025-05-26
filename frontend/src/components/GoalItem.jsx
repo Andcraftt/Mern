@@ -307,6 +307,12 @@ function GoalItem({ goal }) {
         <div className="goal-footer">
             <div className="file-info-tags">
                 
+                {goal.user && goal.user.name && (
+                  <span className="author-tag">
+                    <span className="by-text">by</span> {goal.user.name}
+                  </span>
+                )}
+
                 {goal.category && (
                   <span className="category-tag">{goal.category}</span>
                 )}
