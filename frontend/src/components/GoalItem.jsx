@@ -306,9 +306,11 @@ function GoalItem({ goal }) {
         
         <div className="goal-footer">
             <div className="file-info-tags">
+                
                 {goal.category && (
                   <span className="category-tag">{goal.category}</span>
                 )}
+                <h2> - </h2>
                 {fileExtension && (
                   <span className="file-type-tag">{fileExtension.toUpperCase()}</span>
                 )}

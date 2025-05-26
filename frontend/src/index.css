@@ -1154,6 +1154,10 @@ button {
   animation: pulse 0.3s ease;
 }
 
+.file-info-tags{
+  color: white;
+}
+
 /* Heart pulse animation */
 @keyframes pulse {
   0% {
