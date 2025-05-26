@@ -521,7 +521,6 @@ button {
 }
 
 .download-button:hover {
-  background-color: #45a049;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
