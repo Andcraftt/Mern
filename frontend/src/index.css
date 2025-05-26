@@ -812,21 +812,21 @@ button {
 }
 
 .back-button {
-  background-color: white;
-  color: #2d3748;
-  border: 2px solid #e2e8f0;
-  padding: 10px 20px;
-  font-weight: 600;
-  font-size: 1rem;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 25px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  display: flex;
   align-items: center;
+  background-color: #1d2025;
+  border: 2px solid #1d2025;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px #0000000d;
+  color: #2d3748;
+  cursor: pointer;
+  display: flex;
+  font-size: 1rem;
+  font-weight: 600;
   justify-content: center;
   margin: 25px auto;
+  padding: 10px 20px;
+  transition: all .3s ease;
+  color: white;
 }
 
 .back-button:hover {
