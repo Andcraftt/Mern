@@ -47,8 +47,6 @@ function GoalItem({ goal }) {
 
   // Obtainment of author
 
-  const { users } = useSelector((state) => state.users);
-  const author = users.find(user => user._id === goal.user);
   
   // Load comments when the goal is opened
   useEffect(() => {
