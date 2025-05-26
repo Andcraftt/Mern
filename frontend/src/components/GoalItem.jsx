@@ -44,6 +44,11 @@ function GoalItem({ goal }) {
   const isOtherFile = !isImage && !isVideo && !isAudio && !is3DModel && goal.imgURL;
 
   const isOwner = user && goal.user === user._id
+
+  // Obtainment of author
+
+  const { users } = useSelector((state) => state.users);
+  const author = users.find(user => user._id === goal.user);
   
   // Load comments when the goal is opened
   useEffect(() => {
@@ -306,10 +311,9 @@ function GoalItem({ goal }) {
         
         <div className="goal-footer">
             <div className="file-info-tags">
-                <span>Author: </span>
-                {goal.user && goal.user.name && (
+                {author && (
                   <span className="author-tag">
-                    {goal.user.name}
+                    <span className="by-text">By   </span> {author.name}
                   </span>
                 )}
                 <span>   Category:  </span>
