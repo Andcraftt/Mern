@@ -41,24 +41,22 @@ function Categories() {
 
   return (
     <>
-      <div className='ajustBack'>
-        <section className='heading'>
-          <h1>Categories</h1>
+      <section className='heading'>
+        <h1>Categories</h1>
+      </section>
+      {/* Category Buttons - Only show if no category is selected */}
+      {!selectedCategory && (
+        <section className='category-filters'>
+          {categories.map((category) => (
+            <button
+            key={category}
+            onClick={() => setSelectedCategory(category)}
+            className='category-button'
+          >
+            {category}
+          </button>
+          ))}
         </section>
-
-        {/* Category Buttons - Only show if no category is selected */}
-        {!selectedCategory && (
-          <section className='category-filters'>
-            {categories.map((category) => (
-              <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className='category-button'
-            >
-              {category}
-            </button>
-            ))}
-          </section>
         )}
 
         {/* Displaying Goals - Only show after a category is selected */}
@@ -82,7 +80,6 @@ function Categories() {
             Back to Categories
           </button>
         )}
-      </div>
     </>
   )
 }
