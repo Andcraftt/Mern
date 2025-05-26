@@ -225,7 +225,10 @@ h1, h2, h3 {
   border-radius: 6px;
   font-family: inherit;
   transition: border-color 0.3s ease;
+  background-color: #191919;
+  color: white;
 }
+
 
 .form-group input:focus,
 .form-group textarea:focus,
@@ -678,7 +681,6 @@ button {
   position: absolute;
   top: 20px;
   right: 20px;
-  background-color: #dbdbdb;
   border: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -690,7 +692,7 @@ button {
 }
 
 .ajustButton:hover {
-  background-color: #aaa;
+  
 }
 
 .danger-zone {
