@@ -209,7 +209,6 @@ h1, h2, h3 {
   backdrop-filter: blur(4px);
   padding: 30px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px #ffffff5e;
   margin-bottom: 50px;
 }
 
@@ -222,7 +221,7 @@ h1, h2, h3 {
 .form-group select {
   width: 100%;
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #ffffff;
   border-radius: 6px;
   font-family: inherit;
   transition: border-color 0.3s ease;
@@ -301,7 +300,8 @@ h1, h2, h3 {
 
 /* Modal/Popup Layout Fixes */
 .goal-inner-content {
-  background-color: #ffffff;
+  backdrop-filter: blur(50px);
+  box-shadow: 0 0px 8px #ffffff5e, inset 0 2px 12px #ffffff2a;
   border-radius: 12px;
   width: 70%;
   max-height: 85%;
@@ -326,9 +326,9 @@ h1, h2, h3 {
   padding-bottom: 15px;
   position: sticky;
   top: 0;
-  background-color: #ffffff;
   z-index: 5;
   margin-right: 25px;
+  color: white;
 }
 
 /* Restructure the left column layout */
@@ -435,7 +435,7 @@ h1, h2, h3 {
 
 
 .popup-header h2 {
-  color: #2d3748;
+  color: #ffffff;
   margin: 0;
   flex-grow: 1;
   text-align: center;
@@ -493,7 +493,7 @@ h1, h2, h3 {
 
 .comments-section h3 {
   margin-bottom: 20px;
-  color: #2d3748;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -505,7 +505,7 @@ button {
   padding: 10px 15px;
   border: none;
   border-radius: 6px;
-  background-color: #4CAF50;
+  background-color: #6b46c1;
   color: white;
   font-size: 16px;
   font-weight: 600;
@@ -617,7 +617,7 @@ button {
 }
 
 .no-comments {
-  color: #718096;
+  color: #ffffff;
   font-style: italic;
   text-align: center;
   padding: 25px 0;
@@ -667,16 +667,18 @@ button {
 .ajustBack {
   position: relative; 
   border-radius: 4px;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   padding: 20px;
   margin: 20px;
+  color: white;
+  box-shadow: 0 0px 8px #ffffff5e, inset 0 2px 12px #ffffff2a;
 }
 
 .ajustButton {
   position: absolute;
   top: 20px;
   right: 20px;
-  background-color: silver;
+  background-color: #dbdbdb;
   border: none;
   padding: 10px 16px;
   border-radius: 8px;
@@ -732,6 +734,7 @@ button {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
+  color: white;
 }
 
 /*Ventana de categorias*/
@@ -1063,7 +1066,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #f8f9fa;
+  background: #ffffff;
   border: 1px solid #dee2e6;
   border-radius: 4px;
   padding: 8px 16px;
@@ -1077,8 +1080,8 @@ button {
 }
 
 .like-button.liked {
-  background: #ffefef;
-  border-color: #ffcdd2;
+  background: #ffe2f3;
+  border-color: #ffaeaeb3;
 }
 
 .heart-icon {
