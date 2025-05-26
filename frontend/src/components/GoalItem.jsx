@@ -305,6 +305,15 @@ function GoalItem({ goal }) {
         {goal.imgURL && renderFilePreview()}
         
         <div className="goal-footer">
+            <div className="file-info-tags">
+                {goal.category && (
+                  <span className="category-tag">{goal.category}</span>
+                )}
+                {fileExtension && (
+                  <span className="file-type-tag">{fileExtension.toUpperCase()}</span>
+                )}
+            </div>
+
           <button 
             onClick={handleLikeToggle} 
             className={`like-button-small ${likeStatus ? 'liked' : ''}`}
