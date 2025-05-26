@@ -1113,7 +1113,7 @@ button {
   justify-content: flex-end;
   padding-top: 8px;
   border-top: 1px solid #eee;
-  
+  justify-content: space-between;
   /* Posicionamiento absoluto en la parte inferior */
   position: absolute;
   bottom: 20px;
