@@ -306,9 +306,17 @@ function GoalItem({ goal }) {
         
         <div className="goal-footer">
             <div className="file-info-tags">
+                <span>Author: </span>
+                {goal.user && goal.user.name && (
+                  <span className="author-tag">
+                    {goal.user.name}
+                  </span>
+                )}
+                <span>   Category:  </span>
                 {goal.category && (
                   <span className="category-tag">{goal.category}</span>
                 )}
+                <span className="separator"> - </span>
                 {fileExtension && (
                   <span className="file-type-tag">{fileExtension.toUpperCase()}</span>
                 )}
